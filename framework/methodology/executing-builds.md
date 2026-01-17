@@ -281,7 +281,7 @@ Include:
 - **Retry limit**: If verification fails, retry up to 3 times total, then STOP
 - **Document everything**: Every completed step gets a DONE file with timing information
 - **Update status file**: Keep BUILD_STATUS.md current
-- **Reference specs**: Use `../../specs/system/ybs-spec.md` and related specs as reference
+- **Reference specs**: Use `../../systems/bootstrap/specs/ybs-spec.md` and related specs as reference
 
 ### Starting Point
 
@@ -360,9 +360,9 @@ For steps that involve code implementation:
 ### Reference Documentation
 
 Core specifications are in:
-- `../../specs/system/ybs-spec.md` - Technical specification
-- `../../specs/system/ybs-decisions.md` - Architectural decisions
-- `../../specs/system/ybs-lessons-learned.md` - Implementation checklist
+- `../../systems/bootstrap/specs/ybs-spec.md` - Technical specification
+- `../../systems/bootstrap/specs/ybs-decisions.md` - Architectural decisions
+- `../../systems/bootstrap/specs/ybs-lessons-learned.md` - Implementation checklist
 
 ### Spec-to-Step Traceability
 

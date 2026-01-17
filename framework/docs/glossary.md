@@ -5,7 +5,7 @@
 
 📍 **You are here**: YBS Framework > Documentation > Glossary
 **↑ Parent**: [Documentation Hub](README.md)
-📚 **Quick Links**: [README](../README.md) | [CLAUDE.md](../CLAUDE.md)
+📚 **Quick Links**: [README](../README.md) | [CLAUDE.md](../../CLAUDE.md)
 
 > **Canonical Terminology**: Use these terms consistently across all YBS documentation.
 
@@ -39,7 +39,7 @@ The YBS methodology, specifications, and build step system. Prefer "methodology"
 **Synonym**: Methodology (preferred)
 **Not to be confused with**: Software frameworks like React, Rails
 
-**Example usage**: "The YBS framework includes specs/, build-from-scratch/, and helper scripts."
+**Example usage**: "The YBS framework includes methodology/, templates/, docs/, and tools/."
 
 ---
 
@@ -68,7 +68,7 @@ The YBS methodology, specifications, and build step system. Prefer "methodology"
 ---
 
 ### Step
-A single unit of work in the build-from-scratch framework. Each step has objectives, instructions, verification criteria, and traceability to specs.
+A single unit of work in the YBS build step framework. Each step has objectives, instructions, verification criteria, and traceability to specs.
 
 **File format**: `ybs-step_<12-hex-guid>.md`
 **Location**: `systems/SYSTEMNAME/steps/`
@@ -112,7 +112,7 @@ Status tracking file for a build showing current step, progress metrics, and com
 ### Spec
 A specification document defining WHAT to build. Can be system-wide, business, functional, technical, or testing specs.
 
-**Location**: `docs/specs/`
+**Location**: `systems/SYSTEMNAME/specs/`
 **Purpose**: Requirements, architecture, decisions
 
 **Example usage**: "The technical spec defines the API surface."
@@ -399,7 +399,7 @@ Specifications directory containing WHAT to build.
 
 **Location**: docs/specs/
 
-**Example usage**: "Put architectural decisions in specs/system/ybs-decisions.md."
+**Example usage**: "Put architectural decisions in systems/SYSTEMNAME/specs/ybs-decisions.md."
 
 ---
 
