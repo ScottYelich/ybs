@@ -1,6 +1,6 @@
 # Build Instructions for Claude Code
 
-**Version**: 0.7.0
+**Version**: 0.8.0
 
 This directory contains step-by-step instructions for building software systems using the YBS framework. The current steps guide building a Swift-based LLM chat tool (the "bootstrap"), but the framework can be adapted for building any type of system.
 
@@ -169,9 +169,9 @@ This file tracks:
 1. **Check for Step 0**: If `BUILD_CONFIG.json` doesn't exist in builds/SYSTEMNAME/, execute Step 0 first
 2. **Find next step**: Check STEPS_ORDER.txt or BUILD_STATUS.md for next step GUID
    - **If no next step exists**: Report "All steps completed" - do NOT make up or propose steps
-3. **Read step file**: Read `steps/ybs-step_<guid>.md` completely
-4. **Replace config placeholders**: Replace all `{{CONFIG:key}}` with values from BUILD_CONFIG.json
-5. **Record start time**: Note the step start timestamp in ISO 8601 format (YYYY-MM-DD HH:MM UTC)
+3. **Record start time IMMEDIATELY**: Note current timestamp in ISO 8601 format (YYYY-MM-DD HH:MM UTC) - this is the REAL start of work
+4. **Read step file**: Read `steps/ybs-step_<guid>.md` completely
+5. **Replace config placeholders**: Replace all `{{CONFIG:key}}` with values from BUILD_CONFIG.json
 6. **Create todo list**: Use TodoWrite tool to track sub-tasks for the step
 7. **Execute instructions**: Follow all instructions in the step
 8. **Write tests**: For code steps, write unit tests before or during implementation
@@ -179,11 +179,17 @@ This file tracks:
    - **Retry limit**: If verification fails, retry up to 3 times total
    - **After 3 failures**: STOP and report to user - do NOT continue attempting
    - **Track attempts**: Document each attempt and what failed
-10. **Record end time**: Note the step completion timestamp
-11. **Calculate duration**: Compute total time taken for the step
-12. **Document results**: Create `builds/SYSTEMNAME/docs/build-history/ybs-step_<guid>-DONE.txt` (include timing)
+10. **Record end time**: Note current timestamp (ISO 8601) - when ALL work is complete
+11. **Calculate duration**: Compute ACTUAL elapsed time from start to end
+12. **Document results**: Create `builds/SYSTEMNAME/docs/build-history/ybs-step_<guid>-DONE.txt` (include actual timing)
 13. **Update status**: Update `BUILD_STATUS.md` with completion, progress metrics, and next step GUID
 14. **Proceed**: Move to next step in STEPS_ORDER.txt
+
+**CRITICAL TIMING NOTES**:
+- Start time = when you BEGIN working on step (before reading step file)
+- End time = when ALL work is COMPLETE (after documentation)
+- Duration = ACTUAL elapsed wall-clock time, not just "1 minute" intervals
+- Be honest about timing - record real elapsed time for user visibility
 
 ### Step Documentation Format
 
@@ -414,6 +420,17 @@ Each maintains its own BUILD_STATUS.md and build-history.
 ---
 
 ## Version History
+
+### 0.8.0 (2026-01-17)
+- **CRITICAL TIMING FIX**: Clarified timing must reflect ACTUAL elapsed time, not just completion intervals
+- **Updated Step 2**: Added CONFIG markers for language and platform (v0.3.0)
+  - Step now reads from BUILD_CONFIG.json instead of asking user
+  - All questions now asked upfront in Step 0
+- **Switched from python3 to jq**: All JSON querying now uses `jq` (standard JSON processor)
+- **Added DEPENDENCIES.md**: Documented all YBS framework system dependencies
+- Updated workflow step 3 to emphasize recording start time IMMEDIATELY
+- Added "CRITICAL TIMING NOTES" section explaining real elapsed time expectations
+- Updated README.md to reference dependencies
 
 ### 0.7.0 (2026-01-17)
 - **Added Step 0 Configuration System**: Configurable values with `{{CONFIG:...}}` syntax

@@ -1,6 +1,6 @@
 # Build from Scratch Instructions
 
-**Version**: 0.7.0
+**Version**: 0.8.0
 
 This directory contains step-by-step instructions for building software systems from scratch using the YBS framework. The current steps guide building a Swift-based LLM chat tool (the "bootstrap"), but the framework is designed to guide building any type of system.
 
@@ -38,6 +38,18 @@ All build work happens in the `builds/` directory at the repository root (siblin
 - Subsequent steps read from config (no user prompts)
 - Enables fully autonomous execution after Step 0
 
+## Dependencies
+
+**YBS framework requires these system tools to be installed:**
+- **bash** (or zsh) - Shell
+- **jq** - JSON processor (install: `brew install jq` or `apt-get install jq`)
+- **git** - Version control
+- Standard Unix tools: mkdir, cat, grep, echo, test, ls
+
+See **DEPENDENCIES.md** for complete dependency documentation and installation instructions.
+
+**Note**: Language-specific tools (Swift, Python, Go, etc.) are NOT YBS dependencies - they're only needed if you build a system in that language.
+
 ## For Claude Code
 
 If you're Claude Code reading this, see **CLAUDE.md** in this directory for detailed instructions.
@@ -56,6 +68,15 @@ All documentation in this directory uses semantic versioning (major.minor.patch)
 - Each document tracks its own version independently
 
 ## Version History
+
+### 0.8.0 (2026-01-17)
+- **CRITICAL TIMING FIX**: Clarified that timing must reflect actual elapsed time
+- **Updated Step 2 (ybs-step_c5404152680d)**: Added CONFIG markers (v0.3.0) - reads from BUILD_CONFIG.json
+- **Switched from python3 to jq**: All JSON queries now use jq (standard tool)
+- **Added DEPENDENCIES.md**: Complete YBS framework dependency documentation
+- **Added Dependencies section**: To README with quick reference
+- Updated CLAUDE.md to version 0.8.0 with timing clarifications
+- Updated Step 1 to use jq instead of python3
 
 ### 0.7.0 (2026-01-17)
 - **Added Step 0 (Build Configuration)**: Collects all configurable values upfront

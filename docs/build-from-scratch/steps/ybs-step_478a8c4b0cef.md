@@ -59,7 +59,7 @@ Read the system name from BUILD_CONFIG.json:
 
 **Command**:
 ```bash
-cat builds/BUILD_CONFIG.json | python3 -c "import json, sys; print(json.load(sys.stdin)['system_name'])"
+jq -r '.system_name' builds/BUILD_CONFIG.json
 ```
 
 **Note**: BUILD_CONFIG.json is in the top-level builds/ directory initially, then will be moved to builds/{{CONFIG:system_name}}/ by this step.
