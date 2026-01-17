@@ -283,11 +283,22 @@ ybs/
 
 3. **Clean up when done** - After EVERY successful step/session:
    ```bash
-   # When step/session completes successfully:
-   rm -rf scratch/*
-   # Or delete specific files:
-   rm scratch/analysis.md scratch/draft.txt
+   # SAFE cleanup - list first, then remove directory:
+   ls -la scratch/              # Review what will be deleted
+   rm -r scratch/               # Remove entire directory (no wildcards!)
+
+   # Or delete specific files individually:
+   ls scratch/
+   rm scratch/analysis.md
+   rm scratch/draft.txt
+   rm scratch/notes.txt
+
+   # Or use find (lists first, then deletes):
+   find scratch/ -type f        # Preview files
+   find scratch/ -type f -delete # Delete files only
    ```
+
+   **NEVER use `rm -rf scratch/*` - avoid wildcards with -rf**
 
    **When to clean up:**
    - ✅ After completing a build step
@@ -325,7 +336,7 @@ ybs/
 - ✅ Clean repository root (only deliverables)
 - ✅ .gitignore prevents accidental commits
 - ✅ Clear separation: deliverables vs working files
-- ✅ Easy cleanup (rm -rf scratch/*)
+- ✅ Safe cleanup (rm -r scratch/ without wildcards)
 - ✅ Consistent pattern across all sessions
 
 ### Examples
@@ -339,8 +350,9 @@ echo "Analysis findings..." > scratch/analysis.md
 # Do work, create final deliverables in proper locations
 echo "Final content" > docs/new-document.md
 
-# Clean up when done
-rm -rf scratch/*
+# Clean up when done (SAFE - no wildcards!)
+ls -la scratch/              # Review first
+rm -r scratch/               # Remove directory
 git add docs/new-document.md
 git commit -m "Add new document"
 ```
