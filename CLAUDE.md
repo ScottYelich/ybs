@@ -22,12 +22,59 @@ This repository contains:
 **Next Phase**: Bootstrap implementation (use YBS to build YBS in Swift)
 **Note**: The Swift specs are ONE possible implementation, not THE only way
 
+---
+
+## How YBS Works
+
+**YBS is a methodology that provides sufficient specifications and details for an AI agent to build ANY system autonomously.**
+
+The framework uses structured files to guide AI agents (like Claude) through building complete systems - calculators, web apps, AI agents, databases, compilers, anything:
+
+### 1. Specifications (`docs/specs/`)
+Define WHAT to build:
+- Technical specs, architectural decisions, requirements
+- Example: `docs/specs/system/ybs-spec.md` defines the Swift chat tool
+- Can specify ANY type of system (web apps, CLI tools, AI agents, databases, etc.)
+
+### 2. Build Steps (`docs/build-from-scratch/`)
+Define HOW to build it:
+- Step-by-step instructions AI agents can execute autonomously
+- Each step has: objectives, instructions, verification, traceability to specs
+- Steps are language-agnostic and guide the AI agent through the build
+
+### 3. AI Agent Execution (You, Claude!)
+Tool-using LLM reads steps and executes them:
+- Uses tools: read files, write code, run commands, search, edit, etc.
+- Follows specifications and architectural decisions
+- Builds system from scratch to completion
+- Documents progress and maintains traceability
+
+### 4. Output (`builds/SYSTEMNAME/`)
+Complete working system:
+- Fully functional code
+- Build history and documentation
+- Traceable to specs and steps
+- Tests and verification
+
+### Current Usage
+
+**We're using YBS to build a Swift-based LLM chat tool (the "bootstrap").** This:
+- Tests and validates that the YBS framework works
+- Helps refine the methodology through practical use
+- Demonstrates that an AI agent (Claude) can build a complete system from specs alone
+- The bootstrap HAPPENS to be an AI agent, but YBS could just as easily build a calculator, web server, or anything else
+
+**Key Point**: YBS can guide building ANY system - the methodology provides sufficient detail for autonomous development regardless of what's being built.
+
+---
+
 ## Repository Structure
 
 ```
 ybs/
 ├── CLAUDE.md                          # This file - guidance for Claude Code
 ├── SESSION.md                         # [TRANSIENT] Active session scratchpad (crash recovery)
+├── SESSION.md.template                # Template for creating SESSION.md
 ├── LICENSE                            # MIT License
 ├── bin/                               # Centralized helper scripts
 │   ├── list-specs.sh                 # List specifications by GUID
@@ -56,26 +103,48 @@ ybs/
 
 ## For Claude Code Agents
 
-**What are you doing?**
+**What are you doing? Identify your task:**
 
-→ **Evolving the YBS meta-framework** (docs/)
-  - Read this file for overview
-  - You're helping define the specifications and patterns
-  - Focus on language-agnostic concepts
+### → **Working on the YBS Framework Itself** (docs/)
+You're helping evolve the meta-framework:
+- Read this file for overview
+- You're defining specifications and patterns
+- Focus on language-agnostic concepts
+- Goal: Make the framework better for building ANY system
 
-→ **Editing bootstrap implementation specs** (docs/specs/system/)
-  - Reference ybs-spec.md, ybs-decisions.md, ybs-lessons-learned.md
-  - These are Swift/macOS specific (bootstrap implementation)
-  - Concepts can be adapted to other languages
+**Key files:**
+- docs/README.md - Framework documentation
+- docs/build-from-scratch/ - Step framework
+- ANALYSIS.md - Framework improvements
 
-→ **Executing build steps** (using build-from-scratch framework)
-  - Read `docs/build-from-scratch/CLAUDE.md` instead
-  - That file has detailed workflow for step execution
-  - Framework is language-agnostic
+---
 
-→ **Working in a specific build** (builds/SYSTEMNAME/)
-  - Read `builds/SYSTEMNAME/CLAUDE.md` instead
-  - Each build has its own guidance file
+### → **Editing Bootstrap Specifications** (docs/specs/system/)
+You're working on the Swift chat tool specs:
+- Reference ybs-spec.md, ybs-decisions.md, ybs-lessons-learned.md
+- These are Swift/macOS specific (one example system)
+- You're defining WHAT the bootstrap will be
+
+**Remember:** These specs are for the bootstrap, not YBS itself.
+
+---
+
+### → **Executing Build Steps** (using build-from-scratch framework)
+You're building a system using YBS:
+- **Read `docs/build-from-scratch/CLAUDE.md`** for detailed workflow
+- Follow steps in order, maintain traceability
+- Use specifications as reference
+- Document your work
+
+**This is YBS in action!** You're the AI agent building a system autonomously.
+
+---
+
+### → **Working in a Specific Build** (builds/SYSTEMNAME/)
+You're in an active build workspace:
+- Read `builds/SYSTEMNAME/CLAUDE.md` for system-specific guidance
+- Check `BUILD_STATUS.md` for current status
+- Each build has its own context and requirements
 
 ---
 
@@ -92,7 +161,7 @@ ybs/
    ls -la SESSION.md 2>/dev/null
    ```
    - **If found**: Read it, understand the context, resume from where it left off
-   - **If not found**: Create a new SESSION.md (see template below)
+   - **If not found**: Create a new SESSION.md using the template file
 
 2. **Update SESSION.md regularly** - After EVERY significant action:
    - After reading files
@@ -108,58 +177,23 @@ ybs/
 
 ### SESSION.md Template
 
-```markdown
-# Session Scratchpad
+**Use the template file**: Copy `SESSION.md.template` to create your SESSION.md
 
-**Session ID**: YYYY-MM-DD_<12-hex-guid>
-**Started**: YYYY-MM-DD HH:MM UTC
-**Last Updated**: YYYY-MM-DD HH:MM UTC
-**Status**: in_progress | completing | failed
-
-## Context
-
-What am I working on?
-- Brief description of the task
-- What build/step am I on (if applicable)
-- What triggered this session
-
-## Action Plan
-
-1. [ ] Step 1
-2. [ ] Step 2
-3. [x] Step 3 (completed)
-4. [ ] Step 4 (current)
-
-## Current Todo List
-
-- [ ] Todo item 1
-- [x] Todo item 2 (completed)
-- [ ] Todo item 3 (blocked: reason)
-
-## Progress Log
-
-**HH:MM** - Action taken
-**HH:MM** - Another action
-**HH:MM** - Current action (IN PROGRESS)
-
-## Files Modified
-
-- path/to/file1.md (edited)
-- path/to/file2.sh (created)
-
-## Next Steps
-
-If I crash, resume by:
-1. First concrete step
-2. Second concrete step
-3. Don't forget to check X
-
-## Notes
-
-- Any important context
-- Any blockers or issues
-- Any decisions made
+```bash
+# At start of session (if no SESSION.md exists):
+cp SESSION.md.template SESSION.md
+# Then edit SESSION.md with current session details
 ```
+
+**Template contents** (see SESSION.md.template for full template):
+- Session ID (timestamp + 12-hex GUID)
+- Context (what you're working on)
+- Action Plan (high-level steps)
+- Current Todo List (specific tasks)
+- Progress Log (timestamped actions)
+- Files Modified (track all changes)
+- Next Steps (recovery instructions)
+- Notes (important context/decisions)
 
 ### Why This Matters
 

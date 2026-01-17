@@ -1,8 +1,8 @@
 # Build from Scratch Instructions
 
-**Version**: 0.3.0
+**Version**: 0.4.0
 
-This directory contains step-by-step instructions for building an LLM-based coding assistant system from scratch.
+This directory contains step-by-step instructions for building software systems from scratch using the YBS framework. The current steps guide building a Swift-based LLM chat tool (the "bootstrap"), but the framework is designed to guide building any type of system.
 
 ## Purpose
 
@@ -49,6 +49,11 @@ All documentation in this directory uses semantic versioning (major.minor.patch)
 - Each document tracks its own version independently
 
 ## Version History
+
+### 0.4.0 (2026-01-17)
+- Clarified that framework can build ANY system (not just LLM assistants)
+- Updated description to emphasize YBS methodology
+- Improved clarity around framework being general-purpose
 
 ### 0.3.0 (2026-01-16)
 - Changed step naming to ybs-step_<12hex> format (GUID-based)

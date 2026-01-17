@@ -6,27 +6,42 @@ Welcome to the YBS documentation hub.
 
 This repository has two main components:
 
-### 1. YBS Specification (specs/)
-**WHAT to build** - Complete design for a local-first AI agent (reasoning + tool using LLM chat)
+### 1. YBS Meta-Framework (specs/ + build-from-scratch/)
+**A methodology that provides sufficient details for AI agents to build ANY system autonomously**
 
-- System-wide technical specifications
-- Feature specifications by category (business, functional, technical, testing)
-- Architectural decisions
-- Implementation checklist
+The YBS framework enables tool-using AI agents (like Claude) to build complete software systems (calculators, web apps, AI agents, databases, anything) from scratch to completion without human intervention.
 
-### 2. Build Framework (build-from-scratch/)
-**HOW to build it** - Generic step-by-step instructions
+**How it works:**
+- **Specifications (specs/)** - Define WHAT to build
+  - Technical specifications, architectural decisions, requirements
+  - Can specify ANY type of system (web apps, CLI tools, AI agents, etc.)
+- **Build Steps (build-from-scratch/)** - Define HOW to build it
+  - Step-by-step instructions AI agents can execute autonomously
+  - Each step: objectives, instructions, verification, traceability
+- **AI Agent Execution** - Tool-using LLM reads steps and builds system
+  - Uses tools: read files, write code, run commands, etc.
+  - Follows specifications and steps
+- **Output (builds/)** - Complete working system with full traceability
 
-- Can implement YBS specification
-- Can create a different system entirely
-- Outputs go to `../builds/SYSTEMNAME/`
+### 2. Bootstrap Implementation (specs/system/ + builds/test1/)
+**Example: Using YBS to build a Swift-based LLM chat tool**
+
+To test and validate the YBS framework, we're having Claude build a tool-using AI chat system for macOS (similar to Aider, but in Swift).
+
+- **Specs (specs/system/)** - Complete specifications for the Swift chat tool
+  - ybs-spec.md - Technical specification
+  - ybs-decisions.md - Architectural decisions
+  - ybs-lessons-learned.md - Implementation checklist
+- **Build (builds/test1/)** - Work in progress using the YBS framework
+
+**Key Insight**: The Swift chat tool is ONE example of what YBS can build. YBS is the framework, not the tool itself.
 
 ### Relationship: Specs ↔ Steps
 
 **Critical**: Specs and steps must stay synchronized.
 
 - Each step references which spec sections it implements
-- When creating steps, reference specs/system/ sections
+- When creating steps, reference specs/ sections
 - When updating specs, update affected steps
 - All spec functionality needs corresponding steps
 - See [build-from-scratch/CLAUDE.md](build-from-scratch/CLAUDE.md#step-to-spec-traceability) for details
@@ -132,37 +147,67 @@ Before making changes:
 
 ## Current Status
 
-**Project Phase**: Specification complete, implementation not started
+**Project Phase**: Framework evolution + Bootstrap implementation starting
 
-**What exists:**
-- ✅ Complete technical specification
-- ✅ Architectural Decision Records
+**YBS Framework (Meta-Framework):**
+- ✅ Core methodology defined
+- ✅ Documentation structure established
+- ✅ Specification templates and patterns
+- ✅ Build step framework (build-from-scratch/)
+- ✅ Helper scripts and tooling
+- 🔄 Refining through bootstrap validation
+
+**Bootstrap Implementation (Swift Chat Tool):**
+- ✅ Complete technical specification (100+ pages)
+- ✅ 15 Architectural Decision Records
 - ✅ Implementation checklist from industry research
-- ✅ Documentation structure
+- ✅ Build steps defined
+- 🔄 Code implementation (using YBS framework)
+- ❌ User documentation (future)
 
 **What's next:**
-- 🔄 Create build-from-scratch guides
-- 🔄 Begin Swift implementation
-- 🔄 Create user documentation as features are built
+- Continue building bootstrap using YBS framework
+- Validate and refine framework based on experience
+- Document patterns and best practices
 
 ## Key Concepts
 
 ### What is YBS?
 
-YBS is a command-line AI agent (reasoning + tool using LLM chat) that:
+**YBS is a methodology that provides sufficient specifications and details for an AI agent to build ANY system autonomously.**
+
+It's a system of structured files (specs, steps, decisions, checklists) that enable tool-using AI agents like Claude to build complete software systems (calculators, web apps, AI agents, compilers, anything) from scratch to completion without human intervention.
+
+**How It Works:**
+1. **Specs define WHAT to build** - Technical specifications, architectural decisions, requirements
+2. **Steps define HOW to build it** - Detailed instructions AI agents can follow autonomously
+3. **AI agent executes steps** - Tool-using LLM (Claude, etc.) reads steps and builds the system
+4. **System is built** - From initialization to completion, guided by the framework
+
+**Current Project:** We're testing YBS by having Claude build a Swift-based LLM chat tool (the "bootstrap"). This validates that the framework provides sufficient detail for autonomous development. The bootstrap HAPPENS to be an AI agent, but YBS could just as easily guide building a calculator, web server, or anything else.
+
+**Key Insight:** YBS is NOT the Swift chat tool. YBS is the FRAMEWORK (methodology + structured files) that enables building it autonomously.
+
+### The Bootstrap Implementation
+
+The first system being built WITH YBS is a command-line AI agent (reasoning + tool using LLM chat) that:
 - Executes **locally** (all tools run on your machine)
 - Supports **local or remote LLMs** (Ollama, OpenAI, Anthropic, etc.)
 - Uses **hybrid tool architecture** (6 built-in + unlimited external tools)
 - Implements **security by default** (sandboxed execution, confirmation for destructive ops)
 - Maintains **simple, understandable core** (agent loop < 100 lines)
 
-### Design Philosophy
+### Bootstrap Design Philosophy
+
+The Swift chat tool (bootstrap) follows these principles:
 
 1. **Local-first** - Your code stays on your machine
 2. **Minimal dependencies** - Swift stdlib + 2-3 packages
 3. **Extensible** - Add tools without recompiling
 4. **Secure** - Sandboxed shell, path restrictions, user confirmation
 5. **Simple** - Core logic should be human-readable
+
+These principles are specific to the bootstrap. Systems built with YBS can follow different principles.
 
 ## Documentation Standards
 

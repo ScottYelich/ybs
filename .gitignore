@@ -1,5 +1,6 @@
 # Session scratchpad (crash recovery) - transient file, never commit
 SESSION.md
+# Note: SESSION.md.template SHOULD be committed (it's the template)
 
 # macOS
 .DS_Store

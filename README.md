@@ -1,51 +1,72 @@
 # YBS (Yelich Build System)
 
-> A meta-framework for building systems that build systems
+> A methodology that provides sufficient details for AI agents to build ANY system autonomously
 >
-> **Status**: Specifications complete, bootstrap implementation in progress
+> **Status**: Framework evolution + Bootstrap implementation in progress
 
 ## What is This Repository?
 
 This repository contains:
 
-1. **YBS Meta-Framework** - Language-agnostic specifications for building system-building systems
+1. **YBS Meta-Framework** - Methodology for autonomous system development by AI agents
+   - Structured files (specs, steps, decisions, checklists) with sufficient detail for autonomous builds
    - Generic build framework (step-by-step instructions)
    - Specification templates and patterns
-   - Architecture for tool-based AI agents
+   - Language-agnostic, system-agnostic
 
-2. **YBS Bootstrap Implementation** - First reference implementation using the framework
-   - Swift-based AI agent for macOS (specs/system/)
+2. **YBS Bootstrap Implementation** - First test case using the framework
+   - Swift-based AI chat tool for macOS (specs/system/)
    - Technical spec, architectural decisions, implementation checklist
-   - Used to validate and dogfood the framework
+   - Used to validate and refine the framework
+   - The bootstrap HAPPENS to be an AI agent, but YBS could build anything
 
 3. **builds/** - Output directory for systems built with YBS
 
 ## What is YBS?
 
-**YBS is a meta-framework**: A system for building systems that build systems.
+**YBS is a methodology that provides sufficient specifications and details for an AI agent to build ANY system autonomously.**
 
-It provides language-agnostic specifications and step-by-step build instructions for creating AI agents that:
-- Execute tools locally (file I/O, shell commands, external tools)
-- Reason using LLMs (local or remote)
-- Maintain conversation context
-- Require minimal dependencies
-- Support extensible tool architectures
+It uses structured files (specs, steps, decisions, checklists) to guide tool-using AI agents (like Claude) through building complete systems from scratch to completion without human intervention.
 
-**The Bootstrap**: We're using YBS to build the first YBS implementation (Swift/macOS), which will then be used to build other systems.
+**What can be built:**
+- Calculators, web apps, CLI tools, libraries
+- AI agents, compilers, databases, servers
+- Anything that can be specified
+- Language-agnostic (Python, Swift, Rust, Go, TypeScript, etc.)
 
-### What YBS Builds
+**How it works:**
+- **Specs** define WHAT to build (requirements, architecture, decisions)
+- **Steps** define HOW to build it (detailed instructions for AI agents)
+- **AI agent** (Claude, etc.) executes steps using tools (read, write, run commands)
+- **System** gets built autonomously with full traceability
 
-Systems built with YBS are AI agents that:
-- Chat with users to understand intent
-- Use tools to accomplish tasks (read files, edit code, run commands)
-- Maintain context across operations
-- Work with any LLM backend (Ollama, OpenAI, Anthropic, etc.)
+**The Bootstrap**: We're testing YBS by having Claude build a Swift-based LLM chat tool. This validates that the framework provides sufficient detail for autonomous development.
 
-The first system we're building is a Swift-based coding assistant for macOS.
+### Example: The Bootstrap Implementation
 
-### Framework Principles
+The first system being built WITH YBS is a command-line AI chat tool (Swift/macOS) that:
+- Executes tools locally (file I/O, shell commands, external tools)
+- Reasons using LLMs (local or remote: Ollama, OpenAI, Anthropic, etc.)
+- Maintains conversation context
+- Uses minimal dependencies
+- Supports extensible tool architectures
 
-Systems built with YBS follow these principles:
+This is ONE example of what YBS can build - we could just as easily use YBS to build a calculator, web server, or anything else.
+
+### YBS Framework Principles
+
+The YBS methodology itself follows these principles:
+
+- **📋 Sufficiently detailed**: Specs and steps provide enough detail for autonomous development
+- **🎯 Traceable**: Every implementation decision traces back to specs
+- **🔀 Language-agnostic**: Can guide building systems in any language
+- **🌐 System-agnostic**: Can guide building any type of software
+- **📦 Modular**: Specs, steps, decisions, and checklists are separate concerns
+- **✅ Verifiable**: Each step includes verification criteria
+
+### Bootstrap Implementation Principles
+
+The Swift chat tool (bootstrap) follows THESE principles (specific to that system):
 
 - **🏠 Local-first**: All tool execution happens locally; code stays on user's machine
 - **🔧 Extensible**: Add new tools without recompiling (external tool protocol)
@@ -53,6 +74,8 @@ Systems built with YBS follow these principles:
 - **🎯 Simple core**: Agent loop designed to be understandable in < 100 lines
 - **🌐 Flexible LLM**: Works with local (Ollama) or remote (OpenAI, Anthropic) providers
 - **⚡ Minimal overhead**: Fast startup, low memory footprint
+
+Different systems built with YBS can follow different principles.
 
 ### Design Philosophy
 
@@ -191,39 +214,39 @@ These insights are codified in [docs/specs/system/ybs-lessons-learned.md](docs/s
 
 ## FAQ
 
-**Q: What is the "bootstrap" implementation?**
-- YBS is a meta-framework for building systems that build systems
-- We're using YBS to build the first YBS implementation (Swift/macOS)
-- This first implementation will then be used to build other systems
-- It's recursive: YBS builds YBS
+**Q: What exactly is YBS?**
+- YBS is a METHODOLOGY (not a tool) for providing sufficient details so AI agents can build systems autonomously
+- Uses structured files: specs (WHAT to build), steps (HOW to build it), decisions, checklists
+- Can guide building ANY system: calculators, web apps, AI agents, databases, anything
+- Language-agnostic and system-agnostic
 
-**Q: Can I use a different language?**
-- Yes! The framework is language-agnostic
-- The Swift implementation is just the first example
-- You can build implementations in Python, Rust, Go, TypeScript, etc.
-- The specifications are concepts, not code
+**Q: What is the "bootstrap" implementation?**
+- The first system we're building WITH YBS to test and validate the framework
+- It's a Swift-based AI chat tool (similar to Aider, but local-first)
+- The bootstrap HAPPENS to be an AI agent, but YBS could just as easily build a calculator
+- This validates that YBS provides sufficient detail for autonomous development
+
+**Q: Can I use YBS to build something other than AI agents?**
+- **YES!** That's the whole point
+- YBS can guide building: web servers, calculators, compilers, databases, CLI tools, libraries, anything
+- The bootstrap is an AI agent only because we're testing the framework with a complex example
+- Use YBS to build whatever you want in whatever language you want
 
 **Q: Why Swift for the bootstrap?**
 - Native macOS integration, single binary distribution, fast startup, type safety
 - See [docs/specs/system/ybs-decisions.md](docs/specs/system/ybs-decisions.md) D01 for full rationale
-- This choice is specific to the bootstrap, not required by YBS
-
-**Q: Can systems built with YBS use ChatGPT/Claude/local models?**
-- Yes! The framework supports any LLM backend
-- OpenAI, Anthropic, Ollama, or any OpenAI-compatible API
-- Local-first: tool execution is always local, only LLM calls go to cloud (if using cloud LLM)
+- This choice is specific to the bootstrap, not required for YBS or other systems built with YBS
 
 **Q: When will the bootstrap be ready?**
-- Specifications complete, code implementation in progress via build framework
+- Specifications complete, code implementation in progress via YBS framework
 - No timeline set (this is a learning/validation project)
-- Other implementations can start now using the framework
+- The goal is to validate YBS works, not ship a product
 
 **Q: How is this different from Claude Code/Aider/Cursor?**
-- YBS is a meta-framework, not a single tool
-- Designed for building custom AI agent systems
-- Local-first by default (tool execution always local)
-- Extensible architecture (external tool protocol)
-- Language-agnostic specifications
+- YBS is a METHODOLOGY, those are TOOLS
+- YBS guides AI agents to build systems; those tools are the systems themselves
+- YBS is for creating new systems from scratch; those tools are for working with existing codebases
+- You could use YBS to build something like Aider/Cursor (that's essentially what the bootstrap is)
 
 ## Contributing
 
@@ -273,21 +296,23 @@ builds/ybs-swift/
 ## Current Journey
 
 **Phase 1 (Current)**: Framework Evolution
-- Claude (Sonnet 4.5) + Human evolving the YBS specifications
+- Claude (Sonnet 4.5) + Human refining the YBS methodology
 - Documenting patterns, architecture, and best practices
-- Building the meta-framework iteratively
+- Testing the framework by building the bootstrap
 
-**Phase 2 (Next)**: Bootstrap Implementation
-- Use the YBS method to build a YBS implementation (Swift/macOS)
-- Follow the build-from-scratch framework step-by-step
-- Goal: Working local implementation (even if imperfect!)
+**Phase 2 (In Progress)**: Bootstrap Implementation
+- Using YBS to have Claude build a Swift-based AI chat tool
+- Following the build-from-scratch framework step-by-step
+- Goal: Validate YBS provides sufficient detail for autonomous development
+- Refine the methodology based on what works and what doesn't
 
-**Phase 3 (Future)**: Self-Hosting
-- Use the Swift YBS to build other systems
-- Test with local LLMs (Ollama, etc.)
-- Iterate and improve based on real usage
+**Phase 3 (Future)**: Validation & Iteration
+- Complete the bootstrap implementation
+- Use what we learned to improve YBS
+- Apply YBS to build other systems (calculators, web apps, etc.)
+- Iterate and refine the methodology
 
-It's okay if the local LLM implementation isn't as capable as Claude. The goal is to reach the point where we can try, learn, and iterate.
+The bootstrap being an AI chat tool is intentionally complex - if YBS can guide building that autonomously, it can guide building anything.
 
 ---
 
