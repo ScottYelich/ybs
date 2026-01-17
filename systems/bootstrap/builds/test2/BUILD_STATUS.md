@@ -41,6 +41,6 @@ Ready to proceed to next step (to be determined).
 - **Target Platform**: macOS 14+
 
 ## Reference Documentation
-- Specification: `../../docs/specs/system/ybs-spec.md`
-- Decisions: `../../docs/specs/system/ybs-decisions.md`
-- Checklist: `../../docs/specs/system/ybs-lessons-learned.md`
+- Specification: `../../specs/ybs-spec.md`
+- Decisions: `../../specs/ybs-decisions.md`
+- Checklist: `../../specs/ybs-lessons-learned.md`

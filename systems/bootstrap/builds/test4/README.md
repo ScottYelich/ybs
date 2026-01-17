@@ -85,7 +85,7 @@ test4/
 
 ---
 
-**Built with**: Step-by-step instructions from `../../docs/build-from-scratch/`
+**Built with**: Step-by-step instructions from `../../steps/`
 
 ---
 

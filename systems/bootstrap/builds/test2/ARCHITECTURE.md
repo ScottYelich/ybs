@@ -79,5 +79,5 @@ Step 000003 will set up the Swift project structure with Package.swift, initial 
 **Reference Documentation**:
 - Language chosen: Swift (native macOS, type-safe, fast)
 - Platform chosen: macOS 14+ (single platform, use platform features)
-- Original spec reference: `../../docs/specs/system/ybs-spec.md` (Swift-specific spec)
-- Architectural decisions: `../../docs/specs/system/ybs-decisions.md` (D01 explains Swift choice)
+- Original spec reference: `../../specs/ybs-spec.md` (Swift-specific spec)
+- Architectural decisions: `../../specs/ybs-decisions.md` (D01 explains Swift choice)

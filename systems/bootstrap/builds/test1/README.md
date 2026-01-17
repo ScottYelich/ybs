@@ -88,5 +88,5 @@ test1/
 
 ---
 
-**Built with**: Step-by-step instructions from `../../docs/build-from-scratch/`
+**Built with**: Step-by-step instructions from `../../steps/`
 **Last updated**: 2026-01-16 19:20:00

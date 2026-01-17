@@ -120,6 +120,6 @@ Step 3 (ybs-step_89b9e6233da5) will set up the Swift project structure with Pack
 
 **Reference Documentation**:
 - Language chosen: User preference via BUILD_CONFIG.json
-- Original spec reference: `../../docs/specs/system/ybs-spec.md` (Swift-specific bootstrap spec)
-- Architectural decisions: `../../docs/specs/system/ybs-decisions.md` (reference for design patterns)
-- Implementation checklist: `../../docs/specs/system/ybs-lessons-learned.md`
+- Original spec reference: `../../specs/ybs-spec.md` (Swift-specific bootstrap spec)
+- Architectural decisions: `../../specs/ybs-decisions.md` (reference for design patterns)
+- Implementation checklist: `../../specs/ybs-lessons-learned.md`

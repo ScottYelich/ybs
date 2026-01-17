@@ -412,7 +412,7 @@ SYSTEMNAME --help
 
 ---
 
-**Built with**: Step-by-step instructions from `../../docs/build-from-scratch/`
+**Built with**: Step-by-step instructions from `../../steps/`
 **Last updated**: [timestamp]
 ```
 
@@ -433,7 +433,7 @@ This file provides guidance to Claude Code when working on this project.
 **Language**: [language]
 **Platform**: [platform(s)]
 **Purpose**: LLM-powered coding assistant
-**Build Method**: Following step-by-step instructions from `../../docs/build-from-scratch/`
+**Build Method**: Following step-by-step instructions from `../../steps/`
 
 ## Quick Start for Claude
 
@@ -464,7 +464,7 @@ SYSTEMNAME/
 ### Development Workflow
 
 1. **Check status**: Always read BUILD_STATUS.md first
-2. **Read instructions**: Follow steps from `../../docs/build-from-scratch/steps/`
+2. **Read instructions**: Follow steps from `../../steps/`
 3. **Use todo lists**: Create TodoWrite for each step
 4. **Write tests**: For code changes, write tests first or concurrently
 5. **Verify**: Run tests and build before marking step complete

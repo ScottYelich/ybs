@@ -10,7 +10,7 @@ This file provides guidance to Claude Code when working on this project.
 **Language**: Swift
 **Platform**: macOS only
 **Purpose**: LLM-powered coding assistant
-**Build Method**: Following step-by-step instructions from `../../docs/build-from-scratch/`
+**Build Method**: Following step-by-step instructions from `../../steps/`
 
 ## Quick Start for Claude
 
@@ -44,7 +44,7 @@ test1/
 ### Development Workflow
 
 1. **Check status**: Always read BUILD_STATUS.md first
-2. **Read instructions**: Follow steps from `../../docs/build-from-scratch/steps/`
+2. **Read instructions**: Follow steps from `../../steps/`
 3. **Use todo lists**: Create TodoWrite for each step
 4. **Write tests**: For code changes, write tests first or concurrently
 5. **Verify**: Run tests and build before marking step complete
@@ -101,7 +101,7 @@ test1/
 ### Workflow
 
 1. **Check status**: Read BUILD_STATUS.md to see current step
-2. **Read instructions**: Read the step file from `../../docs/build-from-scratch/step_NNNNNN.md`
+2. **Read instructions**: Read the step file from `../../steps/step_NNNNNN.md`
 3. **Execute**: Follow instructions exactly
 4. **Verify**: Run verification checks
 5. **Document**: Create build-history entry
@@ -111,12 +111,12 @@ test1/
 ### Reference Documentation
 
 Core specifications (DO NOT MODIFY):
-- `../../docs/specs/system/ybs-spec.md` - Technical specification
-- `../../docs/specs/system/ybs-decisions.md` - Architectural decisions
-- `../../docs/specs/system/ybs-lessons-learned.md` - Best practices
+- `../../specs/ybs-spec.md` - Technical specification
+- `../../specs/ybs-decisions.md` - Architectural decisions
+- `../../specs/ybs-lessons-learned.md` - Best practices
 
 Build instructions (FOLLOW THESE):
-- `../../docs/build-from-scratch/step_NNNNNN.md` - Individual steps
+- `../../steps/step_NNNNNN.md` - Individual steps
 
 ### Important Notes
 

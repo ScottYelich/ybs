@@ -123,9 +123,9 @@ Complete step 000000 initialization and verification.
 - **Target Platform**: macOS 14+ (primary)
 
 ## Reference Documentation
-- Specification: `../../docs/specs/system/ybs-spec.md`
-- Decisions: `../../docs/specs/system/ybs-decisions.md`
-- Checklist: `../../docs/specs/system/ybs-lessons-learned.md`
+- Specification: `../../specs/ybs-spec.md`
+- Decisions: `../../specs/ybs-decisions.md`
+- Checklist: `../../specs/ybs-lessons-learned.md`
 ```
 
 Replace `SYSTEM_NAME` and `[current timestamp]` with actual values.
@@ -161,13 +161,13 @@ See `docs/build-history/` for completed build steps and verification results.
 ## Reference Specifications
 
 This implementation is based on specifications in:
-- `../../docs/specs/system/ybs-spec.md` - Complete technical specification
-- `../../docs/specs/system/ybs-decisions.md` - Architectural decisions
-- `../../docs/specs/system/ybs-lessons-learned.md` - Implementation best practices
+- `../../specs/ybs-spec.md` - Complete technical specification
+- `../../specs/ybs-decisions.md` - Architectural decisions
+- `../../specs/ybs-lessons-learned.md` - Implementation best practices
 
 ## Getting Started
 
-This project is being built step-by-step following instructions in `../../docs/build-from-scratch/`.
+This project is being built step-by-step following instructions in `../../steps/`.
 
 **Current step**: See BUILD_STATUS.md
 
@@ -195,7 +195,7 @@ This file provides guidance to Claude Code when working in this build workspace.
 **System Name**: SYSTEM_NAME
 **System Version**: 0.1.0
 **Purpose**: LLM-based coding assistant
-**Build Method**: Following step-by-step instructions from `../../docs/build-from-scratch/`
+**Build Method**: Following step-by-step instructions from `../../steps/`
 
 ## Documentation Versioning
 
@@ -233,7 +233,7 @@ SYSTEM_NAME/
 ### Workflow
 
 1. **Check status**: Read BUILD_STATUS.md to see current step
-2. **Read instructions**: Read the step file from `../../docs/build-from-scratch/step_NNNNNN.md`
+2. **Read instructions**: Read the step file from `../../steps/ybs-step_NNNNNN.md`
 3. **Execute**: Follow instructions exactly
 4. **Verify**: Run verification checks
 5. **Document**: Create build-history entry
@@ -243,12 +243,12 @@ SYSTEM_NAME/
 ### Reference Documentation
 
 Core specifications (DO NOT MODIFY):
-- `../../docs/specs/system/ybs-spec.md` - Technical specification
-- `../../docs/specs/system/ybs-decisions.md` - Architectural decisions
-- `../../docs/specs/system/ybs-lessons-learned.md` - Best practices
+- `../../specs/ybs-spec.md` - Technical specification
+- `../../specs/ybs-decisions.md` - Architectural decisions
+- `../../specs/ybs-lessons-learned.md` - Best practices
 
 Build instructions (FOLLOW THESE):
-- `../../docs/build-from-scratch/step_NNNNNN.md` - Individual steps
+- `../../steps/ybs-step_NNNNNN.md` - Individual steps
 
 ### Important Notes
 

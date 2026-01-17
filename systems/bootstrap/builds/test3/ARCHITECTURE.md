@@ -87,5 +87,5 @@ Step 000002 (ybs-step_89b9e6233da5) will set up the Swift project structure with
 **Reference Documentation**:
 - Language chosen: Swift (user preference)
 - Platform chosen: macOS (user preference)
-- Original spec reference: `../../docs/specs/system/ybs-spec.md` (Swift-specific, directly applicable)
-- Architectural decisions: `../../docs/specs/system/ybs-decisions.md` (fully applicable for Swift/macOS)
+- Original spec reference: `../../specs/ybs-spec.md` (Swift-specific, directly applicable)
+- Architectural decisions: `../../specs/ybs-decisions.md` (fully applicable for Swift/macOS)

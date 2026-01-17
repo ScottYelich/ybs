@@ -1,6 +1,6 @@
 # YBS Specifications
 
-**Version**: 0.1.0
+**Version**: 1.0.0
 
 This directory contains all specifications for the Yelich Build System (YBS) and systems built with it.
 
@@ -119,7 +119,7 @@ Checks:
 
 ## Relationship to Build Steps
 
-Build steps (`docs/build-from-scratch/steps/ybs-step_<guid>.md`) implement specifications:
+Build steps (`systems/SYSTEMNAME/steps/ybs-step_<guid>.md`) implement specifications:
 
 ```markdown
 # Step: Implement Configuration System

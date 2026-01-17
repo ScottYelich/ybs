@@ -1,6 +1,6 @@
 # YBS Glossary
 
-**Version**: 0.1.0
+**Version**: 1.0.0
 **Last Updated**: 2026-01-17
 
 📍 **You are here**: YBS Framework > Documentation > Glossary
