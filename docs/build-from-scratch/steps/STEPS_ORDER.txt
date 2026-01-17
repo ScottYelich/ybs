@@ -1,0 +1,31 @@
+# Build Steps Order
+#
+# This file defines the sequence of build steps.
+# Each line: <12-hex-guid>  # Description
+#
+# Format allows for:
+# - Comments (lines starting with #)
+# - Conditional branches (if/else logic in descriptions)
+# - Loops (repeat steps)
+# - Optional steps (mark as [optional])
+#
+# Use ../list-steps.sh to see numbered view
+#
+# Step files are named: ybs-step_<guid>.md
+
+478a8c4b0cef  # Initialize Build Workspace
+c5404152680d  # Define Architecture & Choose Technology Stack
+89b9e6233da5  # Set Up Project Environment
+
+# Future steps will be added below with new GUIDs
+# Insert new steps anywhere - no renumbering needed!
+
+# Example conditional:
+# a1b2c3d4e5f6  # [If Swift] Configure Swift Package Manager
+# a7b8c9d0e1f2  # [If Python] Configure Poetry/pip
+
+# Example loop:
+# a3b4c5d6e7f8  # Implement Tool (repeat for each tool)
+
+# Example optional:
+# a9b0c1d2e3f4  # [Optional] Set up CI/CD pipeline
