@@ -216,7 +216,7 @@ When YBS is implemented, add:
 
 ## License
 
-*[To be determined]*
+MIT License - See [LICENSE](LICENSE) file for details
 
 ---
 
