@@ -1,12 +1,33 @@
-# YBS Documentation
+# YBS Documentation (LEGACY)
 
-**Version**: 0.2.0
-**Last Updated**: 2026-01-17
+> ⚠️ **LEGACY DOCUMENT - FOR HISTORICAL REFERENCE ONLY**
+>
+> This document reflects the pre-restructure (v0.2.0) documentation organization.
+> **For current documentation**, see:
+> - [Framework README](../README.md) - Current framework documentation
+> - [Repository README](../../README.md) - Current repository overview
+>
+> **Last Updated**: 2026-01-17 (before restructure)
 
-📍 **You are here**: YBS Framework > Documentation Hub
-**↑ Parent**: [YBS Root](../README.md)
+**Version**: 0.2.0 (LEGACY)
 
-Welcome to the YBS documentation hub.
+📍 **You are here**: YBS Framework > Legacy Documentation
+**↑ Parent**: [Framework](../README.md)
+
+---
+
+## Historical Context
+
+This document describes the YBS documentation structure before the 2026-01-17 major restructure (v1.0.0).
+
+### What Changed in v1.0.0
+
+The repository was restructured to clearly separate:
+- **A**: Framework (framework/) - Reusable methodology
+- **B**: Systems (systems/) - System definitions (specs + steps)
+- **C**: Builds (systems/*/builds/) - Build outputs
+
+This document preserves the historical v0.2.0 structure for reference.
 
 ## What's in This Repository
 
@@ -58,15 +79,15 @@ To test and validate the YBS framework, we're having Claude build a tool-using A
 
 ### 📚 Core Reference Documentation (NEW!)
 
-**Canonical references** - single source of truth for key concepts:
+**Canonical references** (v0.2.0 locations - now moved in v1.0.0):
 
-- **[glossary.md](glossary.md)** - Standard terminology across all YBS documentation
-- **[bootstrap-principles.md](bootstrap-principles.md)** - Complete bootstrap design principles
-- **[tool-architecture.md](tool-architecture.md)** - Hybrid tool system (built-in + external)
-- **[security-model.md](security-model.md)** - Sandboxing, confirmations, restrictions
-- **[configuration.md](configuration.md)** - Layered configuration system
+- **[glossary.md](glossary.md)** - Standard terminology (NOW: framework/docs/glossary.md)
+- **[bootstrap-principles.md](../../systems/bootstrap/docs/bootstrap-principles.md)** - Complete bootstrap design principles (NOW: systems/bootstrap/docs/)
+- **[tool-architecture.md](../../systems/bootstrap/docs/tool-architecture.md)** - Hybrid tool system (NOW: systems/bootstrap/docs/)
+- **[security-model.md](../../systems/bootstrap/docs/security-model.md)** - Sandboxing, confirmations (NOW: systems/bootstrap/docs/)
+- **[configuration.md](../../systems/bootstrap/docs/configuration.md)** - Layered configuration (NOW: systems/bootstrap/docs/)
 
-**When writing documentation**: Link to these canonical docs rather than duplicating content.
+**Historical note**: In v0.2.0 these were all in docs/. In v1.0.0, bootstrap-specific docs moved to systems/bootstrap/docs/.
 
 ---
 

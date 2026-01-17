@@ -460,9 +460,9 @@ Directory containing completion documentation for each step.
 ## References
 
 - **Framework overview**: [README.md](../README.md)
-- **Documentation hub**: [docs/README.md](README.md)
-- **Bootstrap principles**: [bootstrap-principles.md](bootstrap-principles.md)
-- **Tool architecture**: [tool-architecture.md](tool-architecture.md)
+- **Framework documentation hub**: [Framework docs](README.md)
+- **Bootstrap principles**: [bootstrap-principles.md](../../systems/bootstrap/docs/bootstrap-principles.md)
+- **Tool architecture**: [tool-architecture.md](../../systems/bootstrap/docs/tool-architecture.md)
 
 ---
 
