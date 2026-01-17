@@ -1,0 +1,28 @@
+# Session scratchpad (crash recovery) - transient file, never commit
+SESSION.md
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Build artifacts
+builds/*/build/
+builds/*/.build/
+builds/*/dist/
+builds/*/target/
+builds/*/__pycache__/
+builds/*/*.egg-info/
+builds/*/node_modules/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.log
+.*.tmp

@@ -1,59 +1,88 @@
 # YBS (Yelich Build System)
 
-> A local-first, extensible AI agent (reasoning + tool using LLM chat) specification + build framework
+> A meta-framework for building systems that build systems
 >
-> **Status**: Specification complete, framework ready
+> **Status**: Specifications complete, bootstrap implementation in progress
 
 ## What is This Repository?
 
 This repository contains:
 
-1. **YBS Specification** - Complete design for a local-first AI agent (reasoning + tool using LLM chat)
+1. **YBS Meta-Framework** - Language-agnostic specifications for building system-building systems
+   - Generic build framework (step-by-step instructions)
+   - Specification templates and patterns
+   - Architecture for tool-based AI agents
+
+2. **YBS Bootstrap Implementation** - First reference implementation using the framework
+   - Swift-based AI agent for macOS (specs/system/)
    - Technical spec, architectural decisions, implementation checklist
+   - Used to validate and dogfood the framework
 
-2. **Build Framework** - Step-by-step system builder
-   - Generic instructions for building ANY LLM coding assistant
-   - Can be used to implement YBS or create a different system
-
-3. **builds/** - Output directory for active builds (like .build/ or dist/)
+3. **builds/** - Output directory for systems built with YBS
 
 ## What is YBS?
 
-YBS (the specification) defines a command-line tool providing an interactive chat interface for AI-assisted coding. It maintains conversation context, executes tools locally, and supports both local and remote LLM backends.
+**YBS is a meta-framework**: A system for building systems that build systems.
 
-### Key Features (Planned)
+It provides language-agnostic specifications and step-by-step build instructions for creating AI agents that:
+- Execute tools locally (file I/O, shell commands, external tools)
+- Reason using LLMs (local or remote)
+- Maintain conversation context
+- Require minimal dependencies
+- Support extensible tool architectures
 
-- **🏠 Local-first**: All tool execution happens locally; your code stays on your machine
+**The Bootstrap**: We're using YBS to build the first YBS implementation (Swift/macOS), which will then be used to build other systems.
+
+### What YBS Builds
+
+Systems built with YBS are AI agents that:
+- Chat with users to understand intent
+- Use tools to accomplish tasks (read files, edit code, run commands)
+- Maintain context across operations
+- Work with any LLM backend (Ollama, OpenAI, Anthropic, etc.)
+
+The first system we're building is a Swift-based coding assistant for macOS.
+
+### Framework Principles
+
+Systems built with YBS follow these principles:
+
+- **🏠 Local-first**: All tool execution happens locally; code stays on user's machine
 - **🔧 Extensible**: Add new tools without recompiling (external tool protocol)
 - **🔒 Secure by default**: Sandboxed shell execution, path restrictions, user confirmation for destructive ops
 - **🎯 Simple core**: Agent loop designed to be understandable in < 100 lines
-- **🌐 Flexible LLM**: Works with Ollama (local), OpenAI, Anthropic, or any OpenAI-compatible API
-- **⚡ Fast**: Native Swift binary, ~10ms startup time
+- **🌐 Flexible LLM**: Works with local (Ollama) or remote (OpenAI, Anthropic) providers
+- **⚡ Minimal overhead**: Fast startup, low memory footprint
 
 ### Design Philosophy
 
 1. **Local tool execution** - Security and control
-2. **Minimal dependencies** - Swift stdlib + 2-3 packages
-3. **Hybrid tool architecture** - 6 built-in tools + unlimited external tools
+2. **Minimal dependencies** - Use language standard library where possible
+3. **Hybrid tool architecture** - Core built-in tools + unlimited external tools
 4. **Stateless sessions** - State via filesystem (tools can access git, sqlite, etc. as needed)
 5. **Graceful degradation** - Errors don't crash; LLM can adapt
 
 ## Current Status
 
-**What's complete**:
-- ✅ YBS specification (100+ pages technical spec)
+**Framework (Language-Agnostic)**:
+- ✅ Generic build framework (step-by-step system builder)
+- ✅ Specification templates and patterns
+- ✅ Architecture documentation
+- ✅ Session-based changelog system
+- ✅ Helper scripts (bin/)
+
+**Bootstrap Implementation (Swift/macOS)**:
+- ✅ Complete technical specification (100+ pages)
 - ✅ 15 architectural decision records with rationale
 - ✅ Implementation checklist from industry research
-- ✅ Build framework (step-by-step instructions)
-
-**What's NOT in this repo**:
-- ❌ YBS implementation (specs define WHAT, not code)
+- ❌ Code implementation (in progress via build framework)
 - ❌ Pre-built binaries
 
 **How to use this**:
-- Read specs to understand YBS design
-- Use build framework to implement YBS (or create your own system)
-- builds/ directory is where framework outputs go
+- **To understand the framework**: Read docs/build-from-scratch/
+- **To see a complete spec example**: Read docs/specs/system/ (Swift implementation)
+- **To build your own system**: Use the framework with any language
+- **To contribute**: Help build the bootstrap implementation
 
 ## Documentation
 
@@ -84,7 +113,9 @@ All project documentation lives in [`docs/`](docs/):
 - Review [docs/specs/system/ybs-decisions.md](docs/specs/system/ybs-decisions.md) before proposing changes
 - Check if your idea conflicts with existing architectural decisions
 
-## Architecture Overview
+## Architecture Overview (Bootstrap Implementation)
+
+This shows the architecture of the Swift/macOS bootstrap implementation. Other implementations may vary.
 
 ```
 ┌─────────────────────────────┐
@@ -109,33 +140,34 @@ All project documentation lives in [`docs/`](docs/):
 └─────────────────────────────┘
 ```
 
-### Built-in Tools (6)
-- `read_file` - Read file contents with line limits
-- `write_file` - Create/overwrite files (requires confirmation)
-- `edit_file` - Search/replace edits (no line number hallucinations)
-- `list_files` - Glob pattern file discovery
-- `search_files` - Regex content search
-- `run_shell` - Sandboxed command execution (requires confirmation)
+### Core Tool Architecture
 
-### External Tools (Unlimited)
-Simple protocol: executable receives JSON via argv, outputs JSON to stdout
-- Examples: `web-search`, `web-fetch`, project-specific test runners
+Systems built with YBS typically include:
 
-## Implementation Details
+**Built-in Tools** (compiled into agent):
+- File I/O (read, write, edit)
+- File discovery (list, search)
+- Shell execution (sandboxed)
 
-### Language & Platform
-- **Language**: Swift 5.9+
-- **Platform**: macOS 14+ (Linux support planned)
-- **Dependencies**: swift-argument-parser, AsyncHTTPClient (or URLSession)
+**External Tools** (runtime-loaded):
+- Simple protocol: JSON in via argv, JSON out via stdout
+- Examples: web-search, web-fetch, language-specific tooling
 
-### Security Model
-- **Sandboxing**: macOS `sandbox-exec` (deny-by-default profile)
-- **Path restrictions**: Block `~/.ssh`, `~/.aws`, `~/.config`
-- **Command blocklist**: `rm -rf /`, `sudo`, `chmod 777`, etc.
-- **User confirmation**: All destructive operations require approval
+### Bootstrap Implementation Details
 
-### Configuration
-Layered resolution (later overrides earlier):
+The Swift/macOS bootstrap implementation uses:
+
+**Language & Platform**:
+- Swift 5.9+, macOS 14+ (Linux support planned)
+- Dependencies: swift-argument-parser, AsyncHTTPClient
+
+**Security Model**:
+- Sandboxing via macOS `sandbox-exec` (deny-by-default)
+- Path restrictions: Block `~/.ssh`, `~/.aws`, `~/.config`
+- Command blocklist: `rm -rf /`, `sudo`, `chmod 777`, etc.
+- User confirmation for all destructive operations
+
+**Configuration** (layered resolution):
 ```
 /etc/ybs/config.json          # System defaults
 ~/.config/ybs/config.json     # User defaults
@@ -144,40 +176,54 @@ Layered resolution (later overrides earlier):
 --config <path>               # CLI override
 ```
 
+Other implementations may use different approaches (Python, Rust, Go, etc.).
+
 ## Design Inspiration
 
-YBS design informed by analysis of:
+The bootstrap implementation (Swift/macOS) was informed by analysis of:
 - [Aider](https://aider.chat) - Edit format, repo maps
 - [Goose](https://github.com/block/goose) - MCP integration, architecture
 - [OpenHands](https://github.com/All-Hands-AI/OpenHands) - Loop detection
 - [Cursor](https://cursor.sh) - Context management
 - [Claude Code](https://claude.ai/code) - Tool design patterns
 
-See [docs/specs/system/ybs-lessons-learned.md](docs/specs/system/ybs-lessons-learned.md) for detailed analysis.
+These insights are codified in [docs/specs/system/ybs-lessons-learned.md](docs/specs/system/ybs-lessons-learned.md) and can be applied to implementations in any language.
 
 ## FAQ
 
-**Q: Why Swift instead of Python/Rust/Go?**
+**Q: What is the "bootstrap" implementation?**
+- YBS is a meta-framework for building systems that build systems
+- We're using YBS to build the first YBS implementation (Swift/macOS)
+- This first implementation will then be used to build other systems
+- It's recursive: YBS builds YBS
+
+**Q: Can I use a different language?**
+- Yes! The framework is language-agnostic
+- The Swift implementation is just the first example
+- You can build implementations in Python, Rust, Go, TypeScript, etc.
+- The specifications are concepts, not code
+
+**Q: Why Swift for the bootstrap?**
 - Native macOS integration, single binary distribution, fast startup, type safety
 - See [docs/specs/system/ybs-decisions.md](docs/specs/system/ybs-decisions.md) D01 for full rationale
+- This choice is specific to the bootstrap, not required by YBS
 
-**Q: Can I use it with ChatGPT/Claude/local models?**
-- Yes! Supports OpenAI, Anthropic, Ollama, or any OpenAI-compatible API
+**Q: Can systems built with YBS use ChatGPT/Claude/local models?**
+- Yes! The framework supports any LLM backend
+- OpenAI, Anthropic, Ollama, or any OpenAI-compatible API
+- Local-first: tool execution is always local, only LLM calls go to cloud (if using cloud LLM)
 
-**Q: Is my code sent to the cloud?**
-- Only if you use a cloud LLM (OpenAI, Anthropic)
-- Tool execution is always local
-- Default config uses Ollama (fully local)
+**Q: When will the bootstrap be ready?**
+- Specifications complete, code implementation in progress via build framework
+- No timeline set (this is a learning/validation project)
+- Other implementations can start now using the framework
 
-**Q: When will it be ready?**
-- Specification complete, implementation not started
-- No timeline set (this is a personal/learning project)
-
-**Q: How is this different from Claude Code?**
-- YBS is local-first with simpler core (< 100 line agent loop)
-- Designed for transparency and extensibility
-- Hybrid tool architecture (built-in + external)
-- No cloud dependency requirement (Ollama default)
+**Q: How is this different from Claude Code/Aider/Cursor?**
+- YBS is a meta-framework, not a single tool
+- Designed for building custom AI agent systems
+- Local-first by default (tool execution always local)
+- Extensible architecture (external tool protocol)
+- Language-agnostic specifications
 
 ## Contributing
 
@@ -187,32 +233,63 @@ Currently in specification phase. Once implementation begins:
 3. Ensure changes align with design principles
 4. Add tests for all new functionality
 
-## Project Structure (Planned)
+## Project Structure
 
+**Current (Framework + Specifications)**:
 ```
 ybs/
 ├── README.md                          # This file
 ├── CLAUDE.md                          # Guidance for Claude Code
-├── builds/                            # OUTPUT: Build workspace (not source)
+├── LICENSE                            # MIT License
+├── bin/                               # Helper scripts
+│   ├── list-specs.sh                 # List specifications by GUID
+│   ├── deps.sh                       # Show dependency tree
+│   ├── list-steps.sh                 # List build steps
+│   └── list-changelogs.sh            # List session changelogs
+├── builds/                            # OUTPUT: Systems built with YBS
+│   └── test1/                        # Example build (experimental)
 └── docs/                              # All documentation
     ├── README.md                      # Documentation index
-    ├── specs/                         # YBS specifications
-    │   ├── system/                    # System-wide specs
+    ├── changelogs/                    # Session-based change tracking
+    ├── specs/                         # Specifications
+    │   ├── system/                    # Bootstrap (Swift) implementation specs
     │   ├── business/                  # Business specs per feature
     │   ├── functional/                # Functional specs per feature
     │   ├── technical/                 # Technical specs per feature
     │   └── testing/                   # Testing specs per feature
-    ├── build-from-scratch/           # Build framework (step-by-step)
-    └── usage/                         # User documentation (future)
+    ├── build-from-scratch/           # Generic build framework
+    └── usage/                         # User documentation (planned)
 ```
 
-When YBS is implemented, add:
+**When bootstrap implementation is built** (in builds/ybs-swift/):
 ```
+builds/ybs-swift/
 ├── Package.swift                      # Swift package definition
-├── Sources/ybs/                       # Implementation
+├── Sources/ybs/                       # Implementation code
 ├── Tools/                             # External tool examples
 └── Tests/                             # Test suite
 ```
+
+## Current Journey
+
+**Phase 1 (Current)**: Framework Evolution
+- Claude (Sonnet 4.5) + Human evolving the YBS specifications
+- Documenting patterns, architecture, and best practices
+- Building the meta-framework iteratively
+
+**Phase 2 (Next)**: Bootstrap Implementation
+- Use the YBS method to build a YBS implementation (Swift/macOS)
+- Follow the build-from-scratch framework step-by-step
+- Goal: Working local implementation (even if imperfect!)
+
+**Phase 3 (Future)**: Self-Hosting
+- Use the Swift YBS to build other systems
+- Test with local LLMs (Ollama, etc.)
+- Iterate and improve based on real usage
+
+It's okay if the local LLM implementation isn't as capable as Claude. The goal is to reach the point where we can try, learn, and iterate.
+
+---
 
 ## License
 
@@ -220,6 +297,6 @@ MIT License - See [LICENSE](LICENSE) file for details
 
 ---
 
-**Name etymology**: "YBS" = Yelich Build System, a framework for building LLM-based coding assistants.
+**Name etymology**: "YBS" = Yelich Build System, a meta-framework for building systems that build systems.
 
 **Last updated**: 2026-01-16

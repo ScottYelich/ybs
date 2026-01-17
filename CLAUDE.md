@@ -4,35 +4,53 @@ This file provides guidance to Claude Code when working in this repository.
 
 ## Repository Overview
 
+**YBS = Meta-Framework**: A system for building systems that build systems.
+
 This repository contains:
 
-1. **YBS Specification** - Complete design for a local-first AI agent (reasoning + tool using LLM chat)
-2. **Build Framework** - Generic step-by-step system builder for creating LLM coding assistants
+1. **YBS Meta-Framework** - Language-agnostic specifications for building AI agent systems
+   - Generic build framework (step-by-step instructions in docs/build-from-scratch/)
+   - Specification templates and patterns
+   - Architecture for tool-based AI agents
 
-**Note**: YBS itself is not yet implemented. The specs define WHAT to build, the framework provides HOW to build it.
+2. **Bootstrap Implementation Specs** - First reference implementation (Swift/macOS)
+   - Complete technical specification (docs/specs/system/)
+   - Architectural decisions and implementation checklist
+   - Used to validate the framework and demonstrate completeness
+
+**Current Phase**: Framework evolution (Claude + Human refining specifications)
+**Next Phase**: Bootstrap implementation (use YBS to build YBS in Swift)
+**Note**: The Swift specs are ONE possible implementation, not THE only way
 
 ## Repository Structure
 
 ```
 ybs/
 ├── CLAUDE.md                          # This file - guidance for Claude Code
+├── SESSION.md                         # [TRANSIENT] Active session scratchpad (crash recovery)
+├── LICENSE                            # MIT License
 ├── bin/                               # Centralized helper scripts
 │   ├── list-specs.sh                 # List specifications by GUID
 │   ├── deps.sh                       # Show dependency tree for specs
-│   └── list-steps.sh                 # List build steps in order
-├── builds/                            # OUTPUT: Working directory for builds (not source)
+│   ├── list-steps.sh                 # List build steps in order
+│   └── list-changelogs.sh            # List session changelogs
+├── builds/                            # OUTPUT: Systems built with YBS
+│   └── test1/                        # Example experimental build
 └── docs/
     ├── README.md                      # Documentation index and navigation hub
+    ├── changelogs/                    # Session-based change tracking
+    │   ├── README.md                  # Changelog system documentation
+    │   └── YYYY-MM-DD_<guid>.md      # Individual session changelogs
     ├── specs/
-    │   ├── system/                    # System-wide specifications
-    │   │   ├── ybs-spec.md            # YBS technical specification
-    │   │   ├── ybs-decisions.md       # YBS architectural decisions
+    │   ├── system/                    # Bootstrap implementation specs (Swift/macOS)
+    │   │   ├── ybs-spec.md            # Complete technical specification
+    │   │   ├── ybs-decisions.md       # Architectural decisions
     │   │   └── ybs-lessons-learned.md # Implementation checklist
-    │   ├── business/                  # Business specs per feature
-    │   ├── functional/                # Functional specs per feature
-    │   ├── technical/                 # Technical specs per feature
-    │   └── testing/                   # Testing specs per feature
-    ├── build-from-scratch/           # Generic build framework (step-by-step)
+    │   ├── business/                  # Business specs per feature (future)
+    │   ├── functional/                # Functional specs per feature (future)
+    │   ├── technical/                 # Technical specs per feature (future)
+    │   └── testing/                   # Testing specs per feature (future)
+    ├── build-from-scratch/           # Generic build framework (language-agnostic)
     └── usage/                         # End-user documentation (future)
 ```
 
@@ -40,13 +58,20 @@ ybs/
 
 **What are you doing?**
 
-→ **Editing YBS specs** (docs/specs/)
-  - Read this file for YBS architecture overview
-  - Reference system/ybs-spec.md, system/ybs-decisions.md, system/ybs-lessons-learned.md
+→ **Evolving the YBS meta-framework** (docs/)
+  - Read this file for overview
+  - You're helping define the specifications and patterns
+  - Focus on language-agnostic concepts
+
+→ **Editing bootstrap implementation specs** (docs/specs/system/)
+  - Reference ybs-spec.md, ybs-decisions.md, ybs-lessons-learned.md
+  - These are Swift/macOS specific (bootstrap implementation)
+  - Concepts can be adapted to other languages
 
 → **Executing build steps** (using build-from-scratch framework)
   - Read `docs/build-from-scratch/CLAUDE.md` instead
   - That file has detailed workflow for step execution
+  - Framework is language-agnostic
 
 → **Working in a specific build** (builds/SYSTEMNAME/)
   - Read `builds/SYSTEMNAME/CLAUDE.md` instead
@@ -54,33 +79,177 @@ ybs/
 
 ---
 
-## YBS Specification Overview
+## 🚨 CRITICAL: Session File Crash-Recovery System
+
+**Claude crashes frequently. You MUST maintain a session scratchpad for crash recovery.**
+
+### Mandatory Session File Protocol
+
+**ALWAYS follow this protocol at the start of ANY session:**
+
+1. **Check for SESSION.md** - If it exists, a previous session crashed:
+   ```bash
+   ls -la SESSION.md 2>/dev/null
+   ```
+   - **If found**: Read it, understand the context, resume from where it left off
+   - **If not found**: Create a new SESSION.md (see template below)
+
+2. **Update SESSION.md regularly** - After EVERY significant action:
+   - After reading files
+   - After making edits
+   - After running commands
+   - Before starting complex operations
+   - Update the todo list status
+
+3. **Clean up on completion** - When session ends successfully:
+   - **If working on a build step**: Move SESSION.md → `builds/SYSTEMNAME/step-result_GUID.md`
+   - **If NOT working on a step**: Delete SESSION.md
+   - Never leave SESSION.md if session completed normally
+
+### SESSION.md Template
+
+```markdown
+# Session Scratchpad
+
+**Session ID**: YYYY-MM-DD_<12-hex-guid>
+**Started**: YYYY-MM-DD HH:MM UTC
+**Last Updated**: YYYY-MM-DD HH:MM UTC
+**Status**: in_progress | completing | failed
+
+## Context
+
+What am I working on?
+- Brief description of the task
+- What build/step am I on (if applicable)
+- What triggered this session
+
+## Action Plan
+
+1. [ ] Step 1
+2. [ ] Step 2
+3. [x] Step 3 (completed)
+4. [ ] Step 4 (current)
+
+## Current Todo List
+
+- [ ] Todo item 1
+- [x] Todo item 2 (completed)
+- [ ] Todo item 3 (blocked: reason)
+
+## Progress Log
+
+**HH:MM** - Action taken
+**HH:MM** - Another action
+**HH:MM** - Current action (IN PROGRESS)
+
+## Files Modified
+
+- path/to/file1.md (edited)
+- path/to/file2.sh (created)
+
+## Next Steps
+
+If I crash, resume by:
+1. First concrete step
+2. Second concrete step
+3. Don't forget to check X
+
+## Notes
+
+- Any important context
+- Any blockers or issues
+- Any decisions made
+```
+
+### Why This Matters
+
+Claude Code crashes frequently due to:
+- Token limits
+- Network timeouts
+- Unexpected errors
+- Context overflows
+
+Without SESSION.md:
+- ❌ Human must explain context again
+- ❌ Work is lost or duplicated
+- ❌ No clear recovery path
+
+With SESSION.md:
+- ✅ Next Claude session resumes instantly
+- ✅ No work is lost
+- ✅ Clear state of what's done/pending
+- ✅ Human doesn't need to re-explain
+
+### Examples
+
+**Good - Start of session:**
+```
+1. Check for SESSION.md
+2. If found, read it and resume
+3. If not found, create it with current task
+4. Update it after each major action
+```
+
+**Good - During work:**
+```
+1. Read file → Update SESSION.md progress
+2. Edit file → Update SESSION.md progress
+3. Run command → Update SESSION.md progress
+4. Before complex operation → Update SESSION.md with "about to do X"
+```
+
+**Good - End of session:**
+```
+1. Mark all todos as completed in SESSION.md
+2. Update status to "completing"
+3. If working on build step: Move to builds/SYSTEMNAME/step-result_GUID.md
+4. If not on build step: Delete SESSION.md
+```
+
+### Repository Structure Update
+
+```
+ybs/
+├── SESSION.md                         # [TRANSIENT] Active session scratchpad
+├── CLAUDE.md                          # This file
+├── LICENSE                            # MIT License
+├── bin/                               # Centralized helper scripts
+└── ...
+```
+
+**SESSION.md is transient** - It should only exist during active work, never in commits.
+
+---
+
+## Bootstrap Implementation Overview (Swift/macOS)
 
 ### Core Documentation (docs/specs/system/)
 
-Three foundational documents define YBS:
+Three foundational documents define the bootstrap implementation:
 
-- **ybs-spec.md** - Complete technical specification (architecture, tools, config, security)
-- **ybs-decisions.md** - Architectural Decision Records explaining design choices
-- **ybs-lessons-learned.md** - Implementation checklist from industry research
+- **ybs-spec.md** - Complete technical specification (Swift/macOS architecture, tools, config, security)
+- **ybs-decisions.md** - Architectural Decision Records explaining design choices for Swift implementation
+- **ybs-lessons-learned.md** - Implementation checklist from industry research (applicable to any language)
 
-## Key Architecture Principles
+## Key Architecture Principles (Framework-Level)
 
-### Core Design Tenets
+### Core Design Tenets (for systems built with YBS)
 1. **Local-first**: All tool execution happens locally; LLM can be local or remote
-2. **Minimal dependencies**: Use Swift standard library and Foundation where possible
+2. **Minimal dependencies**: Use language standard library where possible
 3. **Extensible**: Tools can be added without recompiling
 4. **Secure by default**: Sandboxed shell execution, confirmation for destructive operations
 5. **Simple core**: Agent loop should be understandable in <100 lines
 
 ### Tool Architecture (Hybrid Approach)
-- **Built-in tools** (6 core): `read_file`, `write_file`, `edit_file`, `list_files`, `search_files`, `run_shell`
-  - Compiled into binary for security, performance, and tight integration
+- **Built-in tools** (core set): File I/O, file discovery, shell execution
+  - Compiled into agent binary for security, performance, and tight integration
+  - Bootstrap uses 6: `read_file`, `write_file`, `edit_file`, `list_files`, `search_files`, `run_shell`
 - **External tools**: Runtime-loaded executables following simple JSON protocol
   - Examples: `web_search`, `web_fetch`, project-specific test runners
   - Protocol: executable receives JSON via argv, outputs JSON to stdout
+  - Language-agnostic (any language that can handle JSON I/O)
 
-### Configuration System
+### Configuration System (Bootstrap Implementation)
 Layered config resolution (later overrides earlier):
 1. `/etc/ybs/config.json` (system-wide)
 2. `~/.config/ybs/config.json` (user defaults)
@@ -88,11 +257,15 @@ Layered config resolution (later overrides earlier):
 4. `./.ybs.json` (project-specific)
 5. `--config <path>` (CLI override)
 
-### Security Model
+Other implementations may use different paths or formats.
+
+### Security Model (Bootstrap Implementation)
 - **Path sandboxing**: All file operations restricted to allowed directories
 - **Shell sandboxing**: macOS uses `sandbox-exec` with restrictive profile (deny-by-default)
 - **Confirmation required**: `write_file`, `run_shell`, destructive operations need user approval
 - **Session allow-list**: User can approve tool for current session only (not persisted)
+
+Other implementations should follow similar principles but may use different mechanisms (e.g., seccomp on Linux, process isolation, etc.).
 
 ### Edit Format
 Uses SEARCH/REPLACE blocks (not whole-file rewrites or line-based edits):
@@ -101,12 +274,12 @@ Uses SEARCH/REPLACE blocks (not whole-file rewrites or line-based edits):
 - SEARCH text must be unique in file (catches hallucinations)
 - Fuzzy matching handles minor whitespace differences
 
-## Project Structure (When Implemented)
+## Bootstrap Implementation Structure (When Built)
 
-From ybs-spec.md:723-778:
+From ybs-spec.md (Swift/macOS specific):
 ```
-ybs/
-├── Package.swift
+builds/ybs-swift/
+├── Package.swift                  # Swift package definition
 ├── Sources/ybs/
 │   ├── main.swift                 # Entry point, CLI parsing
 │   ├── Config/                    # Configuration loading
@@ -118,6 +291,8 @@ ybs/
 ├── Tools/                         # External tool examples
 └── Tests/                         # Unit and integration tests
 ```
+
+This is the Swift implementation. Implementations in other languages will have different structures.
 
 ## Critical Implementation Checklist
 
