@@ -1,6 +1,6 @@
 # Build Instructions for Claude Code
 
-**Version**: 0.6.0
+**Version**: 0.7.0
 
 This directory contains step-by-step instructions for building software systems using the YBS framework. The current steps guide building a Swift-based LLM chat tool (the "bootstrap"), but the framework can be adapted for building any type of system.
 
@@ -70,6 +70,72 @@ BUILD_STATUS.md must include:
 **Last Updated**: [timestamp]
 ```
 
+## Configurable Values & Step 0
+
+### Configurable Values in Steps
+
+**All steps must mark configurable/settable values using special syntax:**
+
+```markdown
+{{CONFIG:key_name|type|description|default}}
+```
+
+**Examples:**
+- `{{CONFIG:system_name|string|Name of the system being built|myapp}}`
+- `{{CONFIG:language|choice[Swift,Python,Go,Rust,TypeScript]|Programming language|Swift}}`
+- `{{CONFIG:platform|choice[macOS,Linux,Windows]|Target platform|macOS}}`
+- `{{CONFIG:primary_color|color|Primary UI color|#007AFF}}`
+- `{{CONFIG:api_endpoint|url|API endpoint URL|http://localhost:8080}}`
+- `{{CONFIG:max_retries|integer|Maximum retry attempts|3}}`
+
+**Types:**
+- `string` - Free text
+- `choice[opt1,opt2,...]` - Multiple choice (one selection)
+- `multichoice[opt1,opt2,...]` - Multiple choice (multiple selections)
+- `boolean` - True/false
+- `integer` - Whole number
+- `float` - Decimal number
+- `color` - Hex color code
+- `url` - URL
+- `email` - Email address
+- `path` - File system path
+
+### Step 0: Build Configuration
+
+**Step 0 MUST be executed FIRST before any other step.**
+
+**Purpose**: Collect all configurable values upfront to enable autonomous execution.
+
+**Process:**
+1. Scan all steps in STEPS_ORDER.txt
+2. Extract all `{{CONFIG:...}}` markers
+3. Ask user for all values using AskUserQuestion
+4. Generate `builds/SYSTEMNAME/BUILD_CONFIG.json`
+5. Later steps read from BUILD_CONFIG.json instead of asking
+
+**BUILD_CONFIG.json format:**
+```json
+{
+  "version": "0.1.0",
+  "generated": "2026-01-17T05:30:00Z",
+  "system_name": "test2",
+  "values": {
+    "system_name": "test2",
+    "language": "Swift",
+    "platform": "macOS",
+    "primary_color": "#007AFF",
+    "api_endpoint": "http://localhost:11434"
+  }
+}
+```
+
+**Using config in steps:**
+When executing a step with `{{CONFIG:language|...}}`, replace it with `BUILD_CONFIG.json["values"]["language"]`.
+
+**Step 0 Location**: First entry in STEPS_ORDER.txt (if present)
+
+---
+
 ## How This Works
 
 ### Instruction Files
@@ -100,22 +166,24 @@ This file tracks:
 
 ### Workflow
 
-1. **Find next step**: Check STEPS_ORDER.txt or BUILD_STATUS.md for next step GUID
+1. **Check for Step 0**: If `BUILD_CONFIG.json` doesn't exist in builds/SYSTEMNAME/, execute Step 0 first
+2. **Find next step**: Check STEPS_ORDER.txt or BUILD_STATUS.md for next step GUID
    - **If no next step exists**: Report "All steps completed" - do NOT make up or propose steps
-2. **Read step file**: Read `steps/ybs-step_<guid>.md` completely
-3. **Record start time**: Note the step start timestamp in ISO 8601 format (YYYY-MM-DD HH:MM UTC)
-4. **Create todo list**: Use TodoWrite tool to track sub-tasks for the step
-5. **Execute instructions**: Follow all instructions in the step
-6. **Write tests**: For code steps, write unit tests before or during implementation
-7. **Verify completion**: Run verification checks specified in the step (including tests)
+3. **Read step file**: Read `steps/ybs-step_<guid>.md` completely
+4. **Replace config placeholders**: Replace all `{{CONFIG:key}}` with values from BUILD_CONFIG.json
+5. **Record start time**: Note the step start timestamp in ISO 8601 format (YYYY-MM-DD HH:MM UTC)
+6. **Create todo list**: Use TodoWrite tool to track sub-tasks for the step
+7. **Execute instructions**: Follow all instructions in the step
+8. **Write tests**: For code steps, write unit tests before or during implementation
+9. **Verify completion**: Run verification checks specified in the step (including tests)
    - **Retry limit**: If verification fails, retry up to 3 times total
    - **After 3 failures**: STOP and report to user - do NOT continue attempting
    - **Track attempts**: Document each attempt and what failed
-8. **Record end time**: Note the step completion timestamp
-9. **Calculate duration**: Compute total time taken for the step
-10. **Document results**: Create `builds/SYSTEMNAME/docs/build-history/ybs-step_<guid>-DONE.txt` (include timing)
-11. **Update status**: Update `BUILD_STATUS.md` with completion and next step GUID
-12. **Proceed**: Move to next step in STEPS_ORDER.txt
+10. **Record end time**: Note the step completion timestamp
+11. **Calculate duration**: Compute total time taken for the step
+12. **Document results**: Create `builds/SYSTEMNAME/docs/build-history/ybs-step_<guid>-DONE.txt` (include timing)
+13. **Update status**: Update `BUILD_STATUS.md` with completion, progress metrics, and next step GUID
+14. **Proceed**: Move to next step in STEPS_ORDER.txt
 
 ### Step Documentation Format
 
@@ -137,8 +205,14 @@ Include:
 
 ### Important Rules
 
+- **EXECUTE STEP 0 FIRST**: If BUILD_CONFIG.json doesn't exist, execute Step 0 before any other step
+- **USE CONFIG VALUES**: Replace all `{{CONFIG:key}}` placeholders with values from BUILD_CONFIG.json
 - **NEVER MAKE UP STEPS**: Steps are defined in STEPS_ORDER.txt ONLY. Do NOT invent, propose, or suggest what future steps should be. If all steps are completed, state that clearly.
+- **MARK CONFIGURABLE VALUES**: When creating steps, mark all configurable values using `{{CONFIG:...}}` syntax
+- **TRACEABILITY REQUIRED**: Every step MUST have "Implements" and "References" sections
+- **PROGRESS METRICS**: Update BUILD_STATUS.md with progress metrics after each step
 - **One step at a time**: Do not skip ahead or combine steps
+- **Single-agent only**: Do NOT work on a build if another Claude instance is active (check SESSION.md)
 - **Track timing**: Record start time, end time, and calculate duration for EVERY step
 - **Use todo lists**: Create TodoWrite list for each step to track progress
 - **Write tests**: For code implementation steps, write unit tests
@@ -183,6 +257,14 @@ For steps that involve code implementation:
 - **Status**: [status]
 - **Issues**: [any issues or "none"]
 
+## Progress Metrics
+- **Total steps**: [count from STEPS_ORDER.txt]
+- **Steps completed**: [count of DONE files]
+- **Steps remaining**: [total - completed]
+- **Completion**: [percentage]%
+- **Average step duration**: [average from DONE files]
+- **Estimated time remaining**: [remaining × average]
+
 ## Next Action
 [What needs to be done next]
 
@@ -221,30 +303,56 @@ Core specifications are in:
 - `../../specs/system/ybs-decisions.md` - Architectural decisions
 - `../../specs/system/ybs-lessons-learned.md` - Implementation checklist
 
-### Step-to-Spec Traceability
+### Spec-to-Step Traceability
 
-**Critical**: Steps and specs must stay synchronized.
+**MANDATORY**: Steps and specs must stay synchronized.
 
-**Each step file should include:**
-- **Implements**: Which YBS spec sections this step implements
-  - Example: `Implements: ybs-spec.md Section 2 (Configuration System)`
-- **References**: Which architectural decisions are relevant
-  - Example: `References: D04 (Hybrid Tool Architecture), D08 (Edit Format)`
+**Every step MUST include a Traceability section:**
 
-**When creating new steps:**
-1. Reference which spec sections you're implementing
-2. If the spec is incomplete, note what needs to be added
-3. Update the spec before or during step creation
+```markdown
+## Traceability
 
-**When updating specs:**
-1. Check which steps are affected
-2. Update those step files to match
-3. Add new steps if new functionality is specified
+**Implements**: [Which spec sections this step implements]
+- ybs-spec.md Section 2.3 (Configuration Loading)
+- ybs-spec.md Section 4.1 (Tool Interface)
 
-This ensures:
-- All specs have corresponding implementation steps
-- All steps trace back to specifications
-- Changes in one trigger updates in the other
+**References**: [Which architectural decisions are relevant]
+- D04 (Hybrid Tool Architecture)
+- D08 (Edit Format)
+- D12 (Stateless Design)
+```
+
+**Validation Checklist** (before marking build complete):
+1. List all sections in ybs-spec.md
+2. Check that each has at least one step implementing it
+3. If gaps exist, create steps or document as "deferred"
+4. All architectural decisions should be referenced by at least one step
+
+**Why This Matters**:
+- Ensures specs are fully implemented
+- Enables impact analysis when specs change
+- Provides clear traceability from requirements to code
+
+### Multi-Agent Coordination
+
+**CRITICAL: Only ONE Claude instance should work on a build at a time.**
+
+**Rules:**
+1. **No parallel execution**: Do NOT work on a build if another agent is active
+2. **Check SESSION.md**: If it exists, another agent may be active or crashed
+3. **Lock mechanism**: SESSION.md acts as an implicit lock file
+4. **If found SESSION.md**:
+   - If "Status: completing" or timestamp >1 hour old: Assume crashed, resume
+   - If "Status: in_progress" and timestamp <1 hour: STOP, report "Build locked by another agent"
+5. **Single-threaded builds**: All steps must execute sequentially
+
+**Why This Matters:**
+- Prevents conflicting edits
+- Prevents duplicate work
+- Maintains clean build history
+- SESSION.md provides implicit locking
+
+**Future**: Multi-agent coordination may be added with explicit locking mechanism
 
 ### Example Session
 
@@ -306,6 +414,15 @@ Each maintains its own BUILD_STATUS.md and build-history.
 ---
 
 ## Version History
+
+### 0.7.0 (2026-01-17)
+- **Added Step 0 Configuration System**: Configurable values with `{{CONFIG:...}}` syntax
+- **Added BUILD_CONFIG.json**: Central config file for all build settings
+- **Added Progress Metrics**: BUILD_STATUS.md now includes completion percentage and time estimates
+- **Added Spec-to-Step Traceability**: Mandatory "Implements" and "References" sections
+- **Added Multi-Agent Coordination**: Rules forbidding parallel execution (single-agent only)
+- Updated workflow to 14 steps (added Step 0 check and config replacement)
+- Enhanced Important Rules with new requirements
 
 ### 0.6.0 (2026-01-17)
 - **CRITICAL RULE ADDED**: Never make up or propose steps - steps are defined in STEPS_ORDER.txt ONLY

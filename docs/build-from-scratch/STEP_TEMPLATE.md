@@ -23,14 +23,32 @@
 
 - Previous step: ybs-step_[guid] must be completed
 - [Other prerequisites]
+- BUILD_CONFIG.json must exist (Step 0 completed)
+
+## Configurable Values
+
+**This step uses the following configuration values:**
+
+- `{{CONFIG:system_name|string|Name of the system|myapp}}` - Used in file paths and documentation
+- `{{CONFIG:language|choice[Swift,Python,Go]|Programming language|Swift}}` - Determines project structure
+- `{{CONFIG:[other_key]|[type]|[description]|[default]}}` - [Where/how used]
+
+**Available types**: string, choice[opts], multichoice[opts], boolean, integer, float, color, url, email, path
+
+**Note**: If this step has NO configurable values, state: "This step has no configurable values."
 
 ## Traceability
 
 **Implements**: [Which spec sections this step implements]
-- Example: `ybs-spec.md Section 2.3 (Configuration Loading)`
+- ybs-spec.md Section 2.3 (Configuration Loading)
+- ybs-spec.md Section 4.1 (Tool Interface)
 
 **References**: [Which architectural decisions are relevant]
-- Example: `D04 (Hybrid Tool Architecture), D08 (Edit Format)`
+- D04 (Hybrid Tool Architecture)
+- D08 (Edit Format)
+- D12 (Stateless Design)
+
+**Note**: If not implementing spec sections (e.g., pure infrastructure step), state: "Infrastructure step - no spec implementation."
 
 ## Instructions
 

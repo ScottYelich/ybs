@@ -13,6 +13,7 @@
 #
 # Step files are named: ybs-step_<guid>.md
 
+000000000000  # Build Configuration (Step 0) - Collect all config values
 478a8c4b0cef  # Initialize Build Workspace
 c5404152680d  # Define Architecture & Choose Technology Stack
 89b9e6233da5  # Set Up Project Environment

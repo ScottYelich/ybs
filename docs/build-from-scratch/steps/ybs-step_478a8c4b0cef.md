@@ -1,6 +1,6 @@
-# Step 000000: Initialize Build Workspace
+# Step 000001: Initialize Build Workspace
 
-**Version**: 0.1.0
+**Version**: 0.2.0
 
 ## Overview
 
@@ -15,7 +15,7 @@ An LLM-powered chat agent that assists with coding tasks. The system will:
 - Maintain conversation context
 - Implement security sandboxing for safe code execution
 
-This is a command-line tool, written in Swift, designed to be:
+This is a command-line tool designed to be:
 - **Local-first**: All tool execution happens on your machine
 - **Extensible**: Tools can be added without recompiling
 - **Secure**: Sandboxed execution with user confirmation for destructive operations
@@ -23,22 +23,48 @@ This is a command-line tool, written in Swift, designed to be:
 
 ## Step Objectives
 
-1. Ask the user for the system name
+1. Read system name from BUILD_CONFIG.json
 2. Create the `builds/` directory structure
 3. Create the system-specific workspace
 4. Initialize BUILD_STATUS.md
 5. Create initial documentation files
 6. Verify the structure
 
+## Prerequisites
+
+- BUILD_CONFIG.json must exist (Step 0 completed)
+- system_name must be defined in config
+
+## Configurable Values
+
+**This step uses the following configuration values:**
+
+- `{{CONFIG:system_name|string|Name of the system being built|myapp}}` - Used for directory name and all documentation
+
+**Note**: This value is read from BUILD_CONFIG.json (collected in Step 0).
+
+## Traceability
+
+**Implements**: Infrastructure step - workspace initialization
+
+**References**:
+- Framework design: build isolation in separate directories
+- Configuration-driven execution
+
 ## Instructions
 
-### 1. Ask for System Name
+### 1. Read System Name from Config
 
-Use the AskUserQuestion tool to ask what the system should be called.
+Read the system name from BUILD_CONFIG.json:
 
-**Question**: "What would you like to name this coding assistant system? This will be the directory name in builds/ and the project name. (Examples: 'swiftcoder', 'devassist', 'codex', etc.)"
+**Command**:
+```bash
+cat builds/BUILD_CONFIG.json | python3 -c "import json, sys; print(json.load(sys.stdin)['system_name'])"
+```
 
-Store the response in a variable. Let's call it `SYSTEM_NAME`.
+**Note**: BUILD_CONFIG.json is in the top-level builds/ directory initially, then will be moved to builds/{{CONFIG:system_name}}/ by this step.
+
+Store the value. Let's call it `SYSTEM_NAME`.
 
 ### 2. Create Directory Structure
 

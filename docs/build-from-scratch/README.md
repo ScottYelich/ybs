@@ -1,6 +1,6 @@
 # Build from Scratch Instructions
 
-**Version**: 0.6.0
+**Version**: 0.7.0
 
 This directory contains step-by-step instructions for building software systems from scratch using the YBS framework. The current steps guide building a Swift-based LLM chat tool (the "bootstrap"), but the framework is designed to guide building any type of system.
 
@@ -27,10 +27,16 @@ All build work happens in the `builds/` directory at the repository root (siblin
 ## How to Use
 
 1. View steps: Run `../../bin/list-steps.sh` to see ordered list
-2. Start with first step: `steps/ybs-step_478a8c4b0cef.md` (Initialize)
-3. Follow steps in order defined in `steps/STEPS_ORDER.txt`
+2. **Start with Step 0**: `steps/ybs-step_000000000000.md` (Build Configuration) - **MUST be first**
+3. Follow remaining steps in order defined in `steps/STEPS_ORDER.txt`
 4. Each step verifies completion before moving to next
 5. Build history tracked in `builds/SYSTEMNAME/docs/build-history/`
+
+**NEW: Configuration-First Approach**
+- Step 0 collects ALL configurable values upfront
+- Generates BUILD_CONFIG.json with all settings
+- Subsequent steps read from config (no user prompts)
+- Enables fully autonomous execution after Step 0
 
 ## For Claude Code
 
@@ -50,6 +56,17 @@ All documentation in this directory uses semantic versioning (major.minor.patch)
 - Each document tracks its own version independently
 
 ## Version History
+
+### 0.7.0 (2026-01-17)
+- **Added Step 0 (Build Configuration)**: Collects all configurable values upfront
+- **Added `{{CONFIG:...}}` syntax**: Mark configurable values in steps
+- **Added BUILD_CONFIG.json**: Central configuration file
+- **Added Progress Metrics**: Track completion percentage and time estimates
+- **Added Spec-to-Step Traceability**: Mandatory in all steps
+- **Added Multi-Agent Coordination**: Single-agent only (forbid parallel)
+- Updated CLAUDE.md to version 0.7.0
+- Updated STEP_TEMPLATE.md with new sections
+- Updated Step 1 as example of new format
 
 ### 0.6.0 (2026-01-17)
 - **CRITICAL RULE ADDED**: Never make up or propose steps - steps defined in STEPS_ORDER.txt ONLY
