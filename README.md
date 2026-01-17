@@ -1,6 +1,6 @@
-# YBS (Yelich Derp System)
+# YBS (Yelich Build System)
 
-> A local-first, extensible AI coding assistant specification + build framework
+> A local-first, extensible AI agent (reasoning + tool using LLM chat) specification + build framework
 >
 > **Status**: Specification complete, framework ready
 
@@ -8,7 +8,7 @@
 
 This repository contains:
 
-1. **YBS Specification** - Complete design for a local-first AI coding assistant
+1. **YBS Specification** - Complete design for a local-first AI agent (reasoning + tool using LLM chat)
    - Technical spec, architectural decisions, implementation checklist
 
 2. **Build Framework** - Step-by-step system builder
@@ -35,7 +35,7 @@ YBS (the specification) defines a command-line tool providing an interactive cha
 1. **Local tool execution** - Security and control
 2. **Minimal dependencies** - Swift stdlib + 2-3 packages
 3. **Hybrid tool architecture** - 6 built-in tools + unlimited external tools
-4. **Stateless sessions** - Git is your state; no hidden databases
+4. **Stateless sessions** - State via filesystem (tools can access git, sqlite, etc. as needed)
 5. **Graceful degradation** - Errors don't crash; LLM can adapt
 
 ## Current Status

@@ -7,7 +7,7 @@ Welcome to the YBS documentation hub.
 This repository has two main components:
 
 ### 1. YBS Specification (specs/)
-**WHAT to build** - Complete design for a local-first AI coding assistant
+**WHAT to build** - Complete design for a local-first AI agent (reasoning + tool using LLM chat)
 
 - System-wide technical specifications
 - Feature specifications by category (business, functional, technical, testing)
@@ -149,7 +149,7 @@ Before making changes:
 
 ### What is YBS?
 
-YBS is a command-line AI coding assistant that:
+YBS is a command-line AI agent (reasoning + tool using LLM chat) that:
 - Executes **locally** (all tools run on your machine)
 - Supports **local or remote LLMs** (Ollama, OpenAI, Anthropic, etc.)
 - Uses **hybrid tool architecture** (6 built-in + unlimited external tools)

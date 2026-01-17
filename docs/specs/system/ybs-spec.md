@@ -1,6 +1,6 @@
 # YBS (Yelich Build System): Swift Implementation Specification
 
-> A local-first, extensible AI coding assistant written in Swift.
+> A local-first, extensible AI agent (reasoning + tool using LLM chat) written in Swift.
 >
 > **Name**: `ybs` — Yelich Build System framework for building LLM-based coding assistants.
 

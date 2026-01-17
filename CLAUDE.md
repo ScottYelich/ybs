@@ -6,7 +6,7 @@ This file provides guidance to Claude Code when working in this repository.
 
 This repository contains:
 
-1. **YBS Specification** - Complete design for a local-first AI coding assistant
+1. **YBS Specification** - Complete design for a local-first AI agent (reasoning + tool using LLM chat)
 2. **Build Framework** - Generic step-by-step system builder for creating LLM coding assistants
 
 **Note**: YBS itself is not yet implemented. The specs define WHAT to build, the framework provides HOW to build it.
@@ -206,4 +206,4 @@ Success criteria (docs/specs/system/ybs-spec.md):
 - Default model: Ollama with qwen3:14b (local, free)
 - Target: macOS 14+ (Linux support future)
 - Design is deliberately simple: core agent loop should be <100 lines
-- Stateless sessions: no persistence between runs (git is the state)
+- Stateless sessions: no persistence between runs (tools access filesystem, git, databases as needed)

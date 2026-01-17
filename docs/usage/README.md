@@ -6,7 +6,7 @@ This directory will contain end-user documentation for installing, configuring, 
 
 **Current**: Empty - YBS not yet implemented
 
-**Purpose**: Provide clear, practical guides for users who want to run YBS as their AI coding assistant.
+**Purpose**: Provide clear, practical guides for users who want to run YBS as their AI agent (reasoning + tool using LLM chat).
 
 ## Planned Content
 

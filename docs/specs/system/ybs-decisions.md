@@ -396,10 +396,10 @@ for try await chunk in llm.chatStream(messages, tools) {
 - Git history (if auto-commit enabled)
 
 **Rationale**:
-1. **Simplicity** — No database, no state files
+1. **Simplicity** — No hidden state database; agent relies only on filesystem
 2. **Security** — Fresh session = fresh permissions
 3. **Reproducibility** — Same input = same behavior
-4. **Git is the state** — File changes are tracked there
+4. **Tools provide state** — Tools can access filesystem, git, sqlite, or any state system as needed
 
 **Future Consideration**: Optional session save/restore for long tasks
 
