@@ -43,6 +43,6 @@ Ready to proceed to step_000003 (Implement configuration system).
 - **Target Platform**: macOS 14+
 
 ## Reference Documentation
-- Specification: `../../docs/misc/yds-spec.md`
-- Decisions: `../../docs/misc/yds-decisions.md`
-- Checklist: `../../docs/misc/yds-lessons-learned.md`
+- Specification: `../../docs/specs/system/ybs-spec.md`
+- Decisions: `../../docs/specs/system/ybs-decisions.md`
+- Checklist: `../../docs/specs/system/ybs-lessons-learned.md`

@@ -8,7 +8,7 @@
 # Use --full to show complete file paths
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-STEPS_DIR="$SCRIPT_DIR/steps"
+STEPS_DIR="$SCRIPT_DIR/../docs/build-from-scratch/steps"
 ORDER_FILE="$STEPS_DIR/STEPS_ORDER.txt"
 
 if [ ! -f "$ORDER_FILE" ]; then

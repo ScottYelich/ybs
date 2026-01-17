@@ -212,10 +212,10 @@ Sidecar file `<tool-name>.tool.json`:
 ```
 Priority (highest to lowest):
 1. --config <path>       CLI explicit
-2. ./.yds.json           Project-local
-3. ~/.yds.json           User home
-4. ~/.config/yds/config.json  XDG user
-5. /etc/yds/config.json       System
+2. ./.ybs.json           Project-local
+3. ~/.ybs.json           User home
+4. ~/.config/ybs/config.json  XDG user
+5. /etc/ybs/config.json       System
 ```
 
 **Merge Strategy**: Deep merge, later values override earlier

@@ -6,6 +6,7 @@
 #        ./list-specs.sh --all
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SPECS_DIR="$SCRIPT_DIR/../docs/specs"
 
 # Spec categories in order
 CATEGORIES=("business" "functional" "technical" "testing" "security" "operations" "architecture")
@@ -18,7 +19,7 @@ show_specs_for_guid() {
     echo ""
 
     for category in "${CATEGORIES[@]}"; do
-        SPEC_FILE="$SCRIPT_DIR/$category/ybs-spec_${GUID}.md"
+        SPEC_FILE="$SPECS_DIR/$category/ybs-spec_${GUID}.md"
         if [ -f "$SPEC_FILE" ]; then
             FOUND=true
             # Extract title from file (look for # Title on first non-empty line)
@@ -46,7 +47,7 @@ list_all_specs() {
     echo ""
 
     # Find all unique GUIDs across all categories
-    local GUIDS=$(find "$SCRIPT_DIR"/{business,functional,technical,testing,security,operations,architecture} \
+    local GUIDS=$(find "$SPECS_DIR"/{business,functional,technical,testing,security,operations,architecture} \
         -name "ybs-spec_*.md" 2>/dev/null | \
         sed 's/.*ybs-spec_\([^.]*\)\.md/\1/' | \
         sort -u)
@@ -60,7 +61,7 @@ list_all_specs() {
         # Count how many spec types exist for this GUID
         local COUNT=0
         for category in "${CATEGORIES[@]}"; do
-            if [ -f "$SCRIPT_DIR/$category/ybs-spec_${guid}.md" ]; then
+            if [ -f "$SPECS_DIR/$category/ybs-spec_${guid}.md" ]; then
                 COUNT=$((COUNT + 1))
             fi
         done

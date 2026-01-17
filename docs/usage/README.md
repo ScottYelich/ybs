@@ -1,12 +1,12 @@
-# YDS Usage Documentation
+# YBS Usage Documentation
 
-This directory will contain end-user documentation for installing, configuring, and using YDS.
+This directory will contain end-user documentation for installing, configuring, and using YBS.
 
 ## Status
 
-**Current**: Empty - YDS not yet implemented
+**Current**: Empty - YBS not yet implemented
 
-**Purpose**: Provide clear, practical guides for users who want to run YDS as their AI coding assistant.
+**Purpose**: Provide clear, practical guides for users who want to run YBS as their AI coding assistant.
 
 ## Planned Content
 
@@ -46,14 +46,14 @@ This directory will contain end-user documentation for installing, configuring, 
 - Troubleshooting config issues
 
 ### CLI Commands Reference (`commands.md`)
-- `yds` - Basic interactive mode
-- `yds --config <file>` - Custom config
-- `yds --model <name>` - Override model
-- `yds --provider <name>` - Override provider
-- `yds --no-sandbox` - Disable sandboxing (dangerous)
-- `yds --dry-run` - Preview mode
-- `yds --version` - Version info
-- `yds --help` - Help text
+- `ybs` - Basic interactive mode
+- `ybs --config <file>` - Custom config
+- `ybs --model <name>` - Override model
+- `ybs --provider <name>` - Override provider
+- `ybs --no-sandbox` - Disable sandboxing (dangerous)
+- `ybs --dry-run` - Preview mode
+- `ybs --version` - Version info
+- `ybs --help` - Help text
 - Interactive commands (within session):
   - `/help` - Show help
   - `/exit` - Exit session
@@ -101,7 +101,7 @@ This directory will contain end-user documentation for installing, configuring, 
 - Git integration and auto-commit
 - Security considerations
 - Performance tuning
-- Using YDS in CI/CD (with --dry-run)
+- Using YBS in CI/CD (with --dry-run)
 - Session recording and replay
 
 ### Best Practices (`best-practices.md`)
@@ -122,7 +122,7 @@ This directory will contain end-user documentation for installing, configuring, 
 ## Audience
 
 These guides target:
-- Developers who want to use YDS for coding assistance
+- Developers who want to use YBS for coding assistance
 - Users familiar with command-line tools
 - Those who may not know Swift (implementation language)
 - Both beginners and advanced users (separate sections as needed)
@@ -149,21 +149,21 @@ All user docs should:
 ## FAQ Topics
 
 Common questions to address:
-- "Why choose YDS over Aider/Cursor/etc?"
-- "Can I use GPT-4/Claude with YDS?"
+- "Why choose YBS over Aider/Cursor/etc?"
+- "Can I use GPT-4/Claude with YBS?"
 - "How much does it cost to run?"
 - "Is my code sent to the cloud?"
 - "How do I add my own tools?"
-- "Can I use YDS without Ollama?"
-- "What languages/frameworks does YDS support?"
-- "How does YDS handle large files?"
+- "Can I use YBS without Ollama?"
+- "What languages/frameworks does YBS support?"
+- "How does YBS handle large files?"
 
 ## Reference Material
 
 User documentation should reference:
-- Configuration schema from `../yds-spec/yds-spec.md`
-- Tool definitions from `../yds-spec/yds-spec.md`
-- Design principles from `../yds-spec/yds-spec.md`
+- Configuration schema from `../ybs-spec/ybs-spec.md`
+- Tool definitions from `../ybs-spec/ybs-spec.md`
+- Design principles from `../ybs-spec/ybs-spec.md`
 
 Avoid referencing:
 - Implementation details from build-from-scratch/
@@ -173,5 +173,5 @@ Avoid referencing:
 ---
 
 **Status**: Planning phase
-**Target audience**: End users of YDS (developers using it for coding assistance)
+**Target audience**: End users of YBS (developers using it for coding assistance)
 **Prerequisites**: Basic command-line familiarity, Git knowledge helpful

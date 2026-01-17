@@ -1,6 +1,6 @@
-# YDS Documentation
+# YBS Documentation
 
-Welcome to the YDS documentation hub.
+Welcome to the YBS documentation hub.
 
 ## What's in This Repository
 
@@ -88,7 +88,7 @@ Step-by-step instructions for building LLM coding assistant systems.
 
 ### 📖 User Documentation (`usage/`)
 
-*[Planned]* Documentation for end-users running YDS.
+*[Planned]* Documentation for end-users running YBS.
 
 **Proposed structure:**
 - Installation instructions
@@ -147,9 +147,9 @@ Before making changes:
 
 ## Key Concepts
 
-### What is YDS?
+### What is YBS?
 
-YDS is a command-line AI coding assistant that:
+YBS is a command-line AI coding assistant that:
 - Executes **locally** (all tools run on your machine)
 - Supports **local or remote LLMs** (Ollama, OpenAI, Anthropic, etc.)
 - Uses **hybrid tool architecture** (6 built-in + unlimited external tools)
@@ -169,7 +169,7 @@ YDS is a command-line AI coding assistant that:
 When contributing to this documentation:
 
 - **Use relative links** between docs (enables offline browsing)
-- **Reference line numbers** for spec locations (e.g., "see yds-spec.md:723-778")
+- **Reference line numbers** for spec locations (e.g., "see ybs-spec.md:723-778")
 - **Update index** (this file) when adding new documents
 - **Keep examples concrete** with actual code snippets
 - **Explain the "why"** not just the "what"

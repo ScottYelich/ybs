@@ -2,7 +2,7 @@
 
 > A local-first, extensible AI coding assistant written in Swift.
 >
-> **Name**: `yds` — because every coding session is a beautiful disaster.
+> **Name**: `ybs` — Yelich Build System framework for building LLM-based coding assistants.
 
 ---
 
@@ -33,17 +33,17 @@ A command-line tool that provides an interactive chat interface for AI-assisted 
 Config files are loaded in order, with later files overriding earlier values:
 
 ```
-1. /etc/yds/config.json          (system-wide defaults)
-2. ~/.config/yds/config.json     (user defaults)
-3. ~/.yds.json                   (user home shorthand)
-4. ./.yds.json                   (project-specific)
+1. /etc/ybs/config.json          (system-wide defaults)
+2. ~/.config/ybs/config.json     (user defaults)
+3. ~/.ybs.json                   (user home shorthand)
+4. ./.ybs.json                   (project-specific)
 5. --config <path>               (explicit override)
 ```
 
 ### 2.2 Command Line Interface
 
 ```
-USAGE: yds [options]
+USAGE: ybs[options]
 
 OPTIONS:
   -c, --config <file>       Path to configuration file
@@ -106,13 +106,13 @@ OPTIONS:
       {
         "name": "web_search",
         "type": "executable",
-        "path": "~/.yds/tools/web-search",
+        "path": "~/.ybs/tools/web-search",
         "enabled": true
       },
       {
         "name": "web_fetch",
         "type": "executable",
-        "path": "~/.yds/tools/web-fetch",
+        "path": "~/.ybs/tools/web-fetch",
         "enabled": true
       }
     ]
@@ -120,7 +120,7 @@ OPTIONS:
 
   "git": {
     "auto_commit": true,
-    "commit_message_prefix": "[yds]"
+    "commit_message_prefix": "[ybs]"
   },
 
   "ui": {
@@ -427,7 +427,7 @@ In config:
 {
   "name": "web_search",
   "type": "executable",
-  "path": "~/.yds/tools/web-search",
+  "path": "~/.ybs/tools/web-search",
   "description": "Search the web for information. Returns titles, URLs, and snippets.",
   "parameters": {
     "query": {"type": "string", "required": true, "description": "Search query"},
@@ -482,7 +482,7 @@ struct ToolRegistry {
 External tools can be added without restart:
 
 1. **Config-based**: Add to `tools.external` array in config, send SIGHUP to reload
-2. **Directory-based**: Drop executable in `~/.yds/tools/`, auto-discovered if it has a `.tool.json` sidecar file
+2. **Directory-based**: Drop executable in `~/.ybs/tools/`, auto-discovered if it has a `.tool.json` sidecar file
 
 **Sidecar file example** (`web-search.tool.json`):
 ```json
@@ -722,10 +722,10 @@ func confirmWithUser(_ toolCall: ToolCall) -> Bool {
 ## 9. Project Structure
 
 ```
-yds/
+ybs/
 ├── Package.swift
 ├── Sources/
-│   └── yds/
+│   └── ybs/
 │       ├── main.swift                 # Entry point, CLI parsing
 │       ├── Config/
 │       │   ├── Config.swift           # Configuration model

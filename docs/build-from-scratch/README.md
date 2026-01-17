@@ -13,9 +13,11 @@ Each step file is a single build step with complete instructions. Steps use GUID
 - **steps/** - Directory containing all step files
   - **STEPS_ORDER.txt** - Defines step sequence (GUID-based)
   - **ybs-step_<guid>.md** - Individual step files (12-hex GUID)
-- **list-steps.sh** - Helper script to view steps in numbered order
 - **CLAUDE.md** - Guide for Claude Code on how to use these instructions
 - **README.md** - This file (for humans)
+
+**Helper Scripts**: Located in `../../bin/` at repository root:
+- **list-steps.sh** - View steps in numbered order
 
 ## Work Area
 
@@ -23,7 +25,7 @@ All build work happens in the `builds/` directory at the repository root (siblin
 
 ## How to Use
 
-1. View steps: Run `./list-steps.sh` to see ordered list
+1. View steps: Run `../../bin/list-steps.sh` to see ordered list
 2. Start with first step: `steps/ybs-step_478a8c4b0cef.md` (Initialize)
 3. Follow steps in order defined in `steps/STEPS_ORDER.txt`
 4. Each step verifies completion before moving to next

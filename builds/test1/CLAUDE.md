@@ -111,9 +111,9 @@ test1/
 ### Reference Documentation
 
 Core specifications (DO NOT MODIFY):
-- `../../docs/misc/yds-spec.md` - Technical specification
-- `../../docs/misc/yds-decisions.md` - Architectural decisions
-- `../../docs/misc/yds-lessons-learned.md` - Best practices
+- `../../docs/specs/system/ybs-spec.md` - Technical specification
+- `../../docs/specs/system/ybs-decisions.md` - Architectural decisions
+- `../../docs/specs/system/ybs-lessons-learned.md` - Best practices
 
 Build instructions (FOLLOW THESE):
 - `../../docs/build-from-scratch/step_NNNNNN.md` - Individual steps

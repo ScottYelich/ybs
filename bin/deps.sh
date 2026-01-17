@@ -5,6 +5,7 @@
 # Usage: ./deps.sh <guid>
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SPECS_DIR="$SCRIPT_DIR/../docs/specs"
 
 if [ $# -eq 0 ]; then
     echo "Usage: $0 <guid>"
@@ -15,7 +16,7 @@ if [ $# -eq 0 ]; then
 fi
 
 GUID=$1
-TECH_SPEC="$SCRIPT_DIR/technical/ybs-spec_${GUID}.md"
+TECH_SPEC="$SPECS_DIR/technical/ybs-spec_${GUID}.md"
 
 if [ ! -f "$TECH_SPEC" ]; then
     echo "Error: Technical spec not found: $TECH_SPEC"
@@ -45,7 +46,7 @@ extract_deps() {
         sed 's/`ybs-spec_\([^`]*\)`/\1/' | \
         while read dep_guid; do
             # Try to get title from that spec's technical file
-            DEP_FILE="$SCRIPT_DIR/technical/ybs-spec_${dep_guid}.md"
+            DEP_FILE="$SPECS_DIR/technical/ybs-spec_${dep_guid}.md"
             if [ -f "$DEP_FILE" ]; then
                 DEP_TITLE=$(grep -m 1 '^# ' "$DEP_FILE" | sed 's/^# //')
                 echo "  $MARKER $dep_guid  # $DEP_TITLE"

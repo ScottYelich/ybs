@@ -10,7 +10,7 @@ This directory contains step-by-step instructions for building an LLM-based codi
 
 - Step files: `ybs-step_478a8c4b0cef.md`, `ybs-step_c5404152680d.md`, etc.
 - Order defined in: `steps/STEPS_ORDER.txt`
-- View ordered list: `./list-steps.sh`
+- View ordered list: `../../bin/list-steps.sh`
 
 **Format: `ybs-step_<12-hex>.md`**
 - `ybs-` = Yelich Build System (branded prefix)
@@ -26,7 +26,7 @@ This directory contains step-by-step instructions for building an LLM-based codi
 
 **Example:**
 ```bash
-$ ./list-steps.sh
+$ ../../bin/list-steps.sh
 000001 ybs-step_478a8c4b0cef  # Initialize Build Workspace
 000002 ybs-step_c5404152680d  # Define Architecture
 000003 ybs-step_89b9e6233da5  # Set Up Project Environment
@@ -77,7 +77,7 @@ Each `steps/ybs-step_<guid>.md` file contains complete instructions for a single
 
 **Location**: All step files are in the `steps/` subdirectory.
 **Order**: Defined in `steps/STEPS_ORDER.txt`
-**Helper**: Use `./list-steps.sh` to see numbered order
+**Helper**: Use `../../bin/list-steps.sh` to see numbered order
 
 ### Work Area
 All build work happens in `builds/SYSTEMNAME/` at the repository root:
@@ -200,8 +200,8 @@ Core specifications are in:
 **Critical**: Steps and specs must stay synchronized.
 
 **Each step file should include:**
-- **Implements**: Which YDS spec sections this step implements
-  - Example: `Implements: yds-spec.md Section 2 (Configuration System)`
+- **Implements**: Which YBS spec sections this step implements
+  - Example: `Implements: ybs-spec.md Section 2 (Configuration System)`
 - **References**: Which architectural decisions are relevant
   - Example: `References: D04 (Hybrid Tool Architecture), D08 (Edit Format)`
 
@@ -302,4 +302,4 @@ Each maintains its own BUILD_STATUS.md and build-history.
 
 ---
 
-**Ready to start?** Run `./list-steps.sh` to see steps, then read the first step file.
+**Ready to start?** Run `../../bin/list-steps.sh` to see steps, then read the first step file.

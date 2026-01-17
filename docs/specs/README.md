@@ -84,23 +84,25 @@ This enables:
 
 ## Helper Scripts
 
+**Location**: All helper scripts are centralized in `bin/` at repository root.
+
 ### View all specs for a feature
 ```bash
-./list-specs.sh a1b2c3d4e5f6
+../../bin/list-specs.sh a1b2c3d4e5f6
 ```
 
 Shows all spec types (business, functional, technical, etc.) for that GUID.
 
 ### Show dependency tree
 ```bash
-./deps.sh a1b2c3d4e5f6
+../../bin/deps.sh a1b2c3d4e5f6
 ```
 
 Shows required/optional dependencies and dependents.
 
 ### Validate specs
 ```bash
-./validate-specs.sh
+../../bin/validate-specs.sh
 ```
 
 Checks:

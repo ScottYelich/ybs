@@ -1,4 +1,4 @@
-# YDS (Yelich Derp System)
+# YBS (Yelich Derp System)
 
 > A local-first, extensible AI coding assistant specification + build framework
 >
@@ -8,18 +8,18 @@
 
 This repository contains:
 
-1. **YDS Specification** - Complete design for a local-first AI coding assistant
+1. **YBS Specification** - Complete design for a local-first AI coding assistant
    - Technical spec, architectural decisions, implementation checklist
 
 2. **Build Framework** - Step-by-step system builder
    - Generic instructions for building ANY LLM coding assistant
-   - Can be used to implement YDS or create a different system
+   - Can be used to implement YBS or create a different system
 
 3. **builds/** - Output directory for active builds (like .build/ or dist/)
 
-## What is YDS?
+## What is YBS?
 
-YDS (the specification) defines a command-line tool providing an interactive chat interface for AI-assisted coding. It maintains conversation context, executes tools locally, and supports both local and remote LLM backends.
+YBS (the specification) defines a command-line tool providing an interactive chat interface for AI-assisted coding. It maintains conversation context, executes tools locally, and supports both local and remote LLM backends.
 
 ### Key Features (Planned)
 
@@ -41,18 +41,18 @@ YDS (the specification) defines a command-line tool providing an interactive cha
 ## Current Status
 
 **What's complete**:
-- ✅ YDS specification (100+ pages technical spec)
+- ✅ YBS specification (100+ pages technical spec)
 - ✅ 15 architectural decision records with rationale
 - ✅ Implementation checklist from industry research
 - ✅ Build framework (step-by-step instructions)
 
 **What's NOT in this repo**:
-- ❌ YDS implementation (specs define WHAT, not code)
+- ❌ YBS implementation (specs define WHAT, not code)
 - ❌ Pre-built binaries
 
 **How to use this**:
-- Read specs to understand YDS design
-- Use build framework to implement YDS (or create your own system)
+- Read specs to understand YBS design
+- Use build framework to implement YBS (or create your own system)
 - builds/ directory is where framework outputs go
 
 ## Documentation
@@ -93,7 +93,7 @@ All project documentation lives in [`docs/`](docs/):
            │
            ▼
 ┌─────────────────────────────┐
-│   YDS Agent (Swift CLI)     │
+│   YBS Agent (Swift CLI)     │
 │   - Tool execution          │
 │   - Context management      │
 │   - Sandboxing              │
@@ -137,16 +137,16 @@ Simple protocol: executable receives JSON via argv, outputs JSON to stdout
 ### Configuration
 Layered resolution (later overrides earlier):
 ```
-/etc/yds/config.json          # System defaults
-~/.config/yds/config.json     # User defaults
-~/.yds.json                   # User home
-./.yds.json                   # Project-specific
+/etc/ybs/config.json          # System defaults
+~/.config/ybs/config.json     # User defaults
+~/.ybs.json                   # User home
+./.ybs.json                   # Project-specific
 --config <path>               # CLI override
 ```
 
 ## Design Inspiration
 
-YDS design informed by analysis of:
+YBS design informed by analysis of:
 - [Aider](https://aider.chat) - Edit format, repo maps
 - [Goose](https://github.com/block/goose) - MCP integration, architecture
 - [OpenHands](https://github.com/All-Hands-AI/OpenHands) - Loop detection
@@ -174,7 +174,7 @@ See [docs/specs/system/ybs-lessons-learned.md](docs/specs/system/ybs-lessons-lea
 - No timeline set (this is a personal/learning project)
 
 **Q: How is this different from Claude Code?**
-- YDS is local-first with simpler core (< 100 line agent loop)
+- YBS is local-first with simpler core (< 100 line agent loop)
 - Designed for transparency and extensibility
 - Hybrid tool architecture (built-in + external)
 - No cloud dependency requirement (Ollama default)
@@ -190,7 +190,7 @@ Currently in specification phase. Once implementation begins:
 ## Project Structure (Planned)
 
 ```
-yds/
+ybs/
 ├── README.md                          # This file
 ├── CLAUDE.md                          # Guidance for Claude Code
 ├── builds/                            # OUTPUT: Build workspace (not source)
@@ -206,10 +206,10 @@ yds/
     └── usage/                         # User documentation (future)
 ```
 
-When YDS is implemented, add:
+When YBS is implemented, add:
 ```
 ├── Package.swift                      # Swift package definition
-├── Sources/yds/                       # Implementation
+├── Sources/ybs/                       # Implementation
 ├── Tools/                             # External tool examples
 └── Tests/                             # Test suite
 ```
@@ -220,6 +220,6 @@ When YDS is implemented, add:
 
 ---
 
-**Name etymology**: "YDS" = Yelich Derp System, because every coding session is a beautiful disaster.
+**Name etymology**: "YBS" = Yelich Build System, a framework for building LLM-based coding assistants.
 
 **Last updated**: 2026-01-16

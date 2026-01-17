@@ -6,16 +6,20 @@ This file provides guidance to Claude Code when working in this repository.
 
 This repository contains:
 
-1. **YDS Specification** - Complete design for a local-first AI coding assistant
+1. **YBS Specification** - Complete design for a local-first AI coding assistant
 2. **Build Framework** - Generic step-by-step system builder for creating LLM coding assistants
 
-**Note**: YDS itself is not yet implemented. The specs define WHAT to build, the framework provides HOW to build it.
+**Note**: YBS itself is not yet implemented. The specs define WHAT to build, the framework provides HOW to build it.
 
 ## Repository Structure
 
 ```
-yds/
+ybs/
 ├── CLAUDE.md                          # This file - guidance for Claude Code
+├── bin/                               # Centralized helper scripts
+│   ├── list-specs.sh                 # List specifications by GUID
+│   ├── deps.sh                       # Show dependency tree for specs
+│   └── list-steps.sh                 # List build steps in order
 ├── builds/                            # OUTPUT: Working directory for builds (not source)
 └── docs/
     ├── README.md                      # Documentation index and navigation hub
@@ -78,10 +82,10 @@ Three foundational documents define YBS:
 
 ### Configuration System
 Layered config resolution (later overrides earlier):
-1. `/etc/yds/config.json` (system-wide)
-2. `~/.config/yds/config.json` (user defaults)
-3. `~/.yds.json` (user home)
-4. `./.yds.json` (project-specific)
+1. `/etc/ybs/config.json` (system-wide)
+2. `~/.config/ybs/config.json` (user defaults)
+3. `~/.ybs.json` (user home)
+4. `./.ybs.json` (project-specific)
 5. `--config <path>` (CLI override)
 
 ### Security Model
@@ -99,11 +103,11 @@ Uses SEARCH/REPLACE blocks (not whole-file rewrites or line-based edits):
 
 ## Project Structure (When Implemented)
 
-From yds-spec.md:723-778:
+From ybs-spec.md:723-778:
 ```
-yds/
+ybs/
 ├── Package.swift
-├── Sources/yds/
+├── Sources/ybs/
 │   ├── main.swift                 # Entry point, CLI parsing
 │   ├── Config/                    # Configuration loading
 │   ├── Agent/                     # Core agent loop
