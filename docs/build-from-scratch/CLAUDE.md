@@ -1,8 +1,62 @@
 # Build Instructions for Claude Code
 
-**Version**: 0.8.0
+**Version**: 0.9.0
 
 This directory contains step-by-step instructions for building software systems using the YBS framework. The current steps guide building a Swift-based LLM chat tool (the "bootstrap"), but the framework can be adapted for building any type of system.
+
+---
+
+## 🎯 TOP PRIORITY: Autonomous Execution
+
+**The primary goal of YBS is to enable Claude to build systems autonomously with minimal user intervention.**
+
+### Core Principle
+
+**Work as long as possible without prompting the user.** This is the fundamental design goal of the YBS framework.
+
+### Why Step 0 Exists
+
+Step 0 (Build Configuration) collects ALL questions upfront so that:
+- Steps 1-N can execute fully autonomously
+- No user prompts are needed during execution
+- Claude can work continuously through multiple steps
+- Builds complete faster with less interruption
+
+### Autonomous Execution Rules
+
+1. **NEVER ask the user if you should proceed to the next step** - just proceed automatically
+2. **NEVER prompt "Should I continue?" or "Ready for next step?"** - just continue
+3. **Complete as many steps as possible in one session** - keep working until:
+   - All steps are completed, OR
+   - A step fails verification 3 times (blocked state), OR
+   - You encounter an unrecoverable error
+4. **Only stop to ask questions if**:
+   - You discover a critical ambiguity not covered by BUILD_CONFIG.json
+   - A step verification fails 3 times and you need user guidance
+   - You encounter an error you cannot resolve autonomously
+
+### Expected Behavior
+
+**CORRECT** ✓:
+```
+Step 1 complete. Starting Step 2...
+[executes Step 2]
+Step 2 complete. Starting Step 3...
+[executes Step 3]
+Step 3 complete. All steps completed.
+```
+
+**WRONG** ✗:
+```
+Step 1 complete. Ready for Step 2.
+Would you like me to proceed? ← NEVER DO THIS
+```
+
+### Summary
+
+**The user has already given permission to execute all steps when they started the build. Execute autonomously until completion or blockage.**
+
+---
 
 ## Step Identification System
 
@@ -183,7 +237,7 @@ This file tracks:
 11. **Calculate duration**: Compute ACTUAL elapsed time from start to end
 12. **Document results**: Create `builds/SYSTEMNAME/docs/build-history/ybs-step_<guid>-DONE.txt` (include actual timing)
 13. **Update status**: Update `BUILD_STATUS.md` with completion, progress metrics, and next step GUID
-14. **Proceed**: Move to next step in STEPS_ORDER.txt
+14. **Proceed AUTOMATICALLY**: Move to next step in STEPS_ORDER.txt WITHOUT prompting user - continue autonomous execution
 
 **CRITICAL TIMING NOTES**:
 - Start time = when you BEGIN working on step (before reading step file)
@@ -211,6 +265,7 @@ Include:
 
 ### Important Rules
 
+- **🎯 AUTONOMOUS EXECUTION (TOP PRIORITY)**: After completing a step successfully, proceed IMMEDIATELY to the next step WITHOUT prompting the user. Never ask "Should I continue?" or "Ready for next step?" - just continue working. This is the primary design goal of YBS.
 - **EXECUTE STEP 0 FIRST**: If BUILD_CONFIG.json doesn't exist, execute Step 0 before any other step
 - **USE CONFIG VALUES**: Replace all `{{CONFIG:key}}` placeholders with values from BUILD_CONFIG.json
 - **NEVER MAKE UP STEPS**: Steps are defined in STEPS_ORDER.txt ONLY. Do NOT invent, propose, or suggest what future steps should be. If all steps are completed, state that clearly.
@@ -420,6 +475,16 @@ Each maintains its own BUILD_STATUS.md and build-history.
 ---
 
 ## Version History
+
+### 0.9.0 (2026-01-16)
+- **🎯 TOP PRIORITY: Autonomous Execution** - Added new section establishing autonomous execution as primary goal
+- **CRITICAL RULE**: After completing a step, proceed AUTOMATICALLY to next step WITHOUT prompting user
+- **Never ask "Should I continue?"** - Claude should work continuously through steps until completion or blockage
+- **Emphasized Step 0 purpose**: All questions collected upfront to enable autonomous execution
+- Updated workflow step 14: "Proceed AUTOMATICALLY" instead of just "Proceed"
+- Added autonomous execution as first rule in Important Rules section (top priority)
+- Clarified expected vs wrong behavior with examples
+- Updated "When to stop" criteria: only stop for critical ambiguity, 3x verification failure, or unrecoverable error
 
 ### 0.8.0 (2026-01-17)
 - **CRITICAL TIMING FIX**: Clarified timing must reflect ACTUAL elapsed time, not just completion intervals
