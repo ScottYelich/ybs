@@ -2,20 +2,34 @@
 #
 # deps.sh - Show dependency tree for a spec GUID
 #
-# Usage: ./deps.sh <guid>
+# Usage: ./deps.sh [SYSTEM] <guid>
+#
+# Note: This tool is designed for GUID-based spec organization.
+#       May not be applicable to all systems (e.g., bootstrap uses descriptive names).
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SPECS_DIR="$SCRIPT_DIR/../docs/specs"
 
+# Parse arguments
 if [ $# -eq 0 ]; then
-    echo "Usage: $0 <guid>"
+    echo "Usage: $0 [SYSTEM] <guid>"
     echo ""
     echo "Shows dependency tree from technical spec."
-    echo "Example: $0 a1b2c3d4e5f6"
+    echo "SYSTEM defaults to 'bootstrap'"
+    echo "Example: $0 bootstrap a1b2c3d4e5f6"
+    echo ""
+    echo "Note: This tool expects GUID-based spec organization."
     exit 1
 fi
 
-GUID=$1
+if [ $# -eq 1 ]; then
+    SYSTEM="bootstrap"
+    GUID=$1
+else
+    SYSTEM=$1
+    GUID=$2
+fi
+
+SPECS_DIR="$SCRIPT_DIR/../systems/$SYSTEM/specs"
 TECH_SPEC="$SPECS_DIR/technical/ybs-spec_${GUID}.md"
 
 if [ ! -f "$TECH_SPEC" ]; then

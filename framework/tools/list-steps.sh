@@ -2,13 +2,28 @@
 #
 # list-steps.sh - Display build steps in order
 #
-# Usage: ./list-steps.sh [--full]
+# Usage: ./list-steps.sh [SYSTEM] [--full]
 #
 # Shows numbered list of steps from STEPS_ORDER.txt
 # Use --full to show complete file paths
+# SYSTEM defaults to "bootstrap" if not specified
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-STEPS_DIR="$SCRIPT_DIR/../docs/build-from-scratch/steps"
+
+# Parse arguments
+SYSTEM="bootstrap"
+SHOW_FULL=false
+
+for arg in "$@"; do
+    if [ "$arg" == "--full" ]; then
+        SHOW_FULL=true
+    elif [ -z "$SYSTEM_SET" ]; then
+        SYSTEM="$arg"
+        SYSTEM_SET=true
+    fi
+done
+
+STEPS_DIR="$SCRIPT_DIR/../systems/$SYSTEM/steps"
 ORDER_FILE="$STEPS_DIR/STEPS_ORDER.txt"
 
 if [ ! -f "$ORDER_FILE" ]; then
@@ -16,12 +31,7 @@ if [ ! -f "$ORDER_FILE" ]; then
     exit 1
 fi
 
-SHOW_FULL=false
-if [ "$1" == "--full" ]; then
-    SHOW_FULL=true
-fi
-
-echo "Build Steps (from STEPS_ORDER.txt):"
+echo "Build Steps for system '$SYSTEM' (from STEPS_ORDER.txt):"
 echo ""
 
 # Parse STEPS_ORDER.txt, skip comments and empty lines, number the steps

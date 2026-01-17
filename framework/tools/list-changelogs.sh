@@ -6,7 +6,7 @@
 #
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CHANGELOGS_DIR="$SCRIPT_DIR/../docs/changelogs"
+CHANGELOGS_DIR="$SCRIPT_DIR/../changelogs/changelogs"
 
 show_help() {
     echo "Usage: $0 [OPTIONS]"

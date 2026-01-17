@@ -419,14 +419,14 @@ Core specifications are in:
 
 ```
 1. User: "Execute step 478a8c4b0cef"
-2. Claude reads: docs/build-from-scratch/steps/ybs-step_478a8c4b0cef.md
+2. Claude reads: systems/bootstrap/steps/ybs-step_478a8c4b0cef.md
 3. Claude creates: TodoWrite list for step sub-tasks
 4. Claude asks: "What should we name this system?"
 5. User: "myproject"
-6. Claude creates: builds/myproject/ structure
+6. Claude creates: systems/bootstrap/builds/myproject/ structure
 7. Claude verifies: All directories and files created
-8. Claude documents: builds/myproject/docs/build-history/ybs-step_478a8c4b0cef-DONE.txt
-9. Claude updates: builds/myproject/BUILD_STATUS.md
+8. Claude documents: systems/bootstrap/builds/myproject/docs/build-history/ybs-step_478a8c4b0cef-DONE.txt
+9. Claude updates: systems/bootstrap/builds/myproject/BUILD_STATUS.md
 10. Claude reports: "Step complete. Next: ybs-step_c5404152680d"
 ```
 

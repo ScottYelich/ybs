@@ -71,7 +71,7 @@ The YBS methodology, specifications, and build step system. Prefer "methodology"
 A single unit of work in the build-from-scratch framework. Each step has objectives, instructions, verification criteria, and traceability to specs.
 
 **File format**: `ybs-step_<12-hex-guid>.md`
-**Location**: `docs/build-from-scratch/steps/`
+**Location**: `systems/SYSTEMNAME/steps/`
 
 **Example usage**: "Step 0 collects all configuration values upfront."
 
@@ -120,7 +120,7 @@ A specification document defining WHAT to build. Can be system-wide, business, f
 ---
 
 ### System Spec
-System-wide specification documents in `docs/specs/system/` that define the overall architecture and design.
+System-wide specification documents in `systems/SYSTEMNAME/specs/` that define the overall architecture and design.
 
 **Files**: ybs-spec.md, ybs-decisions.md, ybs-lessons-learned.md
 
@@ -131,7 +131,7 @@ System-wide specification documents in `docs/specs/system/` that define the over
 ### ADR (Architectural Decision Record)
 A document explaining WHY an architectural choice was made, what alternatives were considered, and the trade-offs.
 
-**Location**: `docs/specs/system/ybs-decisions.md`
+**Location**: `systems/SYSTEMNAME/specs/ybs-decisions.md`
 **Format**: D01, D02, D03, etc.
 
 **Example usage**: "See ADR D09 for why we chose sandbox-exec on macOS."
@@ -160,8 +160,8 @@ The first system being built WITH YBS to validate and refine the framework. Curr
 The Swift/macOS AI chat tool that serves as the first test case for the YBS framework.
 
 **Location**:
-- Specs: `docs/specs/system/`
-- Build: `builds/test5/` (or current build)
+- Specs: `systems/bootstrap/specs/`
+- Builds: `systems/bootstrap/builds/test5/` (or current build)
 
 **Example usage**: "The bootstrap implementation demonstrates that YBS provides sufficient detail for autonomous development."
 
@@ -403,12 +403,15 @@ Specifications directory containing WHAT to build.
 
 ---
 
-### build-from-scratch/
+### build-from-scratch/ (DEPRECATED)
+**Legacy directory name from v0.x.x** - Now replaced by `systems/SYSTEMNAME/steps/` in v1.0.0.
+
 Build framework directory containing HOW to build (step-by-step instructions).
 
-**Location**: docs/build-from-scratch/
+**Location (v1.0.0+)**: `systems/SYSTEMNAME/steps/`
+**Location (v0.x.x)**: `docs/build-from-scratch/` (deprecated)
 
-**Example usage**: "AI agents read build-from-scratch/ to execute builds."
+**Example usage**: "AI agents read systems/bootstrap/steps/ to execute builds."
 
 ---
 
