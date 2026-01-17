@@ -75,6 +75,7 @@ ybs/
 ├── CLAUDE.md                          # This file - guidance for Claude Code
 ├── SESSION.md                         # [TRANSIENT] Active session scratchpad (crash recovery)
 ├── SESSION.md.template                # Template for creating SESSION.md
+├── scratch/                           # [TRANSIENT] Session work files directory
 ├── LICENSE                            # MIT License
 ├── bin/                               # Centralized helper scripts
 │   ├── list-specs.sh                 # List specifications by GUID
@@ -252,6 +253,106 @@ ybs/
 ```
 
 **SESSION.md is transient** - It should only exist during active work, never in commits.
+
+---
+
+## 🗂️ CRITICAL: Session Work Files Directory
+
+**Use `scratch/` directory for all session working files. Clean up when done.**
+
+### Mandatory Work Files Protocol
+
+**ALWAYS follow this protocol for temporary/working files:**
+
+1. **Use scratch/ directory** - ALL temporary session files go here:
+   ```bash
+   mkdir -p scratch
+   ```
+
+   **What goes in scratch/**:
+   - Analysis documents (like ANALYSIS.md)
+   - Working drafts and notes
+   - Temporary data files
+   - Session artifacts
+   - Any file that's NOT part of the deliverable
+
+2. **Never commit scratch/** - Already in .gitignore
+   - scratch/ should NEVER appear in git commits
+   - These are transient working files only
+   - If a file needs to be permanent, move it out of scratch/
+
+3. **Clean up when done** - After EVERY successful step/session:
+   ```bash
+   # When step/session completes successfully:
+   rm -rf scratch/*
+   # Or delete specific files:
+   rm scratch/analysis.md scratch/draft.txt
+   ```
+
+   **When to clean up:**
+   - ✅ After completing a build step
+   - ✅ After finishing a session successfully
+   - ✅ Before committing final work
+   - ✅ When working files are no longer needed
+
+   **When NOT to clean up:**
+   - ❌ If session crashes (leave for next session)
+   - ❌ If step is blocked/incomplete
+   - ❌ If files needed for debugging
+
+### Directory Structure
+
+```
+ybs/
+├── SESSION.md              # Current session status (root level)
+├── SESSION.md.template     # Template file (committed)
+└── scratch/                # All temporary work files (NEVER committed)
+    ├── analysis.md         # Example: working analysis
+    ├── draft-spec.md       # Example: draft before final
+    ├── notes.txt           # Example: session notes
+    └── data.json           # Example: temporary data
+```
+
+### Why This Matters
+
+**Without scratch/ directory:**
+- ❌ Working files clutter repository root
+- ❌ Risk of accidentally committing analysis/draft files
+- ❌ Unclear which files are deliverables vs working files
+- ❌ Repository gets messy over time
+
+**With scratch/ directory:**
+- ✅ Clean repository root (only deliverables)
+- ✅ .gitignore prevents accidental commits
+- ✅ Clear separation: deliverables vs working files
+- ✅ Easy cleanup (rm -rf scratch/*)
+- ✅ Consistent pattern across all sessions
+
+### Examples
+
+**Good - Using scratch/:**
+```bash
+# Start analysis
+mkdir -p scratch
+echo "Analysis findings..." > scratch/analysis.md
+
+# Do work, create final deliverables in proper locations
+echo "Final content" > docs/new-document.md
+
+# Clean up when done
+rm -rf scratch/*
+git add docs/new-document.md
+git commit -m "Add new document"
+```
+
+**Bad - Cluttering root:**
+```bash
+# DON'T DO THIS
+echo "Analysis..." > ANALYSIS.md  # Wrong - clutters root
+echo "Draft..." > DRAFT.md        # Wrong - risk of committing
+# Later: accidentally commit these files
+git add ANALYSIS.md  # Oops!
+```
 
 ---
 
