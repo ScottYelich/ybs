@@ -1,6 +1,6 @@
 # Build from Scratch Instructions
 
-**Version**: 0.4.0
+**Version**: 0.6.0
 
 This directory contains step-by-step instructions for building software systems from scratch using the YBS framework. The current steps guide building a Swift-based LLM chat tool (the "bootstrap"), but the framework is designed to guide building any type of system.
 
@@ -14,6 +14,7 @@ Each step file is a single build step with complete instructions. Steps use GUID
   - **STEPS_ORDER.txt** - Defines step sequence (GUID-based)
   - **ybs-step_<guid>.md** - Individual step files (12-hex GUID)
 - **CLAUDE.md** - Guide for Claude Code on how to use these instructions
+- **STEP_TEMPLATE.md** - Template for creating new step files
 - **README.md** - This file (for humans)
 
 **Helper Scripts**: Located in `../../bin/` at repository root:
@@ -49,6 +50,17 @@ All documentation in this directory uses semantic versioning (major.minor.patch)
 - Each document tracks its own version independently
 
 ## Version History
+
+### 0.6.0 (2026-01-17)
+- **CRITICAL RULE ADDED**: Never make up or propose steps - steps defined in STEPS_ORDER.txt ONLY
+- Updated CLAUDE.md to version 0.6.0 with this rule as highest priority
+- Workflow now explicitly checks if next step exists before proceeding
+
+### 0.5.0 (2026-01-17)
+- **Added STEP_TEMPLATE.md**: Template for creating new step files
+- Added timing requirements: all steps must track start time, end time, and duration
+- Added retry limit policy: maximum 3 attempts for failed verifications
+- Updated CLAUDE.md to version 0.5.0 with new timing and retry requirements
 
 ### 0.4.0 (2026-01-17)
 - Clarified that framework can build ANY system (not just LLM assistants)

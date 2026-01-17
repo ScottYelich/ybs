@@ -1,6 +1,6 @@
 # Build Instructions for Claude Code
 
-**Version**: 0.4.0
+**Version**: 0.6.0
 
 This directory contains step-by-step instructions for building software systems using the YBS framework. The current steps guide building a Swift-based LLM chat tool (the "bootstrap"), but the framework can be adapted for building any type of system.
 
@@ -101,14 +101,21 @@ This file tracks:
 ### Workflow
 
 1. **Find next step**: Check STEPS_ORDER.txt or BUILD_STATUS.md for next step GUID
+   - **If no next step exists**: Report "All steps completed" - do NOT make up or propose steps
 2. **Read step file**: Read `steps/ybs-step_<guid>.md` completely
-3. **Create todo list**: Use TodoWrite tool to track sub-tasks for the step
-4. **Execute instructions**: Follow all instructions in the step
-5. **Write tests**: For code steps, write unit tests before or during implementation
-6. **Verify completion**: Run verification checks specified in the step (including tests)
-7. **Document results**: Create `builds/SYSTEMNAME/docs/build-history/ybs-step_<guid>-DONE.txt`
-8. **Update status**: Update `BUILD_STATUS.md` with completion and next step GUID
-9. **Proceed**: Move to next step in STEPS_ORDER.txt
+3. **Record start time**: Note the step start timestamp in ISO 8601 format (YYYY-MM-DD HH:MM UTC)
+4. **Create todo list**: Use TodoWrite tool to track sub-tasks for the step
+5. **Execute instructions**: Follow all instructions in the step
+6. **Write tests**: For code steps, write unit tests before or during implementation
+7. **Verify completion**: Run verification checks specified in the step (including tests)
+   - **Retry limit**: If verification fails, retry up to 3 times total
+   - **After 3 failures**: STOP and report to user - do NOT continue attempting
+   - **Track attempts**: Document each attempt and what failed
+8. **Record end time**: Note the step completion timestamp
+9. **Calculate duration**: Compute total time taken for the step
+10. **Document results**: Create `builds/SYSTEMNAME/docs/build-history/ybs-step_<guid>-DONE.txt` (include timing)
+11. **Update status**: Update `BUILD_STATUS.md` with completion and next step GUID
+12. **Proceed**: Move to next step in STEPS_ORDER.txt
 
 ### Step Documentation Format
 
@@ -119,19 +126,25 @@ builds/SYSTEMNAME/docs/build-history/ybs-step_<guid>-DONE.txt
 
 Include:
 - Step GUID and title
+- **Start time**: When step execution began (ISO 8601: YYYY-MM-DD HH:MM UTC)
+- **End time**: When step completed (ISO 8601: YYYY-MM-DD HH:MM UTC)
+- **Duration**: Total time taken (e.g., "15 minutes", "1 hour 23 minutes")
 - What was accomplished
 - Verification results
+- **Verification attempts**: Number of attempts if verification was retried (1-3)
 - Any issues encountered and resolutions
-- Timestamp of completion
 - Next step GUID
 
 ### Important Rules
 
+- **NEVER MAKE UP STEPS**: Steps are defined in STEPS_ORDER.txt ONLY. Do NOT invent, propose, or suggest what future steps should be. If all steps are completed, state that clearly.
 - **One step at a time**: Do not skip ahead or combine steps
+- **Track timing**: Record start time, end time, and calculate duration for EVERY step
 - **Use todo lists**: Create TodoWrite list for each step to track progress
 - **Write tests**: For code implementation steps, write unit tests
 - **Verify before proceeding**: Each step must pass verification (including tests)
-- **Document everything**: Every completed step gets a DONE file
+- **Retry limit**: If verification fails, retry up to 3 times total, then STOP
+- **Document everything**: Every completed step gets a DONE file with timing information
 - **Update status file**: Keep BUILD_STATUS.md current
 - **Reference specs**: Use `../../specs/system/ybs-spec.md` and related specs as reference
 
@@ -181,12 +194,25 @@ For steps that involve code implementation:
 
 ### Error Handling
 
-If a step fails verification:
-1. Document the failure in BUILD_STATUS.md
-2. Do NOT create a DONE file
-3. Do NOT proceed to next step
-4. Report issue to user
-5. Wait for user guidance
+**Retry Policy for Verification Failures**:
+- **Attempt 1**: Run verification as specified in step
+- **If fails**: Analyze error, fix issue, retry (attempt 2)
+- **If fails again**: Re-analyze, fix, retry (attempt 3)
+- **If fails 3rd time**: STOP - report to user
+
+**After 3 failed attempts**:
+1. Document ALL failure attempts in BUILD_STATUS.md
+2. Document what was tried and why it failed
+3. Do NOT create a DONE file
+4. Do NOT proceed to next step
+5. Set status to "blocked"
+6. Report to user with detailed failure information
+7. Wait for user guidance
+
+**On successful verification** (within 3 attempts):
+1. Document number of attempts in DONE file
+2. Document what failed and how it was resolved
+3. Proceed with normal workflow
 
 ### Reference Documentation
 
@@ -280,6 +306,19 @@ Each maintains its own BUILD_STATUS.md and build-history.
 ---
 
 ## Version History
+
+### 0.6.0 (2026-01-17)
+- **CRITICAL RULE ADDED**: Never make up or propose steps - steps are defined in STEPS_ORDER.txt ONLY
+- Updated workflow step 1 to check if next step exists
+- Added this rule as FIRST in Important Rules section (highest priority)
+
+### 0.5.0 (2026-01-17)
+- **Added retry limit policy**: Maximum 3 attempts for failed verifications
+- **Added timing requirements**: Track start time, end time, and duration for all steps
+- Updated workflow to include timing tracking (steps 3, 8, 9)
+- Updated step documentation format to include timing and retry attempts
+- Enhanced error handling section with detailed retry policy
+- Updated important rules to include timing and retry requirements
 
 ### 0.4.0 (2026-01-17)
 - Clarified that framework can build ANY system (not just LLM assistants)
