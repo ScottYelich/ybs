@@ -1,5 +1,11 @@
 # YBS Documentation
 
+**Version**: 0.2.0
+**Last Updated**: 2026-01-17
+
+📍 **You are here**: YBS Framework > Documentation Hub
+**↑ Parent**: [YBS Root](../README.md)
+
 Welcome to the YBS documentation hub.
 
 ## What's in This Repository
@@ -49,6 +55,20 @@ To test and validate the YBS framework, we're having Claude build a tool-using A
 ---
 
 ## Documentation Organization
+
+### 📚 Core Reference Documentation (NEW!)
+
+**Canonical references** - single source of truth for key concepts:
+
+- **[glossary.md](glossary.md)** - Standard terminology across all YBS documentation
+- **[bootstrap-principles.md](bootstrap-principles.md)** - Complete bootstrap design principles
+- **[tool-architecture.md](tool-architecture.md)** - Hybrid tool system (built-in + external)
+- **[security-model.md](security-model.md)** - Sandboxing, confirmations, restrictions
+- **[configuration.md](configuration.md)** - Layered configuration system
+
+**When writing documentation**: Link to these canonical docs rather than duplicating content.
+
+---
 
 ### 📋 Specifications (`specs/`)
 

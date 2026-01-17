@@ -1,0 +1,17 @@
+{
+  "version": "0.1.0",
+  "generated": "2026-01-17T07:36:09Z",
+  "system_name": "test5",
+  "values": {
+    "system_name": "test5",
+    "language": "Swift",
+    "platform": "macOS only"
+  },
+  "metadata": {
+    "total_steps": 4,
+    "config_sources": [
+      "ybs-step_478a8c4b0cef",
+      "ybs-step_c5404152680d"
+    ]
+  }
+}

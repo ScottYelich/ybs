@@ -21,6 +21,15 @@ builds/*/__pycache__/
 builds/*/*.egg-info/
 builds/*/node_modules/
 
+# Build artifacts in new structure
+systems/*/builds/*/build/
+systems/*/builds/*/.build/
+systems/*/builds/*/dist/
+systems/*/builds/*/target/
+systems/*/builds/*/__pycache__/
+systems/*/builds/*/*.egg-info/
+systems/*/builds/*/node_modules/
+
 # IDE
 .vscode/
 .idea/
