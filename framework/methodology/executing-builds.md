@@ -434,30 +434,37 @@ Core specifications are in:
 
 ```
 repository-root/
-├── docs/
-│   ├── specs/                   # YBS specifications (reference)
-│   │   ├── system/              # System-wide specs
-│   │   ├── business/            # Business specs per feature
-│   │   ├── functional/          # Functional specs per feature
-│   │   ├── technical/           # Technical specs per feature
-│   │   └── testing/             # Testing specs per feature
-│   └── build-from-scratch/      # Instructions (this directory)
-│       ├── CLAUDE.md           # This file
-│       ├── README.md           # Human-readable overview
-│       └── steps/              # All step files
-│           ├── STEPS_ORDER.txt # Step sequence definition
-│           ├── ybs-step_478a8c4b0cef.md  # Initialize
-│           ├── ybs-step_c5404152680d.md  # Architecture
-│           └── ybs-step_89b9e6233da5.md  # Project Setup
-└── builds/
-    └── SYSTEMNAME/             # Created by first step (OUTPUT)
-        ├── BUILD_STATUS.md     # Current build status
+├── framework/                   # YBS framework (methodology)
+│   ├── README.md               # Framework overview
+│   ├── methodology/            # How YBS works
+│   ├── templates/              # Reusable templates
+│   ├── docs/                   # Framework documentation
+│   └── tools/                  # Helper scripts
+└── systems/                    # Collection of system definitions
+    └── SYSTEMNAME/             # A specific system (e.g., bootstrap)
         ├── README.md           # System overview
-        ├── CLAUDE.md           # System-specific Claude guidance
-        └── docs/
-            └── build-history/  # Completed step documentation
-                ├── ybs-step_478a8c4b0cef-DONE.txt
-                └── ybs-step_c5404152680d-DONE.txt
+        ├── CLAUDE.md           # AI agent guidance for this system
+        ├── specs/              # System specifications (WHAT to build)
+        │   ├── ybs-spec.md
+        │   ├── ybs-decisions.md
+        │   └── ybs-lessons-learned.md
+        ├── steps/              # Build steps (HOW to build)
+        │   ├── README.md
+        │   ├── ybs-step_000000000000.md  # Step 0: Configuration
+        │   ├── ybs-step_478a8c4b0cef.md  # Step 1: Initialize
+        │   ├── ybs-step_c5404152680d.md  # Step 2: Architecture
+        │   └── ybs-step_89b9e6233da5.md  # Step 3: Project Setup
+        ├── docs/               # System-specific documentation
+        └── builds/             # Build outputs (WHERE you work)
+            └── BUILDNAME/      # An active build (e.g., test5)
+                ├── BUILD_CONFIG.json   # Configuration from Step 0
+                ├── BUILD_STATUS.md     # Current build status
+                ├── README.md           # Build overview
+                ├── CLAUDE.md           # Build-specific guidance
+                └── docs/
+                    └── build-history/  # Completed step logs
+                        ├── ybs-step_478a8c4b0cef-DONE.txt
+                        └── ybs-step_c5404152680d-DONE.txt
 ```
 
 ## Working with Multiple Builds

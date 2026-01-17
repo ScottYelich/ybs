@@ -112,4 +112,4 @@ If changing existing functionality:
 
 ---
 
-**Implementation**: See `../../build-from-scratch/steps/ybs-step_[guid].md`
+**Implementation**: See `../../systems/SYSTEMNAME/steps/ybs-step_[guid].md`
