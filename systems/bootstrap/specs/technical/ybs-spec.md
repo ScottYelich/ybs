@@ -128,9 +128,43 @@ OPTIONS:
     "show_token_usage": true,
     "show_tool_calls": true,
     "stream_responses": true
+  },
+
+  "logging": {
+    "log_to_file": true,
+    "log_directory": "~/.config/ybs/logs",
+    "log_level": "info",
+    "console_level": "info",
+    "max_file_size_mb": 10,
+    "max_files": 5
   }
 }
 ```
+
+**Logging Configuration**:
+- `log_to_file`: Enable logging to file (default: `true`)
+- `log_directory`: Directory for log files (default: `~/.config/ybs/logs`)
+- `log_level`: Minimum level for file logs (`debug`, `info`, `warn`, `error`) (default: `info`)
+- `console_level`: Minimum level for console logs (default: `info`)
+- `max_file_size_mb`: Maximum size per log file in MB (default: 10)
+- `max_files`: Maximum number of log files to keep (default: 5)
+
+**Log File Naming**: `ybs-{session-id}-{timestamp}.log`
+
+Example: `ybs-a1b2c3d4e5f6-2026-01-18T08-13-01Z.log`
+
+**Log Format** (plain text):
+```
+[2026-01-18T08:13:01Z] [test7] [INFO] Executing tool: run_shell
+[2026-01-18T08:13:01Z] [test7] [DEBUG] Arguments: {"working_dir":"/path","command":"date"}
+```
+
+**Log Rotation**: When `max_file_size_mb` exceeded, rotate to new file. Keep only `max_files` most recent files.
+
+**Console vs File**:
+- Console logs: Colored (if `ui.color` enabled), useful for interactive use
+- File logs: Plain text, suitable for archival and debugging
+- Can set different levels (e.g., DEBUG to file, INFO to console)
 
 ---
 
