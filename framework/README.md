@@ -118,6 +118,7 @@ YBS organizes work into three distinct layers:
 - **[writing-steps.md](methodology/writing-steps.md)** - How to create build steps
 - **[executing-builds.md](methodology/executing-builds.md)** - How AI agents execute builds
 - **[feature-addition-protocol.md](methodology/feature-addition-protocol.md)** - Process for adding features
+- **[change-management.md](methodology/change-management.md)** - How to handle bugs, enhancements, and modifications
 
 ### Templates
 

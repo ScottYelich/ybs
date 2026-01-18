@@ -1,7 +1,7 @@
 # Writing Build Steps
 
-**Version**: 0.2.1
-**Last Updated**: 2026-01-17
+**Version**: 0.3.0
+**Last Updated**: 2026-01-18
 
 📍 **You are here**: YBS Framework > Methodology > Writing Build Steps
 **↑ Parent**: [Framework](../README.md)
@@ -731,9 +731,94 @@ name: "{{CONFIG:system_name|string|Name of the system|myapp}}"
 
 ---
 
+## Maintaining Steps After Initial Build
+
+**Steps are living documents.**
+
+After a system is built and tested, you may discover:
+- **Bugs** that need fixing
+- **Features** that should be added
+- **Enhancements** to improve existing functionality
+- **Modifications** to change behavior
+
+**These changes must flow back into steps**, or future builds will repeat the same problems.
+
+### When to Update Steps
+
+**Always update steps when**:
+- Bug found in testing → Fix the step that caused the bug
+- New feature requested → Create new step or update existing
+- Enhancement needed → Update the step that implements the feature
+- Behavior changes → Update the step with new behavior
+
+### How to Update Steps
+
+Follow the **Change Management Workflow**:
+
+1. **Update specs first** (specs are source of truth)
+2. **Update the step** to match updated specs
+3. **Add test requirements** to prevent regression
+4. **Add changelog note** at top of step
+5. **Verify** by building from scratch with updated step
+
+**See**: [change-management.md](change-management.md) for complete workflow covering all change types (new features, enhancements, bugs, modifications).
+
+### Step Changelog Format
+
+Add changelog at top of step (after front matter):
+
+```markdown
+---
+## Changelog
+
+### v1.1 (2026-01-18)
+- **Fixed**: [Bug description]
+- **Changed**: [What behavior changed]
+- **Added**: [New functionality or requirements]
+
+### v1.0 (2026-01-17)
+- Initial version
+
+---
+[rest of step]
+```
+
+**Version numbers** (optional but recommended):
+- v1.0: Initial version
+- v1.1: Minor update (bug fix, enhancement)
+- v2.0: Major rewrite (rare)
+
+### Example: Updating Step After Bug Fix
+
+**Bug Found**: "Readline fails over SSH"
+
+**Update Step 44**:
+1. Add changelog at top
+2. Correct Phase 2: `enableReadline: Bool = false` (was `true`)
+3. Add Phase 7: SSH detection code
+4. Add Phase 8: SSH detection tests
+
+**Result**: Next build (test8) won't have the bug.
+
+**See**: [change-management.md Appendix A](change-management.md#appendix-a-readline-bug-fix-walkthrough) for complete walkthrough.
+
+### Testing Updated Steps
+
+**After updating a step, verify**:
+1. Build new system from scratch using updated steps
+2. Verify bug doesn't reoccur (if bug fix)
+3. Verify feature is present (if new feature)
+4. All tests pass
+5. No regression of existing functionality
+
+**Don't assume the update is correct** - always verify with a fresh build.
+
+---
+
 ## References
 
 - **Step Template**: [../templates/step-template.md](../templates/step-template.md)
+- **Change Management**: [change-management.md](change-management.md) - How to update steps after bugs/changes
 - **Executing Builds**: [executing-builds.md](executing-builds.md)
 - **Writing Specs**: [writing-specs.md](writing-specs.md)
 - **Glossary**: [../docs/glossary.md](../docs/glossary.md)
@@ -743,5 +828,8 @@ name: "{{CONFIG:system_name|string|Name of the system|myapp}}"
 
 ## Version History
 
-- **1.0.0** (2026-01-17): Initial comprehensive guide for writing build steps
+- **0.3.0** (2026-01-18): Added "Maintaining Steps After Initial Build" section and change management workflow
+- **0.2.1** (2026-01-17): Minor improvements and clarifications
+- **0.2.0** (2026-01-17): Added comprehensive examples and common mistakes
+- **0.1.0** (2026-01-17): Initial version
 
