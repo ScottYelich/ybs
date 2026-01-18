@@ -21,6 +21,39 @@ Imagine describing a software system you want, then watching an AI agent build i
 
 ---
 
+## The Foundation: Specs as Source of Truth
+
+**Everything in YBS flows from one principle: Specifications are the single source of truth. Code is derived from specs, not the other way around.**
+
+### Why This Changes Everything
+
+In traditional development:
+- Code is written, then documented (maybe)
+- Documentation drifts out of sync
+- Nobody knows why code exists
+- Rebuilding requires reverse-engineering
+
+In YBS:
+- **Specs come FIRST**: Write what you want before any code exists
+- **Code implements specs**: Every function, class, feature traces to a specification
+- **Specs stay current**: When requirements change, specs update FIRST, then code follows
+- **No spec = No code**: Unspecified features are technical debt, identified automatically
+
+### The Superpower This Unlocks
+
+Because specs are authoritative:
+- **AI agents can regenerate code from specs at any time**
+- **Rebuild in any language/platform** - just point an AI at the specs
+- **System understanding never decays** - specs remain accurate because they drive implementation
+- **Instant compliance** - trace any code to its requirement
+- **Zero ambiguity** - if it's not in specs, it doesn't exist
+
+**The rule**: If code exists without specs, it's a bug. If specs say it, code must implement it.
+
+This isn't documentation-as-afterthought. This is **specification-driven autonomous development**.
+
+---
+
 ## The Vision
 
 Traditional software development requires constant human oversight—clarifying requirements, making decisions, resolving ambiguities. AI agents get stuck without this guidance.
