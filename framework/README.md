@@ -249,6 +249,26 @@ framework/
 
 ## Design Philosophy
 
+### Specs as Source of Truth
+
+**Specifications are the single source of truth. Code is derived from specs, not the other way around.**
+
+In YBS:
+- **Specs define reality**: What exists in specs is what should be built
+- **Code implements specs**: Every function, class, and feature traces to a spec
+- **Specs must stay current**: When requirements change, specs are updated FIRST, then code
+- **No spec = No code**: Unspecified features are technical debt
+
+This inverts traditional development where code becomes the documentation. In YBS, documentation (specs) drives the code.
+
+**Why this matters**:
+- AI agents can regenerate code from specs at any time
+- Specs remain accurate because they drive implementation
+- System understanding doesn't decay over time
+- Rebuilding in new languages/platforms is trivial
+
+**Rule**: If it's not in the specs, it doesn't exist. If code exists without specs, it's a bug.
+
 ### Sufficiency Over Completeness
 
 Provide **just enough** detail for autonomous execution—not too much (overwhelming), not too little (ambiguous).
