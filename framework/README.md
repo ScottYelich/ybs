@@ -1,8 +1,8 @@
 # YBS Framework
 
-**Yelich Build System: Enabling AI Agents to Build Complete Software Systems Autonomously**
+**Yelich Build System: Specification-Driven Development (SDD) for Fully Autonomous AI Agents**
 
-**Version**: 2.0.0
+**Version**: 2.1.0
 **Last Updated**: 2026-01-18
 
 📍 **You are here**: YBS Framework
@@ -218,6 +218,68 @@ Write specifications and steps once, then:
 
 ---
 
+## YBS and Specification-Driven Development (SDD)
+
+**YBS is a complete implementation of Specification-Driven Development at the "spec-as-source" level.**
+
+### What is SDD?
+
+Specification-Driven Development (SDD) is an emerging paradigm where specifications become the authoritative artifact driving AI-generated code. In 2026, tools like GitHub Spec Kit, AWS Kiro, and Tessl are pioneering this approach.
+
+**SDD has three levels**:
+1. **Spec-first**: Specification written before coding
+2. **Spec-anchored**: Specification maintained throughout evolution
+3. **Spec-as-source**: Specification IS the primary artifact; code is generated
+
+**YBS operates at level 3: Spec-as-source.**
+
+### How YBS Compares to Other SDD Tools
+
+| Tool | Level | Focus | Autonomous? |
+|------|-------|-------|-------------|
+| **GitHub Spec Kit** | Spec-first | Requirements capture | Partial |
+| **AWS Kiro** | Spec-first | Agentic IDE | Requires interaction |
+| **Tessl** | Spec-as-source | Generated code | Beta |
+| **YBS** | **Spec-as-source** | **Complete methodology** | **Fully autonomous** |
+
+### YBS Unique Advantages
+
+**YBS isn't just "write specs, generate code"—it's a complete methodology:**
+
+✅ **Human-readable build steps**: Not just specs, but sequential instructions AI agents follow autonomously
+
+✅ **Language-agnostic**: Works for ANY language/platform (GitHub Spec Kit is more code-centric)
+
+✅ **Verification-driven**: Each step has explicit verification criteria—tests must pass before proceeding
+
+✅ **Configuration-first**: Step 0 collects ALL decisions upfront, then Steps 1-N run autonomously
+
+✅ **Zero-interaction rebuilds**: BUILD_CONFIG.json enables fully automated regeneration
+
+✅ **Traceability tooling**: `check-traceability.sh` validates code↔spec links automatically
+
+✅ **Fully autonomous**: No prompts after Step 0 (Kiro and others still require interaction)
+
+✅ **Reproducible builds**: Same specs + same steps = identical output every time
+
+✅ **Crash recovery**: SESSION.md enables resumption after interruption
+
+✅ **System evolution**: Framework for how systems grow and change over time
+
+### What YBS Provides That Others Don't
+
+**Complete methodology for**:
+- **How to organize specifications** (system-wide vs feature-level, hybrid approaches)
+- **How to write build steps** that AI agents follow autonomously without getting stuck
+- **How to maintain traceability** from requirement to implementation (feature-level + code-level)
+- **How to verify each step** before proceeding (automated where possible)
+- **How to handle crash recovery** with SESSION.md for resumable builds
+- **How to evolve systems over time** with specs staying synchronized with code
+
+**Result**: YBS is the most complete SDD framework for autonomous AI development in 2026.
+
+---
+
 ## What YBS Provides
 
 ### Core Methodology
@@ -371,6 +433,7 @@ YBS improves through real-world use:
 
 ## Version History
 
+- **2.1.0** (2026-01-18): Positioned YBS as SDD (Specification-Driven Development), added comparison to other SDD tools, highlighted unique advantages
 - **2.0.0** (2026-01-18): Transformed README into human-focused landing page extolling YBS capabilities
 - **1.1.0** (2026-01-18): Enhanced traceability documentation, added Feature Addition Protocol reference
 - **1.0.0** (2026-01-17): Initial framework documentation after restructure
