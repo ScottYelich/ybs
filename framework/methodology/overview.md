@@ -111,7 +111,7 @@ YBS has a three-layer architecture:
 
 ### 1. Configuration-First
 
-**Step 0 collects ALL questions upfront**
+**Step 0 collects ALL questions upfront—or reads from BUILD_CONFIG.json**
 
 Traditional approach (interrupts frequently):
 ```
@@ -125,9 +125,11 @@ Agent: What database?
 User: PostgreSQL
 ```
 
-YBS approach (questions once, builds autonomously):
+YBS approach (questions once, reuses config forever):
+
+**First build**:
 ```
-Agent: [Runs Step 0]
+Agent: [Runs Step 0, BUILD_CONFIG.json doesn't exist]
   - What's the system name? myapp
   - What port? 8080
   - What database? PostgreSQL
@@ -136,7 +138,27 @@ Agent: [Saves BUILD_CONFIG.json]
 Agent: [Builds entire system without interruption]
 ```
 
+**Subsequent builds** (zero human interaction):
+```
+Agent: [Runs Step 0, BUILD_CONFIG.json exists]
+Agent: [Reads config from file]
+Agent: [Proceeds immediately to Steps 1-N, asks NOTHING]
+```
+
+**Machine-updated config** (fully automated):
+```
+Script: [Updates BUILD_CONFIG.json programmatically]
+  - Change port: 8080 → 9000
+  - Add feature: "caching"
+Agent: [Runs Step 0, reads updated config]
+Agent: [Builds new system variant, zero human interaction]
+```
+
 **Benefits**:
+- **Never answer questions twice**: Config persists across builds
+- **Zero-interaction rebuilds**: Edit config file → run agent → new build
+- **Machine-updatable**: CI/CD pipelines can update config and trigger builds
+- **Batch generation**: Update config 10 ways → generate 10 builds automatically
 - No interruptions during build
 - Consistent configuration across all steps
 - Easy to rebuild with different config
@@ -326,11 +348,31 @@ let package = Package(
 
 ### Step 0: Build Configuration
 
-Step 0 extracts all CONFIG markers from all steps and asks user:
+**Step 0 is smart: it reads from BUILD_CONFIG.json if it exists, otherwise asks questions.**
+
+**First build** (BUILD_CONFIG.json doesn't exist):
 1. Scan all steps for `{{CONFIG:...}}` markers
 2. Present questions to user
 3. Save answers to BUILD_CONFIG.json
-4. Subsequent steps read from config
+4. Proceed to Steps 1-N
+
+**Subsequent builds** (BUILD_CONFIG.json exists):
+1. Check if BUILD_CONFIG.json exists
+2. Read all configuration from file
+3. **Skip all questions** (zero user interaction)
+4. Proceed to Steps 1-N immediately
+
+**Machine-updated builds**:
+1. Script/CI updates BUILD_CONFIG.json programmatically
+2. Agent reads updated config
+3. Generates new build variant automatically
+4. Zero human interaction required
+
+This enables:
+- **Reproducible builds**: Same config → same output
+- **Automated rebuilds**: Update config → trigger agent → new build
+- **Batch generation**: Script updates config 10 ways → 10 builds
+- **CI/CD integration**: Config changes committed → automated rebuild
 
 ### BUILD_CONFIG.json Example
 

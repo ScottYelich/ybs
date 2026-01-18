@@ -77,6 +77,18 @@ With YBS, AI agents transform from assistants into **autonomous builders**.
 
 **Real-world impact**: Build complex systems overnight while you sleep.
 
+### 🔄 Zero-Human-Interaction Rebuilds
+
+**Step 0 reads from BUILD_CONFIG.json if it exists.** First build asks questions and creates the config. Every subsequent build reads the config—zero questions, zero interaction.
+
+**Machine-updatable configs**: Edit BUILD_CONFIG.json programmatically (change versions, toggle features, update parameters), run the agent, get a new build. Fully automated regeneration.
+
+**Real-world impact**:
+- **CI/CD integration**: Commit config changes → automated rebuild
+- **Batch generation**: One script updates config 10 different ways → 10 builds generated
+- **A/B testing**: Generate multiple builds with different configurations automatically
+- **Never answer the same questions twice**: Config persists across builds
+
 ### 🔍 Complete Traceability
 
 Every line of code traces back to its specification. Know exactly **WHY** every feature exists, **WHO** requested it, and **WHAT** decision justified it.
@@ -134,19 +146,26 @@ YBS provides templates and patterns to make this easy.
 ### 2. **Create Build Steps** (Human)
 
 Write sequential instructions for how to build it:
-- Step 0: Collect all configuration
-- Steps 1-N: Implement each component
+- **Step 0**: Configuration collection (reads from BUILD_CONFIG.json if exists, otherwise prompts and creates it)
+- **Steps 1-N**: Implement each component
 - Each step includes verification criteria
 
 ### 3. **Execute Build** (AI Agent)
 
 Point an AI agent at your steps:
+
 ```bash
-# Agent reads Step 0, asks all questions upfront
-# Then builds autonomously through Steps 1-N
-# Verifies each step before proceeding
-# Results in complete, working system
+# First build: Agent reads Step 0, asks questions, creates BUILD_CONFIG.json
+# Agent then builds autonomously through Steps 1-N
+
+# Subsequent builds: Agent reads BUILD_CONFIG.json, asks NOTHING
+# Builds immediately with zero human interaction
+
+# Machine-updated config: Edit BUILD_CONFIG.json programmatically
+# Run agent again → new build from updated config, still zero interaction
 ```
+
+**The game-changer**: Once BUILD_CONFIG.json exists, you never answer questions again. Update the config file (manually or programmatically), run the agent, get a new build. Completely automated.
 
 ### 4. **Get Production-Ready Software**
 

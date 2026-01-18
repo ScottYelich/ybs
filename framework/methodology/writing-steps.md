@@ -147,6 +147,53 @@ Don't use CONFIG for:
 - Security settings (hardcode secure defaults)
 - Implementation details (let AI agent decide)
 
+### How Step 0 Works with BUILD_CONFIG.json
+
+**Step 0 is smart: it reads from BUILD_CONFIG.json if it exists.**
+
+**When writing Step 0, implement this logic:**
+
+1. **Check if BUILD_CONFIG.json exists** in the build directory
+2. **If file exists**:
+   - Read all configuration from file
+   - Skip all user questions (zero interaction)
+   - Validate config contains all required keys
+   - Proceed to mark Step 0 complete
+3. **If file does NOT exist**:
+   - Scan all steps for `{{CONFIG:...}}` markers
+   - Ask user for all values (using AskUserQuestion)
+   - Save to BUILD_CONFIG.json
+   - Proceed to mark Step 0 complete
+
+**This enables:**
+- **First build**: Ask questions once, save config
+- **Subsequent builds**: Read config, ask NOTHING (zero interaction)
+- **Machine-updated builds**: Script updates config → agent reads → new build (fully automated)
+- **CI/CD integration**: Config changes committed → automated rebuild
+- **Batch generation**: Update config 10 ways → generate 10 builds automatically
+
+**Example Step 0 logic:**
+```markdown
+## Instructions
+
+1. **Check for existing configuration**
+   ```bash
+   if [ -f BUILD_CONFIG.json ]; then
+     echo "✓ BUILD_CONFIG.json exists - reading configuration"
+     # Read and validate config
+     # Skip to step 4
+   else
+     echo "○ BUILD_CONFIG.json not found - collecting configuration"
+     # Proceed to step 2
+   fi
+   ```
+
+2. **Scan all steps for CONFIG markers** (only if config doesn't exist)
+3. **Ask user for all values** (only if config doesn't exist)
+4. **Validate configuration** (all builds)
+5. **Mark Step 0 complete**
+```
+
 ---
 
 ## Writing Clear Instructions

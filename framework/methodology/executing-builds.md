@@ -16,11 +16,14 @@ This directory contains step-by-step instructions for building software systems 
 
 ### Why Step 0 Exists
 
-Step 0 (Build Configuration) collects ALL questions upfront so that:
+Step 0 (Build Configuration) collects ALL questions upfront—or reads from BUILD_CONFIG.json if it exists:
+- **First build**: Asks questions once, saves to BUILD_CONFIG.json
+- **Subsequent builds**: Reads config file, asks NOTHING (zero interaction)
 - Steps 1-N can execute fully autonomously
-- No user prompts are needed during execution
+- No user prompts needed during execution
 - Claude can work continuously through multiple steps
 - Builds complete faster with less interruption
+- **Machine-updatable**: Edit config → run agent → new build (fully automated)
 
 ### Autonomous Execution Rules
 
@@ -158,14 +161,28 @@ BUILD_STATUS.md must include:
 
 **Step 0 MUST be executed FIRST before any other step.**
 
-**Purpose**: Collect all configurable values upfront to enable autonomous execution.
+**Purpose**: Collect all configurable values upfront OR read from existing BUILD_CONFIG.json to enable autonomous execution.
 
-**Process:**
+**CRITICAL: Check for existing BUILD_CONFIG.json FIRST**
+
+**Process (BUILD_CONFIG.json exists):**
+1. Check if `builds/SYSTEMNAME/BUILD_CONFIG.json` exists
+2. **If YES**: Read all configuration from file
+3. **Skip all questions** (zero user interaction)
+4. Proceed to Steps 1-N immediately
+
+**Process (BUILD_CONFIG.json does NOT exist):**
 1. Scan all steps in STEPS_ORDER.txt
 2. Extract all `{{CONFIG:...}}` markers
 3. Ask user for all values using AskUserQuestion
 4. Generate `builds/SYSTEMNAME/BUILD_CONFIG.json`
-5. Later steps read from BUILD_CONFIG.json instead of asking
+5. Proceed to Steps 1-N
+
+**Why this matters:**
+- **First build**: Ask questions once, save config
+- **Subsequent builds**: Read config, ask NOTHING (zero interaction)
+- **Machine-updated builds**: External script updates config → agent reads → new build generated (fully automated)
+- **CI/CD integration**: Config committed → agent triggered → build created automatically
 
 **BUILD_CONFIG.json format:**
 ```json
