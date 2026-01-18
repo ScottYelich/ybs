@@ -1,7 +1,7 @@
 # YBS Framework
 
-**Version**: 1.0.0
-**Last Updated**: 2026-01-17
+**Version**: 1.1.0
+**Last Updated**: 2026-01-18
 
 📍 **You are here**: YBS Framework
 **↑ Parent**: [Repository Root](../README.md)
@@ -48,11 +48,11 @@ framework/
 │   ├── step-format.md                 # Step file format specification
 │   └── config-markers.md              # CONFIG marker syntax
 ├── tools/                             # Helper scripts
-│   ├── list-specs.sh                  # List specifications by GUID
+│   ├── list-specs.sh                  # List specifications for a system
 │   ├── list-steps.sh                  # List build steps in order
 │   ├── deps.sh                        # Show dependency tree
-│   └── list-changelogs.sh             # List session changelogs
-└── changelogs/                        # Framework change tracking
+│   └── check-traceability.sh          # Verify code-to-spec traceability
+└── changelogs/                        # Historical (no longer maintained)
 ```
 
 ---
@@ -127,9 +127,18 @@ Complete working system:
 
 **Every implementation decision traces to its specification**
 
+**Feature-Level Traceability**:
 - Steps reference specs they implement
 - Specs reference decisions (ADRs)
 - Clear audit trail from requirement to code
+
+**Code-Level Traceability**:
+- Source files include `// Implements: spec § X.Y` comments
+- Automated checking with check-traceability.sh tool
+- Detects unspecified features automatically
+- Enables rapid code review
+
+See: [Feature Addition Protocol](methodology/feature-addition-protocol.md)
 
 ### 4. Verification-Driven
 
@@ -189,6 +198,7 @@ Want to improve the YBS framework itself?
 - [writing-specs.md](methodology/writing-specs.md) - How to write specifications
 - [writing-steps.md](methodology/writing-steps.md) - How to write build steps
 - [executing-builds.md](methodology/executing-builds.md) - How to execute builds (AI agents)
+- [feature-addition-protocol.md](methodology/feature-addition-protocol.md) - Process for adding new features
 
 ### Reference
 
@@ -286,7 +296,8 @@ Helper scripts in `framework/tools/`:
 - **list-specs.sh** - List specifications by GUID
 - **list-steps.sh** - List build steps in execution order
 - **deps.sh** - Show dependency tree for specs
-- **list-changelogs.sh** - List session changelogs
+- **check-traceability.sh** - Verify code-to-spec traceability
+- **list-changelogs.sh** - List session changelogs (historical)
 
 ---
 
@@ -304,6 +315,7 @@ To improve the YBS framework:
 
 ## Version History
 
+- **1.1.0** (2026-01-18): Enhanced traceability documentation, added Feature Addition Protocol reference, clarified tool locations
 - **1.0.0** (2026-01-17): Initial framework documentation after restructure
 
 ---

@@ -1,23 +1,43 @@
 # YBS Specifications
 
-**Version**: 1.0.0
+**Version**: 1.1.0
 
-This directory contains all specifications for the Yelich Build System (YBS) and systems built with it.
+This guide explains how to write specifications for systems built with YBS.
+
+## Overview
+
+Specifications have two purposes:
+1. **System-Wide Documentation**: Master documents describing the entire system
+2. **Feature Specifications**: Granular specs for individual features (optional)
 
 ## Structure
 
-### System-Wide Documentation (`system/`)
+### Option A: System-Wide Documentation (Simpler)
 
-Master documents covering the entire YBS system:
-- **ybs-spec.md** - Complete technical specification
-- **ybs-decisions.md** - Architectural Decision Records (ADRs)
-- **ybs-lessons-learned.md** - Implementation checklist and best practices
+**For smaller systems or monolithic documentation**, create master documents in appropriate category directories:
 
-These documents describe YBS as a whole, not individual features.
+```
+specs/
+├── technical/
+│   ├── _BASE.md           # System-wide technical standards
+│   └── ybs-spec.md        # Complete technical specification
+├── architecture/
+│   ├── _BASE.md           # Architectural principles
+│   └── ybs-decisions.md   # Architectural Decision Records
+├── general/
+│   └── ybs-lessons-learned.md  # Implementation checklist
+├── business/_BASE.md      # Business context
+├── functional/_BASE.md    # UX patterns
+├── testing/_BASE.md       # Test standards
+├── security/_BASE.md      # Security model
+└── operations/_BASE.md    # Deployment standards
+```
 
-### Feature Specifications (by type)
+**Use this approach when**: System is small, features are tightly coupled, or you prefer comprehensive monolithic documentation.
 
-Each feature gets a **12-hex GUID** and specifications across multiple dimensions:
+### Option B: Feature-Level Granularity (More Structured)
+
+**For larger systems with many independent features**, break down into individual GUID-based specs:
 
 ```
 <guid>  # Same GUID used across all spec types for one feature
@@ -32,7 +52,30 @@ Each feature gets a **12-hex GUID** and specifications across multiple dimension
 
 **Format**: `ybs-spec_<12hex>.md` (e.g., `ybs-spec_a1b2c3d4e5f6.md`)
 
-### Categories
+**Use this approach when**: System is large, features are independent, or you need fine-grained traceability to individual features.
+
+### Mixing Both Approaches
+
+**Most systems use a hybrid**:
+- System-wide master docs (ybs-spec.md, ybs-decisions.md) for overall architecture
+- _BASE.md files for system-wide standards
+- GUID-based specs for specific features that need detailed breakdown
+
+**Example** (bootstrap system):
+```
+specs/
+├── technical/
+│   ├── _BASE.md           # System-wide technical standards
+│   ├── ybs-spec.md        # Complete system technical spec
+│   └── ybs-spec_a1b2c3.md # Optional: specific feature spec
+├── architecture/
+│   ├── _BASE.md
+│   └── ybs-decisions.md
+└── general/
+    └── ybs-lessons-learned.md
+```
+
+### Specification Categories
 
 #### Core (always present)
 1. **business/** - Business requirements, user stories, ROI, success metrics
@@ -191,25 +234,25 @@ This enables:
 
 ## Helper Scripts
 
-**Location**: All helper scripts are centralized in `bin/` at repository root.
+**Location**: All helper scripts are in `framework/tools/`.
 
 ### View all specs for a feature
 ```bash
-../../bin/list-specs.sh a1b2c3d4e5f6
+../../framework/tools/list-specs.sh a1b2c3d4e5f6
 ```
 
 Shows all spec types (business, functional, technical, etc.) for that GUID.
 
 ### Show dependency tree
 ```bash
-../../bin/deps.sh a1b2c3d4e5f6
+../../framework/tools/deps.sh a1b2c3d4e5f6
 ```
 
 Shows required/optional dependencies and dependents.
 
 ### Validate specs
 ```bash
-../../bin/validate-specs.sh
+../../framework/tools/validate-specs.sh
 ```
 
 Checks:
@@ -240,4 +283,7 @@ A step can implement one or more spec GUIDs.
 
 ---
 
-**Last updated**: 2026-01-16
+## Version History
+
+- **1.1.0** (2026-01-18): Clarified spec organization - added Option A (system-wide) vs Option B (feature-level) vs hybrid approach
+- **1.0.0** (2026-01-16): Initial version

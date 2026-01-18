@@ -1,7 +1,7 @@
 # YBS Overview
 
-**Version**: 1.0.0
-**Last Updated**: 2026-01-17
+**Version**: 1.1.0
+**Last Updated**: 2026-01-18
 
 📍 **You are here**: YBS Framework > Methodology > Overview
 **↑ Parent**: [Framework](../README.md)
@@ -161,6 +161,10 @@ After Step 0:
 
 **Every implementation traces to specifications**
 
+YBS provides two levels of traceability:
+
+#### Feature-Level Traceability
+
 ```
 Code → Step → Spec → Decision
 ```
@@ -171,11 +175,36 @@ Example:
 - Implements spec Section 4.2: "Configuration Loading"
 - Based on Decision D07: "Layered Configuration"
 
+#### Code-Level Traceability
+
+**Source files include explicit spec references:**
+
+```swift
+// Implements: ybs-spec.md § 4.2.3 (Configuration File Loading)
+func loadConfiguration() {
+    // Implementation...
+}
+```
+
+**Automated verification**:
+```bash
+framework/tools/check-traceability.sh SYSTEMNAME BUILDNAME
+```
+
+This tool:
+- Scans source files for `// Implements:` comments
+- Verifies all referenced specs exist
+- Detects unspecified features (code without spec references)
+- Enables rapid code review
+
 **Benefits**:
 - Audit trail from requirement to code
 - Changes to specs trigger review of affected steps
 - Understand WHY code exists
+- Rapid identification of unspecified features
 - Compliance and documentation
+
+**See**: [Feature Addition Protocol](feature-addition-protocol.md) for mandatory process when adding features
 
 ### 4. Verification-Driven
 
@@ -677,4 +706,5 @@ See [glossary.md](../docs/glossary.md) for complete terminology reference.
 
 ## Version History
 
+- **1.1.0** (2026-01-18): Enhanced Traceability section with Code-Level Traceability and Feature Addition Protocol reference
 - **1.0.0** (2026-01-17): Comprehensive YBS overview after restructure
