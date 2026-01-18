@@ -6,6 +6,9 @@
 #
 # Note: This tool is designed for GUID-based spec organization.
 #       May not be applicable to all systems (e.g., bootstrap uses descriptive names).
+#
+# Environment variables:
+#   YBS_ROOT - Override YBS repository root (default: auto-detect from script location)
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -29,7 +32,14 @@ else
     GUID=$2
 fi
 
-SPECS_DIR="$SCRIPT_DIR/../systems/$SYSTEM/specs"
+# Determine YBS root: use YBS_ROOT if set, otherwise calculate from script location
+if [ -n "$YBS_ROOT" ]; then
+    YBS_ROOT_DIR="$YBS_ROOT"
+else
+    YBS_ROOT_DIR="$SCRIPT_DIR/../.."
+fi
+
+SPECS_DIR="$YBS_ROOT_DIR/systems/$SYSTEM/specs"
 TECH_SPEC="$SPECS_DIR/technical/ybs-spec_${GUID}.md"
 
 if [ ! -f "$TECH_SPEC" ]; then

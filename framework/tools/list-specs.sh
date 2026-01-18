@@ -5,13 +5,23 @@
 # Usage: ./list-specs.sh [SYSTEM]
 #
 # SYSTEM defaults to "bootstrap" if not specified
+#
+# Environment variables:
+#   YBS_ROOT - Override YBS repository root (default: auto-detect from script location)
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Parse arguments
 SYSTEM="${1:-bootstrap}"
 
-SPECS_DIR="$SCRIPT_DIR/../systems/$SYSTEM/specs"
+# Determine YBS root: use YBS_ROOT if set, otherwise calculate from script location
+if [ -n "$YBS_ROOT" ]; then
+    YBS_ROOT_DIR="$YBS_ROOT"
+else
+    YBS_ROOT_DIR="$SCRIPT_DIR/../.."
+fi
+
+SPECS_DIR="$YBS_ROOT_DIR/systems/$SYSTEM/specs"
 
 if [ ! -d "$SPECS_DIR" ]; then
     echo "Error: Specs directory not found at $SPECS_DIR"

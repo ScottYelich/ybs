@@ -7,6 +7,9 @@
 # Shows numbered list of steps from STEPS_ORDER.txt
 # Use --full to show complete file paths
 # SYSTEM defaults to "bootstrap" if not specified
+#
+# Environment variables:
+#   YBS_ROOT - Override YBS repository root (default: auto-detect from script location)
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -23,7 +26,14 @@ for arg in "$@"; do
     fi
 done
 
-STEPS_DIR="$SCRIPT_DIR/../../systems/$SYSTEM/steps"
+# Determine YBS root: use YBS_ROOT if set, otherwise calculate from script location
+if [ -n "$YBS_ROOT" ]; then
+    YBS_ROOT_DIR="$YBS_ROOT"
+else
+    YBS_ROOT_DIR="$SCRIPT_DIR/../.."
+fi
+
+STEPS_DIR="$YBS_ROOT_DIR/systems/$SYSTEM/steps"
 ORDER_FILE="$STEPS_DIR/STEPS_ORDER.txt"
 
 if [ ! -f "$ORDER_FILE" ]; then

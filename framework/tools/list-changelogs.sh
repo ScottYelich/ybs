@@ -4,9 +4,19 @@
 #
 # Usage: ./list-changelogs.sh [--date YYYY-MM-DD] [--recent N] [--session GUID]
 #
+# Environment variables:
+#   YBS_ROOT - Override YBS repository root (default: auto-detect from script location)
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CHANGELOGS_DIR="$SCRIPT_DIR/../changelogs/changelogs"
+
+# Determine YBS root: use YBS_ROOT if set, otherwise calculate from script location
+if [ -n "$YBS_ROOT" ]; then
+    YBS_ROOT_DIR="$YBS_ROOT"
+else
+    YBS_ROOT_DIR="$SCRIPT_DIR/../.."
+fi
+
+CHANGELOGS_DIR="$YBS_ROOT_DIR/framework/changelogs/changelogs"
 
 show_help() {
     echo "Usage: $0 [OPTIONS]"
