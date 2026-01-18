@@ -1,6 +1,6 @@
 # Feature Addition Protocol
 
-**Version**: 1.0.0
+**Version**: 0.2.0
 **Status**: CRITICAL RULE - MUST FOLLOW
 **Last Updated**: 2026-01-18
 

@@ -1,6 +1,6 @@
 # CLAUDE.md - YBS Framework
 
-**Version**: 1.0.0
+**Version**: 0.2.0
 **Last Updated**: 2026-01-18
 
 📍 **You are here**: YBS Framework > AI Agent Guide
@@ -535,7 +535,7 @@ Tested: Reviewed by Claude, validated against bootstrap system
 
 ## Version History
 
-- **1.0.0** (2026-01-18): Initial framework CLAUDE.md - guidance for AI agents working on framework itself
+- **0.2.0** (2026-01-18): Initial framework CLAUDE.md - guidance for AI agents working on framework itself
 
 ---
 

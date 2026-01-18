@@ -1,6 +1,6 @@
 # YBS Overview
 
-**Version**: 1.1.0
+**Version**: 0.2.1
 **Last Updated**: 2026-01-18
 
 📍 **You are here**: YBS Framework > Methodology > Overview
@@ -748,5 +748,5 @@ See [glossary.md](../docs/glossary.md) for complete terminology reference.
 
 ## Version History
 
-- **1.1.0** (2026-01-18): Enhanced Traceability section with Code-Level Traceability and Feature Addition Protocol reference
-- **1.0.0** (2026-01-17): Comprehensive YBS overview after restructure
+- **0.2.1** (2026-01-18): Enhanced Traceability, Configuration-First with BUILD_CONFIG.json reading, Step 0 documentation
+- **0.1.0** (2026-01-17): Initial YBS overview after restructure

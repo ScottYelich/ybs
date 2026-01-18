@@ -1,6 +1,6 @@
 # Writing Build Steps
 
-**Version**: 1.0.0
+**Version**: 0.2.1
 **Last Updated**: 2026-01-17
 
 📍 **You are here**: YBS Framework > Methodology > Writing Build Steps

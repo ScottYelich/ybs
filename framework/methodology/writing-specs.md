@@ -1,6 +1,6 @@
 # YBS Specifications
 
-**Version**: 1.1.0
+**Version**: 0.2.1
 
 This guide explains how to write specifications for systems built with YBS.
 
@@ -285,5 +285,5 @@ A step can implement one or more spec GUIDs.
 
 ## Version History
 
-- **1.1.0** (2026-01-18): Clarified spec organization - added Option A (system-wide) vs Option B (feature-level) vs hybrid approach
-- **1.0.0** (2026-01-16): Initial version
+- **0.2.1** (2026-01-18): Clarified spec organization - added Option A (system-wide) vs Option B (feature-level) vs hybrid approach, tool path fixes
+- **0.1.0** (2026-01-16): Initial version

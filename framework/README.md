@@ -2,7 +2,7 @@
 
 **Yelich Build System: Specification-Driven Development (SDD) for Fully Autonomous AI Agents**
 
-**Version**: 2.1.0
+**Version**: 0.2.1
 **Last Updated**: 2026-01-18
 
 📍 **You are here**: YBS Framework
@@ -433,10 +433,9 @@ YBS improves through real-world use:
 
 ## Version History
 
-- **2.1.0** (2026-01-18): Positioned YBS as SDD (Specification-Driven Development), added comparison to other SDD tools, highlighted unique advantages
-- **2.0.0** (2026-01-18): Transformed README into human-focused landing page extolling YBS capabilities
-- **1.1.0** (2026-01-18): Enhanced traceability documentation, added Feature Addition Protocol reference
-- **1.0.0** (2026-01-17): Initial framework documentation after restructure
+- **0.2.1** (2026-01-18): Positioned YBS as SDD, added comparison to other SDD tools, BUILD_CONFIG.json reading documentation
+- **0.2.0** (2026-01-18): Comprehensive framework documentation improvements (specs as source of truth, traceability)
+- **0.1.0** (2026-01-17): Initial framework documentation after restructure
 
 ---
 

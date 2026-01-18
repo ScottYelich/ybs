@@ -1,6 +1,6 @@
 # Build Instructions for Claude Code
 
-**Version**: 1.0.0
+**Version**: 0.2.1
 
 This directory contains step-by-step instructions for building software systems using the YBS framework. The current steps guide building a Swift-based LLM chat tool (the "bootstrap"), but the framework can be adapted for building any type of system.
 
