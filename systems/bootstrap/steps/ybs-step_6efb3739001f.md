@@ -7,9 +7,24 @@
 
 ---
 
+## Changelog
+
+### v1.1 (2026-01-18)
+- **Fixed**: Readline fails over SSH (character duplication, broken Ctrl+C/Ctrl+L)
+- **Changed**: Default `enable_readline` from `true` to `false` (disabled by default)
+- **Added**: SSH detection to automatically disable readline for SSH sessions
+- **Added**: TERM validation (reject "dumb" or empty TERM)
+- **Added**: Test requirements for SSH detection and terminal validation
+- **Rationale**: LineNoise cannot enter raw mode over SSH pseudo-TTYs, causing terminal echo issues
+
+### v1.0 (2026-01-18)
+- Initial version
+
+---
+
 ## Objective
 
-Implement readline support for enhanced terminal input with line editing, command history, and history persistence across sessions. Users should have a rich interactive experience by default, with the ability to disable readline for automation scenarios.
+Implement readline support for enhanced terminal input with line editing, command history, and history persistence across sessions. Readline is **disabled by default** due to SSH compatibility issues, but users can enable it for local terminal use. The implementation includes automatic detection of incompatible environments (SSH, invalid TERM) with graceful fallback to plain input.
 
 ---
 
@@ -73,7 +88,7 @@ Implement readline support for enhanced terminal input with line editing, comman
 
 2. Update default values in config loading:
    ```swift
-   let enableReadline = uiDict["enable_readline"] as? Bool ?? true
+   let enableReadline = uiDict["enable_readline"] as? Bool ?? false  // Disabled by default
    let historyFile = uiDict["history_file"] as? String ?? "~/.config/ybs/history"
    let historyMaxEntries = uiDict["history_max_entries"] as? Int ?? 1000
    ```
@@ -320,10 +335,20 @@ class ReadlineInputHandler: InputHandler {
    private let inputHandler: InputHandler
    ```
 
-3. Initialize in `init()` based on config and TTY detection:
+3. Initialize in `init()` based on config, TTY detection, TERM validation, and SSH detection:
    ```swift
    // Initialize input handler based on config and TTY
-   if config.ui.enableReadline && isatty(STDIN_FILENO) != 0 {
+   // Check both TTY and TERM environment variable
+   let isTTY = isatty(STDIN_FILENO) != 0
+   let termType = ProcessInfo.processInfo.environment["TERM"] ?? ""
+   let hasValidTerm = !termType.isEmpty && termType != "dumb"
+
+   // Detect SSH sessions (LineNoise often fails over SSH)
+   let isSSH = ProcessInfo.processInfo.environment["SSH_CONNECTION"] != nil ||
+               ProcessInfo.processInfo.environment["SSH_CLIENT"] != nil ||
+               ProcessInfo.processInfo.environment["SSH_TTY"] != nil
+
+   if config.ui.enableReadline && isTTY && hasValidTerm && !isSSH {
        #if canImport(LineNoise)
        self.inputHandler = ReadlineInputHandler(
            historyFile: config.ui.historyFile,
@@ -339,8 +364,12 @@ class ReadlineInputHandler: InputHandler {
        self.inputHandler = PlainInputHandler()
        if !config.ui.enableReadline {
            logger.info("Readline disabled by configuration")
-       } else {
+       } else if !isTTY {
            logger.info("Readline disabled (not a TTY)")
+       } else if !hasValidTerm {
+           logger.info("Readline disabled (TERM=\(termType) not supported)")
+       } else if isSSH {
+           logger.info("Readline disabled (SSH session detected)")
        }
    }
    ```
@@ -372,34 +401,51 @@ class ReadlineInputHandler: InputHandler {
 **Goal**: Verify readline functionality works correctly
 
 **Manual Tests**:
-1. **Default behavior** (readline enabled):
+1. **Default behavior** (readline disabled):
    ```bash
    swift run YBS
-   # Test: Arrow keys work for line editing
-   # Test: Up/down arrows recall history
-   # Test: Type "test command 1", press Enter, type "test command 2", press Enter
-   # Test: Press Up arrow - should show "test command 2"
-   # Test: Press Up again - should show "test command 1"
-   # Test: Quit and restart - history should persist
+   # Test: Plain input mode (no line editing)
+   # Test: Type normally, press Enter, input is processed
+   # Test: Ctrl+C interrupts cleanly
+   # Test: No character duplication or display issues
    ```
 
-2. **Disabled via flag**:
+2. **Enabled via config** (local terminal only):
+   ```bash
+   # Edit ~/.config/ybs/config.json: "enable_readline": true
+   swift run YBS
+   # Test (only if NOT over SSH): Arrow keys work for line editing
+   # Test (only if NOT over SSH): Up/down arrows recall history
+   # Test: If SSH detected, should fall back to plain input with log message
+   ```
+
+3. **Disabled via flag** (redundant but verifies override):
    ```bash
    swift run YBS --no-readline
-   # Test: No line editing (arrow keys show escape sequences)
-   # Test: Plain input only
+   # Test: Plain input mode
+   # Test: No line editing
    ```
 
-3. **Piped input** (auto-disable):
+4. **Piped input** (auto-disable):
    ```bash
    echo "hello" | swift run YBS
    # Test: Should handle piped input gracefully
+   # Test: No readline (not a TTY)
    ```
 
-4. **History file**:
+5. **SSH detection**:
+   ```bash
+   # Connect via SSH, then:
+   swift run YBS
+   # Test: Plain input mode (readline auto-disabled)
+   # Test: Log should show "Readline disabled (SSH session detected)"
+   # Test: No character duplication or broken Ctrl+C
+   ```
+
+6. **History file** (only if readline was enabled):
    ```bash
    cat ~/.config/ybs/history
-   # Test: Contains previous commands
+   # Test: Contains previous commands (if readline was used)
    # Test: Limited to maxEntries (1000 by default)
    ```
 
@@ -437,6 +483,51 @@ final class InputHandlerTests: XCTestCase {
         // Result depends on environment (1 for TTY, 0 for non-TTY)
         XCTAssert(result == 0 || result == 1, "isatty should return 0 or 1")
     }
+
+    func testSSHDetection() {
+        // Test SSH environment variable detection
+        let sshVars = ["SSH_CONNECTION", "SSH_CLIENT", "SSH_TTY"]
+
+        for sshVar in sshVars {
+            setenv(sshVar, "test", 1)
+
+            let isSSH = ProcessInfo.processInfo.environment["SSH_CONNECTION"] != nil ||
+                        ProcessInfo.processInfo.environment["SSH_CLIENT"] != nil ||
+                        ProcessInfo.processInfo.environment["SSH_TTY"] != nil
+
+            XCTAssertTrue(isSSH, "\(sshVar) should be detected")
+            unsetenv(sshVar)
+        }
+
+        // Verify SSH not detected when vars absent
+        let isSSH = ProcessInfo.processInfo.environment["SSH_CONNECTION"] != nil ||
+                    ProcessInfo.processInfo.environment["SSH_CLIENT"] != nil ||
+                    ProcessInfo.processInfo.environment["SSH_TTY"] != nil
+        XCTAssertFalse(isSSH, "SSH should not be detected without env vars")
+    }
+
+    func testTERMValidation() {
+        // Test TERM environment variable validation
+        let originalTerm = ProcessInfo.processInfo.environment["TERM"]
+
+        // Valid TERM
+        setenv("TERM", "xterm-256color", 1)
+        let termType1 = ProcessInfo.processInfo.environment["TERM"] ?? ""
+        XCTAssertFalse(termType1.isEmpty, "TERM should not be empty")
+        XCTAssertNotEqual(termType1, "dumb", "TERM should not be dumb")
+
+        // Invalid TERM (dumb)
+        setenv("TERM", "dumb", 1)
+        let termType2 = ProcessInfo.processInfo.environment["TERM"] ?? ""
+        XCTAssertEqual(termType2, "dumb", "TERM should be dumb")
+
+        // Restore original TERM
+        if let orig = originalTerm {
+            setenv("TERM", orig, 1)
+        } else {
+            unsetenv("TERM")
+        }
+    }
 }
 ```
 
@@ -452,18 +543,22 @@ final class InputHandlerTests: XCTestCase {
 Before marking this step complete, verify:
 
 1. ✅ LineNoise dependency added to Package.swift
-2. ✅ Configuration updated with readline options
+2. ✅ Configuration updated with readline options (default: `false`)
 3. ✅ `--no-readline` CLI flag added
 4. ✅ InputHandler protocol and implementations created
 5. ✅ AgentLoop uses InputHandler instead of readLine()
-6. ✅ Readline works: arrow keys, history navigation, Ctrl+R search
-7. ✅ History persists across sessions
-8. ✅ `--no-readline` flag disables readline
-9. ✅ Piped input auto-disables readline (TTY detection)
-10. ✅ History file created with 600 permissions
-11. ✅ History trimmed to maxEntries
-12. ✅ All tests pass
-13. ✅ Build succeeds without warnings
+6. ✅ SSH detection implemented (checks SSH_CONNECTION, SSH_CLIENT, SSH_TTY)
+7. ✅ TERM validation implemented (rejects empty or "dumb")
+8. ✅ Readline works when enabled (arrow keys, history navigation, Ctrl+R search)
+9. ✅ History persists across sessions (when readline used)
+10. ✅ `--no-readline` flag disables readline
+11. ✅ Piped input auto-disables readline (TTY detection)
+12. ✅ SSH sessions auto-disable readline (no character duplication)
+13. ✅ Invalid TERM auto-disables readline
+14. ✅ History file created with 600 permissions
+15. ✅ History trimmed to maxEntries
+16. ✅ All tests pass (including SSH and TERM tests)
+17. ✅ Build succeeds without warnings
 
 **Retry Limit**: 3 attempts
 
