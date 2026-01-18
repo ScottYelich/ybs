@@ -80,3 +80,5 @@ d1e2f3a4b5c6
 #
 # Step 42: Web Search Tool
 a3b4c5d6e7f8
+# Step 43: Context Statistics and Management
+3b0b0f39524a

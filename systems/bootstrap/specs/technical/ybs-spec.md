@@ -982,6 +982,8 @@ The agent should support meta-commands that control the chat session itself rath
 |---------|---------|---------|
 | `/help` | Show available commands and usage | `/help` |
 | `/tools` | List available tools with descriptions | `/tools` |
+| `/stats` | Show conversation statistics (messages, tokens, size) | `/stats` |
+| `/context <limit>` | Set maximum retained messages (dynamic adjustment) | `/context 100` |
 | `/quit` or `/exit` | Exit the application | `/quit` |
 
 **Command Handling**:
@@ -1254,6 +1256,219 @@ You: `cat file.txt`
 - Is not a shell metacharacter (unlike `$` and `` ` ``)
 - Visually distinctive
 - Common in other tools (e.g., Jupyter `!command`)
+
+---
+
+### 6.4 Context Statistics and Management
+
+**Purpose**: Provide visibility into conversation context size, token usage, and enable dynamic adjustment of context limits during active chat sessions.
+
+#### 6.4.1 Statistics Command (`/stats`)
+
+Display comprehensive statistics about the current conversation context.
+
+**Command**: `/stats`
+
+**Output Format**:
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Conversation Statistics
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Messages:
+  • Total: 47 messages
+  • System: 1 message
+  • User: 23 messages
+  • Assistant: 23 messages
+  • Tool calls: 15 calls
+  • Tool results: 15 results
+
+Context Size:
+  • Characters: 45,234 chars
+  • Estimated tokens: ~11,309 tokens
+  • Context limit: 50 messages
+  • Token budget: 32,000 tokens
+  • Usage: 35.3% of token budget
+
+Session:
+  • Session ID: session-20260118-143022
+  • Started: 2026-01-18 14:30:22
+  • Duration: 12m 34s
+  • Provider: anthropic
+  • Model: claude-3-5-sonnet-20241022
+
+Storage:
+  • Session file: ~/.config/ybs/sessions/session-20260118-143022.jsonl
+  • File size: 156.3 KB
+  • Auto-save: enabled
+```
+
+**Implementation Requirements**:
+
+1. **Message Counting**: Count messages by role (system, user, assistant, tool)
+2. **Token Estimation**: Estimate tokens using `text.count / 4` approximation
+3. **Character Counting**: Sum of all message content lengths
+4. **Percentage Calculation**: Show usage vs. configured limits
+5. **Session Metadata**: Show session start time, duration, provider/model
+6. **File Information**: Show session file path and size
+
+**Token Estimation Algorithm**:
+```swift
+func estimateTokens(_ text: String) -> Int {
+    // Simple approximation: 1 token ≈ 4 characters
+    // This is rough but sufficient for user feedback
+    return text.count / 4
+}
+
+func totalContextTokens() -> Int {
+    return messages.reduce(0) { sum, msg in
+        sum + estimateTokens(msg.content)
+    }
+}
+```
+
+**Note**: Token estimation is approximate. Actual tokenization varies by model. This provides user-friendly feedback without requiring tiktoken/tokenizers library.
+
+#### 6.4.2 Context Limit Adjustment (`/context`)
+
+Dynamically adjust the maximum number of retained messages during an active chat session.
+
+**Command**: `/context <limit>`
+
+**Examples**:
+```
+You: /context 100
+✅ Context limit updated: 50 → 100 messages
+   Current: 47 messages (47% of limit)
+
+You: /context 20
+⚠️  Context limit reduced: 50 → 20 messages
+   Current: 47 messages (exceeds limit)
+   Pruning to 20 most recent messages...
+✅ Pruned 27 old messages (kept system prompt + 19 recent)
+   Current: 20 messages (100% of limit)
+```
+
+**Behavior**:
+- **Increase limit**: Update `maxMessages`, no immediate pruning
+- **Decrease limit**: Update `maxMessages`, immediately prune if current count exceeds new limit
+- **Always preserve**: System prompt(s) are never pruned
+- **Prune strategy**: Keep most recent messages (LIFO - Last In, First Out)
+
+**Implementation**:
+```swift
+func setContextLimit(_ newLimit: Int) {
+    let oldLimit = self.maxMessages
+    let currentCount = messages.count
+
+    self.maxMessages = newLimit
+
+    // If new limit is smaller and we're over it, prune now
+    if newLimit < oldLimit && currentCount > newLimit {
+        print("⚠️  Context limit reduced: \(oldLimit) → \(newLimit) messages")
+        print("   Current: \(currentCount) messages (exceeds limit)")
+        print("   Pruning to \(newLimit) most recent messages...")
+
+        pruneOldMessages()
+
+        print("✅ Pruned \(currentCount - messages.count) old messages")
+        print("   Current: \(messages.count) messages (100% of limit)")
+    } else {
+        print("✅ Context limit updated: \(oldLimit) → \(newLimit) messages")
+        let percentage = (Double(currentCount) / Double(newLimit)) * 100.0
+        print("   Current: \(currentCount) messages (\(Int(percentage))% of limit)")
+    }
+}
+```
+
+#### 6.4.3 Context Visualization
+
+**Show context distribution**:
+```
+You: /stats
+
+Context Distribution:
+  [System========] 1 msg   (2%)
+  [User=============================] 23 msgs (49%)
+  [Assistant============================] 23 msgs (49%)
+
+Recent Activity (last 10 messages):
+  1. User: "search for bogart"
+  2. AI: "Here's information about Humphrey Bogart..."
+  3. User: "write fizzbuzz in python"
+  4. AI: [used tool: write_file] "Created fizzbuzz.py"
+  5. User: "run it"
+  6. AI: [used tool: run_shell] "Output: 1, 2, Fizz, ..."
+  7. User: "list pizza types"
+  8. AI: "Here are 10 types of pizza..."
+  9. User: "get me a fortune"
+  10. AI: [used tool: web_search] "Fortune: Success is..."
+```
+
+#### 6.4.4 Query and Response Extraction
+
+Session files (JSONL format from § 6.5) enable easy extraction of queries and responses:
+
+**Extract all user queries**:
+```bash
+jq -r 'select(.type=="user") | .content' session-20260118-143022.jsonl
+```
+
+**Extract assistant responses**:
+```bash
+jq -r 'select(.type=="assistant") | .content' session-20260118-143022.jsonl
+```
+
+**Extract query-response pairs**:
+```bash
+jq -s 'map(select(.type=="user" or .type=="assistant")) |
+       group_by(if .type=="user" then "Q" else "A" end) |
+       transpose |
+       map({query: .[0].content, response: .[1].content})' \
+   session-20260118-143022.jsonl
+```
+
+**Extract tool usage**:
+```bash
+jq -r 'select(.type=="tool_call") | "\(.timestamp): \(.name) - \(.arguments)"' \
+   session-20260118-143022.jsonl
+```
+
+#### 6.4.5 Configuration
+
+Add to configuration schema (§ 2.3):
+```json
+{
+  "context": {
+    "max_messages": 50,
+    "max_tokens": 32000,
+    "compaction_threshold": 0.95,
+    "repo_map_tokens": 1024,
+    "max_tool_output_chars": 10000,
+    "enable_token_counting": false,
+    "show_stats_on_prune": true
+  }
+}
+```
+
+**New Configuration Options**:
+- `enable_token_counting`: Use actual tokenizer for accurate counts (requires dependency)
+- `show_stats_on_prune`: Automatically show stats when context is pruned
+
+#### 6.4.6 Testing Requirements
+
+**Unit Tests**:
+- `/stats` command output format
+- Token estimation accuracy (within 20% of actual)
+- Message counting by role
+- Context limit adjustment (increase/decrease)
+- Pruning behavior when limit reduced
+- System prompt preservation during pruning
+
+**Integration Tests**:
+- `/stats` during active conversation
+- `/context` followed by `/stats` verification
+- Session file size correlates with message count
 
 ---
 
