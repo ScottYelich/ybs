@@ -483,6 +483,7 @@ External tools can be added without restart:
 
 1. **Config-based**: Add to `tools.external` array in config
 2. **Directory-based** (IMPLEMENTED): Drop executable in configured tool paths, auto-discovered at startup
+3. **Dynamic rescanning** (IMPLEMENTED): Use `/reload-tools` command during chat to rescan tool directories
 
 **Tool Search Paths** (checked in order):
 - `~/.config/ybs/tools`
@@ -532,6 +533,32 @@ $ echo '{"query": "Swift async"}' | ~/.config/ybs/tools/web_search
     ]
   }
 }
+```
+
+**Dynamic Rescanning**: Add tools without restarting the application:
+
+```bash
+# In one terminal: add a new tool
+$ cat > ~/.config/ybs/tools/my_tool <<'EOF'
+#!/bin/bash
+if [ "$1" = "--schema" ]; then
+  echo '{"name":"my_tool","description":"My custom tool","parameters":{}}'
+  exit 0
+fi
+echo '{"success":true,"result":"Tool executed"}'
+EOF
+$ chmod +x ~/.config/ybs/tools/my_tool
+
+# In test7 chat session:
+You: /reload-tools
+🔄 Rescanning for external tools...
+✅ Tool reload complete!
+   Built-in tools: 6
+   External tools: 1
+   Total: 7 tools available
+
+External tools loaded:
+  • my_tool: My custom tool
 ```
 
 ### 5.3 Tool Schema for LLM
