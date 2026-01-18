@@ -325,6 +325,27 @@ Use `SESSION.md.template` from repository root as starting point.
 7. **Update status**: Keep BUILD_STATUS.md current
 8. **Clean up**: Remove scratch/ and SESSION.md when done
 
+## 🚨 CRITICAL: Feature Addition Protocol
+
+**When ANY new feature is requested - MUST follow this process:**
+
+1. **SCAN existing specs/steps** for duplicates
+   - If duplicate found: DENY or ASK for clarification
+   - If similar found: ASK how it differs
+2. **UPDATE SPECS FIRST** (never implement without spec)
+   - Add to system specs with requirements + test requirements
+3. **UPDATE/CREATE STEP** (add implementation instructions)
+4. **IMPLEMENT** with mandatory test coverage:
+   - ✅ Tests written BEFORE/DURING implementation
+   - ✅ Minimum 60% line coverage (REQUIRED)
+   - ✅ Target 80% line coverage (RECOMMENDED)
+   - ✅ 100% coverage for critical paths
+5. **VERIFY** all tests pass + coverage met
+
+**NO EXCEPTIONS** - See: [framework/methodology/feature-addition-protocol.md](framework/methodology/feature-addition-protocol.md)
+
+**Remember**: Specs first, implementation second. No step complete without tests.
+
 ---
 
 ## Tools

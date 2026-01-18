@@ -358,33 +358,58 @@ These tools are compiled into the binary. They require tight integration with th
       "description": "Shell command to execute",
       "required": true
     },
-    "working_directory": {
+    "working_dir": {
       "type": "string",
-      "description": "Directory to run command in",
+      "description": "Directory to run command in (CRITICAL: must be set for shell injection commands)",
       "required": false,
-      "default": "."
+      "default": null
     },
-    "timeout_seconds": {
+    "timeout": {
       "type": "integer",
-      "description": "Max execution time",
+      "description": "Max execution time in seconds",
       "required": false,
-      "default": 30
+      "default": 60
     }
   },
   "returns": {
     "exit_code": "integer",
     "stdout": "string",
-    "stderr": "string",
-    "timed_out": "boolean"
+    "stderr": "string"
   }
 }
 ```
 
+**Implementation Requirements**:
+- **CRITICAL**: When invoked from shell injection (`!command`), MUST pass the current working directory explicitly
+  - Shell injection handler MUST call: `FileManager.default.currentDirectoryPath`
+  - Pass as `working_dir` parameter to ensure commands run in user's expected directory
+  - Without this, commands run in the application's launch directory (incorrect behavior)
+
 **Security**:
 - ALWAYS requires confirmation (unless in allowed list)
-- Sandboxed execution environment
+- Sandboxed execution environment (if enabled)
 - Timeout enforced
-- Blocked commands rejected
+- Blocked commands rejected (if validation implemented)
+
+**Test Requirement**:
+```swift
+// Test: Shell commands run in correct working directory
+func testShellCommandWorkingDirectory() async throws {
+    // Given: A known directory with a test file
+    let testDir = "/tmp/test_shell_wd"
+    try FileManager.default.createDirectory(atPath: testDir, withIntermediateDirectories: true)
+    try "test content".write(toFile: "\(testDir)/test.txt", atomically: true, encoding: .utf8)
+
+    // When: Running shell command with working_dir
+    let result = try await runShellTool.execute(arguments: """
+        {"command": "ls test.txt", "working_dir": "\(testDir)"}
+        """)
+
+    // Then: Command should find the file
+    XCTAssertTrue(result.success)
+    XCTAssertTrue(result.output?.contains("test.txt") ?? false)
+}
+```
 
 ---
 
