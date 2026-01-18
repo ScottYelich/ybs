@@ -642,6 +642,160 @@ func chatStream(
 ) -> AsyncThrowingStream<ChatChunk, Error>
 ```
 
+### 7.4 Anthropic Provider Implementation
+
+Anthropic's API differs significantly from OpenAI's format and requires a separate client implementation.
+
+**Key Differences**:
+
+| Aspect | OpenAI | Anthropic |
+|--------|--------|-----------|
+| Auth Header | `Authorization: Bearer <key>` | `x-api-key: <key>`, `anthropic-version: 2023-06-01` |
+| System Message | In messages array | Separate `system` field |
+| Request Format | `ChatCompletionRequest` | `MessagesRequest` |
+| Response Format | `choices[0].message` | `content[0]` |
+| Tool Format | OpenAI function calling | Anthropic tool use |
+| Streaming | SSE with `data:` prefix | SSE with specific event types |
+
+**Anthropic Request Structure**:
+
+```swift
+struct AnthropicRequest: Codable {
+    var model: String
+    var messages: [AnthropicMessage]
+    var system: String?
+    var max_tokens: Int
+    var temperature: Double?
+    var tools: [AnthropicTool]?
+    var stream: Bool?
+}
+
+struct AnthropicMessage: Codable {
+    var role: String  // "user" or "assistant"
+    var content: String
+}
+
+struct AnthropicTool: Codable {
+    var name: String
+    var description: String
+    var input_schema: [String: Any]  // JSON Schema
+}
+```
+
+**Anthropic Response Structure**:
+
+```swift
+struct AnthropicResponse: Codable {
+    var id: String
+    var type: String  // "message"
+    var role: String  // "assistant"
+    var content: [ContentBlock]
+    var model: String
+    var stop_reason: String?
+    var usage: Usage
+}
+
+struct ContentBlock: Codable {
+    var type: String  // "text" or "tool_use"
+    var text: String?
+    var id: String?
+    var name: String?
+    var input: [String: Any]?
+}
+```
+
+**Authentication**:
+
+```swift
+var headers: [String: String] = [
+    "Content-Type": "application/json",
+    "x-api-key": apiKey,
+    "anthropic-version": "2023-06-01"
+]
+```
+
+**Implementation Requirements**:
+1. Separate `AnthropicLLMClient` class
+2. Transform messages to/from Anthropic format
+3. Extract system message from conversation history
+4. Convert OpenAI tool definitions to Anthropic format
+5. Parse tool_use blocks from content array
+6. Handle streaming with Anthropic's event format
+
+### 7.5 Runtime Provider Switching
+
+Users should be able to switch LLM providers during an active chat session without restarting the application.
+
+**Chat Command**:
+
+```
+You: /provider <name> [model]
+
+Examples:
+  /provider ollama qwen2.5:14b
+  /provider openai gpt-4
+  /provider anthropic claude-3-5-sonnet-20241022
+  /provider apple foundation
+```
+
+**Implementation**:
+
+```swift
+// Detect command in user input
+func handleChatCommand(_ input: String) -> Bool {
+    if input.hasPrefix("/provider ") {
+        let parts = input.split(separator: " ")
+        guard parts.count >= 2 else {
+            print("Usage: /provider <name> [model]")
+            return true
+        }
+
+        let providerName = String(parts[1])
+        let modelName = parts.count > 2 ? String(parts[2]) : nil
+
+        switchProvider(to: providerName, model: modelName)
+        return true
+    }
+    return false
+}
+
+// Switch provider dynamically
+func switchProvider(to providerName: String, model: String?) {
+    // Update config
+    config.llm.provider = providerName
+
+    // Set default model if not specified
+    if let model = model {
+        config.llm.model = model
+    } else {
+        config.llm.model = defaultModel(for: providerName)
+    }
+
+    // Update endpoint
+    config.llm.endpoint = defaultEndpoint(for: providerName)
+
+    // Recreate LLM client with new config
+    llmClient = createLLMClient(config: config.llm)
+
+    logger.info("Switched to \(providerName) with model \(config.llm.model)")
+}
+```
+
+**Other Chat Commands**:
+
+```
+/provider list              - Show available providers
+/provider current           - Show current provider and model
+/model <name>               - Change model (keep same provider)
+/config                     - Show current configuration
+/help                       - Show available commands
+```
+
+**Conversation Continuity**:
+- Conversation history is preserved when switching providers
+- Tool definitions remain available
+- Context limits may differ between providers (warn user if needed)
+
 ---
 
 ## 8. Security Implementation
