@@ -48,7 +48,7 @@ USAGE: ybs[options]
 OPTIONS:
   -c, --config <file>       Path to configuration file
   -m, --model <name>        Override model from config
-  -p, --provider <name>     Override provider (ollama, openai, anthropic)
+  -p, --provider <name>     Override provider (ollama, openai, anthropic, apple)
   --endpoint <url>          Override API endpoint
   --no-sandbox              Disable shell sandboxing (DANGEROUS)
   --dry-run                 Show tool calls without executing
@@ -628,6 +628,7 @@ struct ChatResponse {
 | Ollama | `http://localhost:11434/api/chat` | Local, free |
 | OpenAI | `https://api.openai.com/v1/chat/completions` | Requires API key |
 | Anthropic | `https://api.anthropic.com/v1/messages` | Requires API key |
+| Apple Foundation | Native Apple ML framework | Local, macOS 15+, no API key |
 | OpenAI-compatible | Any URL | LocalAI, LM Studio, etc. |
 
 ### 7.3 Streaming
