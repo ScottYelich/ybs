@@ -1,4 +1,4 @@
-# Step 000002: Set Up Project Environment
+# Step 000003: Set Up Project Environment
 
 **Version**: 0.2.0
 
