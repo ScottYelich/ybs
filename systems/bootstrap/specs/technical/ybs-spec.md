@@ -51,6 +51,7 @@ OPTIONS:
   -p, --provider <name>     Override provider (ollama, openai, anthropic, apple)
   --endpoint <url>          Override API endpoint
   --no-sandbox              Disable shell sandboxing (DANGEROUS)
+  --no-readline             Disable readline (use plain input)
   --dry-run                 Show tool calls without executing
   --quiet                   Disable console logging (clean chat interface)
   --verbose                 Enable verbose console logging (show debug messages)
@@ -129,7 +130,10 @@ OPTIONS:
     "color": true,
     "show_token_usage": true,
     "show_tool_calls": true,
-    "stream_responses": true
+    "stream_responses": true,
+    "enable_readline": true,
+    "history_file": "~/.config/ybs/history",
+    "history_max_entries": 1000
   },
 
   "logging": {
@@ -172,6 +176,163 @@ Example: `ybs-a1b2c3d4e5f6-2026-01-18T08-13-01Z.log`
 - Console logs: Colored (if `ui.color` enabled), useful for interactive use
 - File logs: Plain text, suitable for archival and debugging
 - Can set different levels (e.g., DEBUG to file, INFO to console)
+
+### 2.4 Interactive Input (Readline)
+
+**Purpose**: Enhanced terminal input with line editing and command history for improved user experience.
+
+**Overview**: By default, `ybs` uses readline-style input to provide a rich interactive experience. This can be disabled via configuration or CLI flag for compatibility or automation scenarios.
+
+#### 2.4.1 Features
+
+**Line Editing**:
+- **Arrow keys**: Left/right to move cursor, Up/down for history
+- **Home/End**: Jump to start/end of line (Ctrl+A / Ctrl+E on macOS)
+- **Delete**: Backspace and Delete keys
+- **Kill/Yank**: Ctrl+K (kill to end), Ctrl+U (kill to start), Ctrl+W (kill word)
+- **Clear**: Ctrl+L to clear screen
+
+**Command History**:
+- **Navigation**: Up/down arrows to recall previous commands
+- **Search**: Ctrl+R for reverse incremental search
+- **Persistence**: History saved across sessions to configured file
+- **Limits**: Configurable maximum entries (default: 1000)
+
+**Tab Completion** (Future Enhancement):
+- Meta-command completion (`/help`, `/tools`, `/stats`, etc.)
+- File path completion for tool arguments
+- Not required for initial implementation
+
+#### 2.4.2 Configuration
+
+Readline is controlled by the `ui` section of config:
+
+```json
+"ui": {
+  "enable_readline": true,                       // Enable/disable readline
+  "history_file": "~/.config/ybs/history",      // History file location
+  "history_max_entries": 1000                    // Max history entries
+}
+```
+
+**Configuration Options**:
+- `enable_readline` (bool, default: `true`): Enable readline functionality
+- `history_file` (string, default: `~/.config/ybs/history`): Path to history file
+- `history_max_entries` (int, default: `1000`): Maximum number of history entries to persist
+
+**CLI Override**:
+- `--no-readline`: Disable readline, use plain `readLine()` (overrides config)
+
+#### 2.4.3 Dependencies
+
+**Swift Package**: Use a readline library compatible with Swift Package Manager:
+- **Recommended**: `LineNoise` (https://github.com/andybest/linenoise-swift)
+  - Pure Swift implementation
+  - Cross-platform (macOS, Linux)
+  - Lightweight (~1000 lines)
+  - MIT licensed
+- **Alternative**: `Readline` (system readline bindings)
+  - Requires system readline library
+  - More features but platform-specific
+
+**Package.swift Addition**:
+```swift
+.package(url: "https://github.com/andybest/linenoise-swift", from: "0.0.3")
+```
+
+#### 2.4.4 Fallback Behavior
+
+When readline is disabled (`enable_readline: false` or `--no-readline`):
+- Use standard Swift `readLine()` function
+- No line editing or history
+- Suitable for:
+  - Automated scripts (piping input)
+  - CI/CD environments
+  - Debugging
+  - Compatibility mode
+
+**Detection**: Automatically disable readline when:
+- Input is not a TTY (e.g., piped input: `echo "help" | ybs`)
+- `--no-readline` flag is present
+- `enable_readline: false` in config
+
+#### 2.4.5 History File
+
+**Location**: Configurable via `ui.history_file`, defaults to `~/.config/ybs/history`
+
+**Format**: Plain text, one command per line:
+```
+help
+/stats
+write a function to calculate fibonacci
+/context 100
+```
+
+**Behavior**:
+- **Load**: Read history on startup (up to `history_max_entries` most recent)
+- **Save**: Append new commands on each input
+- **Trim**: When exceeding max entries, keep most recent N entries
+- **Ignore**: Don't save empty lines, duplicate consecutive commands, or commands starting with space
+
+**Privacy**: History file may contain sensitive information. Users should:
+- Keep history file permissions restrictive (600)
+- Consider adding sensitive patterns to ignore list (future enhancement)
+- Be aware history persists across sessions
+
+#### 2.4.6 Implementation Notes
+
+**Architecture**:
+- Create `InputHandler` abstraction with two implementations:
+  - `ReadlineInputHandler`: Uses LineNoise for rich input
+  - `PlainInputHandler`: Uses Swift `readLine()` as fallback
+- AgentLoop selects implementation based on config/CLI flags
+
+**Initialization**:
+```swift
+let inputHandler: InputHandler
+if config.ui.enableReadline && isatty(STDIN_FILENO) != 0 {
+    inputHandler = ReadlineInputHandler(
+        historyFile: config.ui.historyFile,
+        maxEntries: config.ui.historyMaxEntries
+    )
+} else {
+    inputHandler = PlainInputHandler()
+}
+```
+
+**Usage in AgentLoop**:
+```swift
+while true {
+    guard let input = inputHandler.readLine(prompt: "> ") else { break }
+    // Process input...
+}
+```
+
+**Testing**: Both readline and non-readline modes must be tested to ensure compatibility.
+
+#### 2.4.7 Test Requirements
+
+**Unit Tests**:
+- History file loading/saving
+- History trimming when exceeding max entries
+- TTY detection logic
+- Config override with --no-readline
+
+**Integration Tests**:
+- Interactive session with readline enabled
+- Piped input with readline auto-disabled
+- History persistence across sessions
+- Empty/malformed history file handling
+
+**Manual Tests** (not automated):
+- Arrow key navigation works
+- Ctrl+R search works
+- History persists after quit
+- Tab completion (future)
+
+#### 2.4.8 Reference Implementation
+
+See Step 44 (Readline Implementation) for detailed implementation instructions.
 
 ---
 
