@@ -9,7 +9,7 @@
 ## 1. Overview
 
 ### 1.1 Purpose
-A command-line tool that provides an interactive chat interface for AI-assisted coding. The tool maintains conversation context, executes tools on behalf of the LLM, and supports both local and remote LLM backends.
+A command-line tool that provides an extensible LLM chat interface. The tool maintains conversation context, executes tools on behalf of the LLM, and supports both local and remote LLM backends.
 
 ### 1.2 Design Principles
 - **Local-first**: All tool execution happens locally; LLM can be local or remote
@@ -1421,7 +1421,7 @@ class SessionManager {
 ```
 # Starting a new session
 $ ybs
-Welcome to YBS - AI Coding Assistant
+Welcome to YBS - Extensible LLM Chat
 Session: session-20260118-143022.jsonl
 
 You: Read the README file
@@ -1435,7 +1435,7 @@ You: /quit
 
 # Later, resuming the session
 $ ybs
-Welcome to YBS - AI Coding Assistant
+Welcome to YBS - Extensible LLM Chat
 Session: session-20260118-150200.jsonl
 
 You: /sessions
