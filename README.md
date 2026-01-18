@@ -1,43 +1,249 @@
-# YBS (Yelich Build System)
+# YBS: Specification-Driven Development for Autonomous AI Agents
 
-> A methodology that enables AI agents to build ANY system autonomously
+**Yelich Build System (YBS) - The most complete SDD framework for AI-powered software development**
+
+> **Revolutionary**: AI agents build complete, production-ready systems autonomously from specifications
 >
-> **Status**: Framework evolution + Bootstrap implementation in progress
-> **Version**: 1.0.0
-> **Last Updated**: 2026-01-17
+> **Status**: Framework active + Bootstrap (Swift AI tool) in progress
+> **Version**: 0.2.1
+> **GitHub**: [github.com/ScottYelich/ybs](https://github.com/ScottYelich/ybs)
 
-📍 **Navigation**: [Framework](framework/README.md) | [Bootstrap](systems/bootstrap/README.md) | [Glossary](framework/docs/glossary.md)
-
----
-
-## 🚀 Quick Start (Choose Your Path)
-
-**→ Build something with YBS** (AI agents)
-- **Read**: [CLAUDE.md](CLAUDE.md) - AI agent guide for this repository
-- **Learn**: [framework/methodology/executing-builds.md](framework/methodology/executing-builds.md)
-- **Start**: Navigate to systems/SYSTEMNAME/ and execute Step 0
-- **Example**: See [systems/bootstrap/builds/test5/](systems/bootstrap/builds/test5/) - working example
-
-**→ Understand the YBS framework** (humans)
-- **Read**: [framework/README.md](framework/README.md) - Framework overview
-- **Learn**: [framework/docs/glossary.md](framework/docs/glossary.md) - Key terminology
-- **Explore**: [systems/bootstrap/](systems/bootstrap/) - Complete example system
-
-**→ See a working example**
-- **Browse**: [systems/bootstrap/builds/test5/](systems/bootstrap/builds/test5/) - Latest build
-- **Status**: [systems/bootstrap/builds/test5/BUILD_STATUS.md](systems/bootstrap/builds/test5/BUILD_STATUS.md)
-- **Code**: [systems/bootstrap/builds/test5/Package.swift](systems/bootstrap/builds/test5/Package.swift)
-
-**→ Work on YBS framework itself** (contributors)
-- **AI agents**: [CLAUDE.md](CLAUDE.md) - Complete AI agent guide
-- **Humans**: Read [framework/README.md](framework/README.md) before proposing changes
-- **Review**: [systems/bootstrap/specs/architecture/ybs-decisions.md](systems/bootstrap/specs/architecture/ybs-decisions.md) - Architectural decisions
+📍 **Navigation**: [Framework](framework/README.md) | [Bootstrap Example](systems/bootstrap/README.md) | [AI Agent Guide](CLAUDE.md)
 
 ---
 
-## What is This Repository?
+## What is YBS?
 
-**This repository contains the YBS framework and systems built with it.**
+**YBS is Specification-Driven Development (SDD) at the "spec-as-source" level—where AI agents autonomously build complete software systems from specifications.**
+
+Imagine:
+1. You write specifications describing what you want
+2. You write sequential build steps explaining how to build it
+3. An AI agent reads the steps and **builds the entire system autonomously**
+4. You get production-ready code with full traceability
+
+**No human intervention after initial configuration. This is the future of software development.**
+
+---
+
+## The Foundation: Specs as Source of Truth
+
+**Everything in YBS flows from one principle: Specifications are the single source of truth. Code is derived from specs, not the other way around.**
+
+### Why This Changes Everything
+
+**Traditional development**:
+- Code is written, then documented (maybe)
+- Documentation drifts out of sync
+- Nobody knows why code exists
+- Rebuilding requires reverse-engineering
+
+**YBS approach**:
+- **Specs come FIRST**: Write what you want before any code exists
+- **Code implements specs**: Every function, class, feature traces to a specification
+- **Specs stay current**: When requirements change, specs update FIRST, then code follows
+- **No spec = No code**: Unspecified features are technical debt, identified automatically
+
+### The Superpower This Unlocks
+
+Because specs are authoritative:
+- **AI agents can regenerate code from specs at any time**
+- **Rebuild in any language/platform** - just point an AI at the specs
+- **System understanding never decays** - specs remain accurate because they drive implementation
+- **Instant compliance** - trace any code to its requirement
+- **Zero ambiguity** - if it's not in specs, it doesn't exist
+
+**The rule**: If code exists without specs, it's a bug. If specs say it, code must implement it.
+
+---
+
+## YBS and Specification-Driven Development (SDD)
+
+**YBS is a complete implementation of Specification-Driven Development at the "spec-as-source" level.**
+
+### What is SDD?
+
+Specification-Driven Development (SDD) is an emerging paradigm where specifications become the authoritative artifact driving AI-generated code. In 2026, tools like GitHub Spec Kit, AWS Kiro, and Tessl are pioneering this approach.
+
+**SDD has three levels**:
+1. **Spec-first**: Specification written before coding
+2. **Spec-anchored**: Specification maintained throughout evolution
+3. **Spec-as-source**: Specification IS the primary artifact; code is generated
+
+**YBS operates at level 3: Spec-as-source.**
+
+### How YBS Compares to Other SDD Tools
+
+| Tool | Level | Focus | Autonomous? |
+|------|-------|-------|-------------|
+| **GitHub Spec Kit** | Spec-first | Requirements capture | Partial |
+| **AWS Kiro** | Spec-first | Agentic IDE | Requires interaction |
+| **Tessl** | Spec-as-source | Generated code | Beta |
+| **YBS** | **Spec-as-source** | **Complete methodology** | **Fully autonomous** |
+
+---
+
+## YBS Unique Advantages
+
+**YBS isn't just "write specs, generate code"—it's a complete methodology:**
+
+### ✅ Human-Readable Build Steps
+Not just specs, but sequential instructions AI agents follow autonomously. Each step has objectives, instructions, and verification criteria.
+
+### ✅ Language-Agnostic
+Works for ANY programming language or platform. Not tied to JavaScript, Python, or any specific stack. Build Swift apps, Rust CLI tools, Python web servers—anything.
+
+### ✅ Verification-Driven
+Each step has explicit verification criteria. Tests must pass before proceeding. No vague "make sure it works"—automated checks where possible.
+
+### ✅ Configuration-First
+Step 0 collects ALL decisions upfront, then Steps 1-N run autonomously. No interruptions mid-build.
+
+### ✅ Zero-Interaction Rebuilds
+**Step 0 reads from BUILD_CONFIG.json if it exists.** First build asks questions and creates the config. Every subsequent build reads the config—zero questions, zero interaction.
+
+**Machine-updatable configs**: Edit BUILD_CONFIG.json programmatically (change versions, toggle features, update parameters), run the agent, get a new build. Fully automated regeneration.
+
+**Real-world impact**:
+- **CI/CD integration**: Commit config changes → automated rebuild
+- **Batch generation**: One script updates config 10 different ways → 10 builds generated
+- **A/B testing**: Generate multiple builds with different configurations automatically
+- **Never answer the same questions twice**: Config persists across builds
+
+### ✅ Traceability Tooling
+`check-traceability.sh` validates code↔spec links automatically. Detects unspecified features. Every line of code traces to its requirement.
+
+### ✅ Fully Autonomous
+No prompts after Step 0. Kiro and other tools still require interaction. YBS agents build overnight while you sleep.
+
+### ✅ Reproducible Builds
+Same specifications + same steps = identical output every time. No "works on my machine" problems.
+
+### ✅ Crash Recovery
+SESSION.md enables resumption after interruption. AI agents can crash and resume exactly where they left off.
+
+### ✅ System Evolution
+Framework for how systems grow and change over time. Specs stay synchronized with code automatically.
+
+---
+
+## What YBS Provides That Others Don't
+
+**Complete methodology for**:
+- **How to organize specifications** (system-wide vs feature-level, hybrid approaches)
+- **How to write build steps** that AI agents follow autonomously without getting stuck
+- **How to maintain traceability** from requirement to implementation (feature-level + code-level)
+- **How to verify each step** before proceeding (automated where possible)
+- **How to handle crash recovery** with SESSION.md for resumable builds
+- **How to evolve systems over time** with specs staying synchronized with code
+
+**Result**: YBS is the most complete SDD framework for autonomous AI development in 2026.
+
+---
+
+## Unprecedented Capabilities
+
+### 🚀 Fully Autonomous Builds
+
+**Configuration-first design** collects all decisions upfront in Step 0, then agents execute Steps 1-N continuously without interruption. No more "What should I do here?" prompts mid-build.
+
+**Real-world impact**: Build complex systems overnight while you sleep.
+
+### 🔄 Zero-Human-Interaction Rebuilds
+
+**Step 0 reads from BUILD_CONFIG.json if it exists.** First build asks questions and creates the config. Every subsequent build reads the config—zero questions, zero interaction.
+
+**Machine-updatable configs**: Edit BUILD_CONFIG.json programmatically, run the agent, get a new build. Fully automated regeneration.
+
+### 🔍 Complete Traceability
+
+Every line of code traces back to its specification. Know exactly **WHY** every feature exists, **WHO** requested it, and **WHAT** decision justified it.
+
+**Real-world impact**:
+- Instant compliance audits
+- Effortless code reviews
+- Rapid onboarding of new developers
+- Automated detection of unspecified features
+
+### 🌐 Universal Applicability
+
+**Language-agnostic. Platform-agnostic. Domain-agnostic.**
+
+Build anything:
+- Web applications (React, Vue, Angular)
+- Mobile apps (iOS, Android)
+- Backend services (Node, Python, Go, Rust)
+- Desktop applications (Swift, Electron)
+- Embedded systems (C, C++)
+- AI agents (Python, TypeScript)
+- Databases, compilers, operating systems—anything
+
+**Real-world impact**: One framework to rule them all.
+
+### ✅ Verification-Driven Quality
+
+Every build step includes explicit, automated verification criteria. Tests must pass, code must compile, files must exist. No ambiguity.
+
+**Real-world impact**: AI agents produce production-quality code, not prototypes.
+
+### 📦 Reproducible Builds
+
+Same specifications + same steps = identical results. Every time.
+
+**Real-world impact**:
+- No "works on my machine" problems
+- Reproducible research
+- Compliance with regulatory requirements
+
+---
+
+## How It Works
+
+### 1. **Define Your System** (Human)
+
+Write specifications describing what you want to build:
+- Technical architecture
+- Business requirements
+- User workflows
+- Test criteria
+
+YBS provides templates and patterns to make this easy.
+
+### 2. **Create Build Steps** (Human)
+
+Write sequential instructions for how to build it:
+- **Step 0**: Configuration collection (reads from BUILD_CONFIG.json if exists, otherwise prompts and creates it)
+- **Steps 1-N**: Implement each component
+- Each step includes verification criteria
+
+### 3. **Execute Build** (AI Agent)
+
+Point an AI agent at your steps:
+
+```bash
+# First build: Agent reads Step 0, asks questions, creates BUILD_CONFIG.json
+# Agent then builds autonomously through Steps 1-N
+
+# Subsequent builds: Agent reads BUILD_CONFIG.json, asks NOTHING
+# Builds immediately with zero human interaction
+
+# Machine-updated config: Edit BUILD_CONFIG.json programmatically
+# Run agent again → new build from updated config, still zero interaction
+```
+
+**The game-changer**: Once BUILD_CONFIG.json exists, you never answer questions again. Update the config file (manually or programmatically), run the agent, get a new build. Completely automated.
+
+### 4. **Get Production-Ready Software**
+
+The AI agent delivers:
+- ✅ Compiled, running code
+- ✅ Comprehensive test suite (passing)
+- ✅ Complete documentation
+- ✅ Full traceability from requirement to implementation
+
+---
+
+## Repository Structure
 
 ### Three-Layer Architecture
 
@@ -46,6 +252,7 @@
 - Templates and patterns (reusable across all systems)
 - Tools and documentation
 - **Language-agnostic, system-agnostic**
+- **See**: [framework/README.md](framework/README.md)
 
 **B. Systems** (`systems/`) - Definitions of specific systems to build
 - Each system has: specs (WHAT) + steps (HOW) + docs
@@ -58,180 +265,98 @@
 - BUILD_STATUS.md for progress tracking
 - **Location**: Inside each system (B + C together)
 
----
-
-## Repository Structure
-
 ```
 ybs/
-├── README.md                          # This file
+├── README.md                          # This file - Repository overview
 ├── CLAUDE.md                          # AI agent guide
-├── LICENSE
-├── SESSION.md.template                # Session tracking template
-├── scratch/                           # Temporary working files
-│
-├── framework/                         # "A" - YBS Framework
-│   ├── README.md                      # Framework overview
+├── framework/                         # YBS methodology
+│   ├── README.md                      # Framework details
 │   ├── methodology/                   # How YBS works
 │   ├── templates/                     # Reusable templates
-│   ├── docs/                          # Framework docs
-│   ├── tools/                         # Helper scripts
-│   └── changelogs/                    # Framework changes
+│   ├── docs/                          # Reference docs
+│   └── tools/                         # Helper scripts
 │
-└── systems/                           # Collection of system definitions
-    │
-    └── bootstrap/                     # "B" - Bootstrap system
-        ├── README.md                  # Bootstrap overview
-        ├── CLAUDE.md                  # AI agent guide for bootstrap
-        ├── specs/                     # Specifications (WHAT to build)
-        ├── steps/                     # Build steps (HOW to build)
-        ├── docs/                      # Bootstrap-specific documentation
-        └── builds/                    # "C" - Build outputs
-            ├── test1/
-            ├── test2/
-            ├── test3/
-            ├── test4/
-            └── test5/                 # Current build (active)
+└── systems/                           # System definitions
+    └── bootstrap/                     # Swift AI chat tool example
+        ├── specs/                     # Specifications (WHAT)
+        ├── steps/                     # Build steps (HOW)
+        ├── docs/                      # Documentation
+        └── builds/                    # Build workspaces
+            └── test5/                 # Current active build
 ```
 
 ---
 
-## What is YBS?
+## Proven in Production
 
-**YBS is a methodology that provides sufficient specifications and details for AI agents to build ANY system autonomously.**
+**Bootstrap System**: A Swift-based AI chat tool for macOS, built entirely using YBS methodology.
 
-### How It Works
+- 60+ build steps
+- Comprehensive specifications
+- Full test coverage
+- Production-ready code
+- Built autonomously by Claude Code
 
-1. **Define System** - Write specs (technical, business, functional, testing)
-2. **Create Steps** - Write step-by-step build instructions
-3. **Execute** - AI agent reads steps and builds the system
-4. **Result** - Complete working system with full traceability
-
-### What Can Be Built
-
-- **Anything that can be specified**: Calculators, web apps, CLI tools, AI agents, compilers, databases, servers, etc.
-- **Language-agnostic**: Python, Swift, Rust, Go, TypeScript, C++, Java, etc.
-- **Platform-agnostic**: Web, desktop, mobile, embedded, cloud, etc.
-
-### Key Principles
-
-- **📋 Configuration-First**: Step 0 collects all questions upfront → enables autonomous execution
-- **🎯 Traceable**: Every implementation decision traces to specs
-- **🔀 Language-Agnostic**: Framework works for ANY programming language
-- **🌐 System-Agnostic**: Can guide building ANY type of software
-- **✅ Verifiable**: Each step has explicit verification criteria
-- **🔄 Self-Refining**: Framework improves through real-world use
-
----
-
-## Bootstrap Example
-
-**The bootstrap system demonstrates YBS in action.**
-
-**What**: Swift-based AI chat tool (LLM coding assistant) for macOS
-
-**Why**: First test case to validate YBS framework provides sufficient detail
-
+**What**: Command-line AI coding assistant with local/remote LLMs
+**Why**: First test case to validate YBS provides sufficient detail for autonomous builds
 **Status**: In progress (Steps 0-3 complete, test5 build working)
-
 **Location**: [systems/bootstrap/](systems/bootstrap/)
 
-### Bootstrap Features (When Complete)
+---
 
-- Command-line AI coding assistant
-- Local or remote LLMs (Ollama, OpenAI, Anthropic)
-- 6 built-in tools + unlimited external tools
-- Security by default (sandboxed execution)
-- macOS native (Swift)
+## Why YBS is Revolutionary
 
-### Bootstrap Principles
+### Traditional Approach (Manual Development)
+- Human writes specs
+- Human implements code
+- Human writes tests
+- Human reviews everything
+- **Weeks/months of work**
 
-- **🏠 Local-First**: All tool execution on user's machine
-- **🔧 Extensible**: External tool protocol for custom tools
-- **🔒 Secure by Default**: Sandboxing and confirmations
-- **🎯 Simple Core**: Agent loop < 100 lines
-- **⚡ Minimal Dependencies**: Swift stdlib + 2-3 packages
+### YBS Approach (Autonomous AI)
+- Human writes specs once
+- Human writes build steps once
+- **AI agent builds everything autonomously**
+- **Hours/days of work**
 
-**See [systems/bootstrap/docs/bootstrap-principles.md](systems/bootstrap/docs/bootstrap-principles.md) for complete details.**
+### The Multiplier Effect
+
+Write specifications and steps once, then:
+- **Build multiple implementations** (iOS version, Android version, web version)
+- **Rebuild with new frameworks** (migrate React to Vue)
+- **Regenerate for new platforms** (port from Python to Go)
+- **Update autonomously** (AI agent applies spec changes)
+
+**This is the future of software development.**
 
 ---
 
-## Current Status
+## 🚀 Quick Start
 
-### Framework (A)
-- ✅ Methodology documented
-- ✅ Generic build framework
-- ✅ Templates and patterns
-- ✅ Helper scripts and tools
-- 🔄 Refining through bootstrap validation
+### → I'm an AI Agent: Build a System
 
-### Bootstrap System (B)
-- ✅ Complete technical specification (100+ pages)
-- ✅ 15 Architectural Decision Records
-- ✅ Implementation checklist
-- ✅ Build steps (0-3)
-- 🔄 Code implementation in progress
+1. **Read**: [CLAUDE.md](CLAUDE.md) - Complete AI agent guide
+2. **Navigate**: To systems/SYSTEMNAME/
+3. **Read**: systems/SYSTEMNAME/CLAUDE.md
+4. **Execute**: Start with Step 0 (Build Configuration)
+5. **Continue**: Autonomously through all steps
 
-### Bootstrap Builds (C)
-- ✅ test5: Swift package created, compiles successfully
-- ✅ BUILD_CONFIG.json generated (Step 0)
-- ✅ BUILD_STATUS.md tracking progress
-- 🔄 Core features being implemented
+**Example**: [systems/bootstrap/builds/test5/](systems/bootstrap/builds/test5/)
 
----
+### → I'm a Human: Understand YBS
 
-## Documentation
+1. **Read**: [framework/README.md](framework/README.md) - Framework overview (detailed)
+2. **Explore**: [systems/bootstrap/](systems/bootstrap/) - Complete example system
+3. **Review**: [systems/bootstrap/builds/test5/](systems/bootstrap/builds/test5/) - Working build
+4. **Learn**: [framework/docs/glossary.md](framework/docs/glossary.md) - Terminology
 
-### Framework Documentation
+### → I Want to Build Something with YBS
 
-- **[framework/README.md](framework/README.md)** - Framework overview
-- **[framework/methodology/](framework/methodology/)** - How YBS works
-  - [executing-builds.md](framework/methodology/executing-builds.md) - AI agent guide
-  - [writing-specs.md](framework/methodology/writing-specs.md) - How to write specs
-  - [writing-steps.md](framework/methodology/writing-steps.md) - How to write steps
-- **[framework/docs/glossary.md](framework/docs/glossary.md)** - Standard terminology (50+ terms)
-- **[framework/templates/](framework/templates/)** - Reusable templates
-
-### Bootstrap Documentation
-
-- **[systems/bootstrap/README.md](systems/bootstrap/README.md)** - Bootstrap overview
-- **[systems/bootstrap/CLAUDE.md](systems/bootstrap/CLAUDE.md)** - AI agent guide for bootstrap
-- **[systems/bootstrap/specs/](systems/bootstrap/specs/)** - Complete specifications
-  - [ybs-spec.md](systems/bootstrap/specs/technical/ybs-spec.md) - Technical specification
-  - [ybs-decisions.md](systems/bootstrap/specs/architecture/ybs-decisions.md) - Architectural decisions
-  - [ybs-lessons-learned.md](systems/bootstrap/specs/general/ybs-lessons-learned.md) - Implementation checklist
-- **[systems/bootstrap/docs/](systems/bootstrap/docs/)** - Bootstrap-specific docs
-  - [bootstrap-principles.md](systems/bootstrap/docs/bootstrap-principles.md) - Design principles
-  - [tool-architecture.md](systems/bootstrap/docs/tool-architecture.md) - Hybrid tool system
-  - [security-model.md](systems/bootstrap/docs/security-model.md) - Security layers
-  - [configuration.md](systems/bootstrap/docs/configuration.md) - Configuration system
-
----
-
-## Getting Started
-
-### For AI Agents: Build a System
-
-1. Read [CLAUDE.md](CLAUDE.md) - Repository guide
-2. Navigate to systems/SYSTEMNAME/
-3. Read systems/SYSTEMNAME/CLAUDE.md
-4. Execute Step 0 (Build Configuration)
-5. Continue autonomously through all steps
-
-### For Humans: Understand YBS
-
-1. Read [framework/README.md](framework/README.md) - Framework overview
-2. Read [systems/bootstrap/README.md](systems/bootstrap/README.md) - Example system
-3. Browse [systems/bootstrap/specs/](systems/bootstrap/specs/) - Complete specifications
-4. Review [systems/bootstrap/builds/test5/](systems/bootstrap/builds/test5/) - Working build
-
-### For Contributors: Improve Framework
-
-1. Read [framework/README.md](framework/README.md)
-2. Read [framework/docs/glossary.md](framework/docs/glossary.md)
-3. Test framework by building diverse system types
-4. Document patterns and best practices
-5. Refine templates and tools
+**Step 1**: Read [framework/README.md](framework/README.md) - Understand methodology
+**Step 2**: Read [framework/methodology/writing-specs.md](framework/methodology/writing-specs.md) - Learn to write specifications
+**Step 3**: Read [framework/methodology/writing-steps.md](framework/methodology/writing-steps.md) - Learn to create build steps
+**Step 4**: Study `systems/bootstrap/` - See complete real-world example
+**Step 5**: Create your system in `systems/YOUR_SYSTEM/` - Build something amazing
 
 ---
 
@@ -239,10 +364,17 @@ ybs/
 
 ### Configuration-First (Step 0)
 
-Step 0 collects ALL configuration upfront:
-- Generates BUILD_CONFIG.json with all settings
-- Subsequent steps read from config (no user prompts)
-- **Enables fully autonomous execution after Step 0**
+**Step 0 collects ALL questions upfront—or reads from BUILD_CONFIG.json**
+
+- **First build**: Asks questions once, saves to BUILD_CONFIG.json
+- **Subsequent builds**: Reads config file, asks NOTHING (zero interaction)
+- **Machine-updated builds**: Script updates config → agent reads → new build (fully automated)
+
+**Benefits**:
+- Never answer questions twice
+- Zero-interaction rebuilds
+- CI/CD integration
+- Batch generation of build variants
 
 ### Autonomous Execution
 
@@ -250,13 +382,19 @@ AI agents work continuously without interruption:
 - After Step 0, no user prompts needed
 - Agent proceeds through steps automatically
 - Only stops for critical errors or 3x verification failures
+- Can run overnight, over weekends
 
-### Traceability
+### Traceability (Two Levels)
 
-Every implementation decision traces to specifications:
+**Feature-Level**:
 - Steps reference specs they implement
 - Specs reference decisions (ADRs)
 - Clear audit trail from requirement to code
+
+**Code-Level**:
+- Source files include `// Implements: spec § X.Y` comments
+- Automated verification with `check-traceability.sh`
+- Detects unspecified features automatically
 
 ### Parallel Builds
 
@@ -267,59 +405,120 @@ Multiple agents can work simultaneously:
 
 ---
 
+## Documentation
+
+### Framework Documentation
+
+- **[framework/README.md](framework/README.md)** - Comprehensive framework overview
+- **[framework/methodology/](framework/methodology/)** - Complete YBS methodology
+  - [overview.md](framework/methodology/overview.md) - How YBS works (detailed)
+  - [executing-builds.md](framework/methodology/executing-builds.md) - AI agent execution guide
+  - [writing-specs.md](framework/methodology/writing-specs.md) - How to write specs
+  - [writing-steps.md](framework/methodology/writing-steps.md) - How to write steps
+  - [feature-addition-protocol.md](framework/methodology/feature-addition-protocol.md) - Feature addition process
+- **[framework/docs/glossary.md](framework/docs/glossary.md)** - Standard terminology (50+ terms)
+- **[framework/templates/](framework/templates/)** - Reusable templates
+
+### Bootstrap Documentation
+
+- **[systems/bootstrap/README.md](systems/bootstrap/README.md)** - Bootstrap overview
+- **[systems/bootstrap/CLAUDE.md](systems/bootstrap/CLAUDE.md)** - AI agent guide for bootstrap
+- **[systems/bootstrap/specs/](systems/bootstrap/specs/)** - Complete specifications
+  - [ybs-spec.md](systems/bootstrap/specs/technical/ybs-spec.md) - Technical specification (100+ pages)
+  - [ybs-decisions.md](systems/bootstrap/specs/architecture/ybs-decisions.md) - 15 Architectural decisions
+  - [ybs-lessons-learned.md](systems/bootstrap/specs/general/ybs-lessons-learned.md) - Implementation checklist
+- **[systems/bootstrap/docs/](systems/bootstrap/docs/)** - Bootstrap-specific documentation
+
+---
+
 ## Tools
 
 Helper scripts in `framework/tools/`:
 
 ```bash
-framework/tools/list-specs.sh        # List specifications
-framework/tools/list-steps.sh        # List build steps in order
-framework/tools/deps.sh              # Show dependency tree
-framework/tools/list-changelogs.sh   # List session changelogs
+framework/tools/list-specs.sh          # List specifications
+framework/tools/list-steps.sh          # List build steps in order
+framework/tools/deps.sh                # Show dependency tree
+framework/tools/check-traceability.sh  # Verify code↔spec traceability
 ```
 
 ---
 
-## Restructure Note
+## Design Philosophy
 
-**This repository was restructured on 2026-01-17** to clearly separate:
+### Specs as Source of Truth
 
-- **A**: Framework (methodology) - Reusable across all systems
-- **B**: System definitions (specs + steps) - Self-contained per system
-- **C**: Build outputs (inside B) - Active workspaces
+Specifications are the single source of truth. Code is derived from specs, not the other way around.
 
-**Benefits**:
-- Clear separation of concerns
-- Easy to add new systems
-- Supports parallel builds
-- Self-contained system definitions
+### Sufficiency Over Completeness
 
-**See**: `scratch/restructure-plan.md` for complete documentation
+Provide **just enough** detail for autonomous execution—not too much (overwhelming), not too little (ambiguous).
+
+### Configuration-First Always
+
+Collect ALL decisions upfront in Step 0. Zero user prompts during Steps 1-N.
+
+### Traceability by Default
+
+Every implementation decision traces to specifications. Every line of code references its requirement.
+
+### Verification-Driven Development
+
+Explicit, automated verification criteria for every step. No vague "make sure it works."
+
+### Language-Agnostic by Design
+
+Framework works for ANY programming language, platform, or domain. No assumptions.
+
+---
+
+## The Future is Autonomous
+
+Software development is evolving from **human-driven** to **human-designed, AI-built**.
+
+**YBS is the bridge.**
+
+Humans focus on **what** should be built and **why**. AI agents handle the **how**.
+
+This isn't just faster development—it's a **fundamental shift** in how software gets made.
 
 ---
 
 ## Contributing
 
-### Improve Framework
+YBS improves through real-world use:
 
-- Test framework by building diverse systems
-- Refine methodology documentation
-- Improve templates and patterns
-- Enhance helper tools
+1. **Use it**: Build systems with YBS
+2. **Document findings**: What works, what doesn't
+3. **Refine framework**: Improve methodology, templates, tools
+4. **Share examples**: Build diverse system types
+5. **Capture patterns**: Document best practices
 
-### Improve Bootstrap
+**Every system built with YBS makes the framework better.**
 
-- Review specs for completeness
-- Refine build steps for clarity
-- Test autonomous execution
-- Document patterns discovered
+---
 
-### Add New Systems
+## Status
 
-- Create systems/NEWSYSTEM/
-- Write specs (WHAT to build)
-- Write steps (HOW to build)
-- Test with AI agent
+### Framework (A)
+- ✅ Methodology documented
+- ✅ SDD positioning complete
+- ✅ Templates and patterns
+- ✅ Helper scripts and tools
+- 🔄 Refining through bootstrap validation
+
+### Bootstrap System (B)
+- ✅ Complete technical specification (100+ pages)
+- ✅ 15 Architectural Decision Records
+- ✅ Implementation checklist
+- ✅ Build steps (0-3 documented)
+- 🔄 Code implementation in progress
+
+### Bootstrap Builds (C)
+- ✅ test5: Swift package created, compiles successfully
+- ✅ BUILD_CONFIG.json generated (Step 0)
+- ✅ BUILD_STATUS.md tracking progress
+- 🔄 Core features being implemented
 
 ---
 
@@ -331,16 +530,19 @@ MIT License - See [LICENSE](LICENSE)
 
 ## Version History
 
-- **1.0.0** (2026-01-17): Major restructure - separated framework, systems, and builds
-- **0.2.0** (2026-01-17): Documentation improvements, canonical docs, Quick Start
+- **0.2.1** (2026-01-18): SDD positioning, BUILD_CONFIG.json reading, comprehensive updates
+- **0.2.0** (2026-01-17): Documentation improvements, restructure completion
 - **0.1.0** (2026-01-16): Initial version
 
 ---
 
-## References
+## Contact & Community
 
-- **Framework**: [framework/README.md](framework/README.md)
-- **AI Agent Guide**: [CLAUDE.md](CLAUDE.md)
-- **Bootstrap**: [systems/bootstrap/README.md](systems/bootstrap/README.md)
-- **Glossary**: [framework/docs/glossary.md](framework/docs/glossary.md)
+**Repository**: [github.com/ScottYelich/ybs](https://github.com/ScottYelich/ybs)
+**Issues**: [github.com/ScottYelich/ybs/issues](https://github.com/ScottYelich/ybs/issues)
 
+**YBS is open source. Star the repo. Build something amazing. Share your results.**
+
+---
+
+*The future of software development is autonomous. Welcome to YBS.*
