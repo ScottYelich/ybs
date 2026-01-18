@@ -58,7 +58,7 @@ Update your config (`~/.config/ybs/config.json` or project `.ybs.json`):
   "llm": {
     "provider": "ollama",
     "model": "qwen2.5:1.5b",
-    "endpoint": "http://localhost:11434/api/chat",
+    "endpoint": "http://localhost:11434/v1/chat/completions",
     "temperature": 0.7,
     "max_tokens": 2048
   }
@@ -115,7 +115,7 @@ OLLAMA_HOST=0.0.0.0:11434 ollama serve
   "llm": {
     "provider": "ollama",
     "model": "qwen2.5:32b",
-    "endpoint": "http://YOUR_SERVER_IP:11434/api/chat"
+    "endpoint": "http://localhost:11434/v1/chat/completions"
   }
 }
 ```
@@ -200,7 +200,7 @@ vm_stat | head -5
   "llm": {
     "provider": "ollama",
     "model": "qwen2.5:1.5b",
-    "endpoint": "http://localhost:11434/api/chat"
+    "endpoint": "http://localhost:11434/v1/chat/completions"
   }
 }
 ```
@@ -214,7 +214,7 @@ vm_stat | head -5
   "llm": {
     "provider": "ollama",
     "model": "qwen2.5:32b",
-    "endpoint": "http://192.168.x.x:11434/api/chat"
+    "endpoint": "http://localhost:11434/v1/chat/completions"
   }
 }
 ```

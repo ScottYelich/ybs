@@ -481,16 +481,55 @@ struct ToolRegistry {
 
 External tools can be added without restart:
 
-1. **Config-based**: Add to `tools.external` array in config, send SIGHUP to reload
-2. **Directory-based**: Drop executable in `~/.ybs/tools/`, auto-discovered if it has a `.tool.json` sidecar file
+1. **Config-based**: Add to `tools.external` array in config
+2. **Directory-based** (IMPLEMENTED): Drop executable in configured tool paths, auto-discovered at startup
 
-**Sidecar file example** (`web-search.tool.json`):
-```json
+**Tool Search Paths** (checked in order):
+- `~/.config/ybs/tools`
+- `~/.ybs/tools`
+- `./tools` (current directory)
+
+**Schema Discovery**: Tools must implement `--schema` flag to expose their interface:
+
+```bash
+$ ~/.config/ybs/tools/web_search --schema
 {
   "name": "web_search",
   "description": "Search the web using SearXNG",
   "parameters": {
-    "query": {"type": "string", "required": true}
+    "query": {
+      "type": "string",
+      "description": "Search query",
+      "required": true
+    },
+    "max_results": {
+      "type": "integer",
+      "description": "Maximum results to return",
+      "required": false
+    }
+  }
+}
+```
+
+**Tool Invocation**: Tools receive JSON via stdin, return JSON via stdout:
+
+```bash
+$ echo '{"query": "Swift async"}' | ~/.config/ybs/tools/web_search
+{
+  "success": true,
+  "result": "Found 10 results..."
+}
+```
+
+**Configuration** (in `.ybs.json`):
+```json
+{
+  "tools": {
+    "search_paths": [
+      "~/.config/ybs/tools",
+      "~/.ybs/tools",
+      "./tools"
+    ]
   }
 }
 ```
