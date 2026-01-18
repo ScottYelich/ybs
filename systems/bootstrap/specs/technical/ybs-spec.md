@@ -342,6 +342,54 @@ while true {
 
 See Step 44 (Readline Implementation) for detailed implementation instructions.
 
+#### 2.4.9 Known Limitations and Future Enhancements
+
+**LineNoise SSH Incompatibility**:
+
+The current implementation uses **LineNoise** (pure Swift readline replacement), which has a critical limitation:
+- **Does not work over SSH**: Cannot enter raw mode on SSH pseudo-TTYs
+- **Symptoms**: Character duplication, broken Ctrl+C, display corruption
+- **Root cause**: LineNoise lacks the robust terminal handling of system readline/libedit
+
+**Why Plain Input is the Default**:
+
+Readline is **disabled by default** (`enable_readline: false`) because:
+1. **Reliability**: Plain input works everywhere (SSH, local, piped)
+2. **Simplicity**: No terminal compatibility issues
+3. **Production ready**: Most AI coding tools use plain input successfully
+4. **User experience**: Type prompt, press Enter - predictable and reliable
+
+**Future Enhancement Options**:
+
+For users who require readline over SSH, future implementations could:
+
+1. **System libedit bindings** (Recommended):
+   - Wrap native libedit (ships with macOS)
+   - Same library used by Node.js readline, bash, zsh
+   - Full SSH compatibility
+   - Requires: C interop via Swift Package Manager
+   - Complexity: Moderate (platform-specific code for macOS vs Linux)
+
+2. **Alternative libraries**:
+   - Research: More mature Swift readline wrappers
+   - Trade-off: Increased dependencies vs reliability
+
+3. **Keep plain input** (Current recommendation):
+   - Plain input is sufficient for most use cases
+   - Users can pipe input, use heredocs, or type interactively
+   - Readline is "nice to have" not "must have"
+
+**Design Decision**:
+
+For YBS bootstrap, **plain input is the correct default**. Readline support remains as an opt-in feature for local terminal use where LineNoise works reliably. Future systems built with YBS can choose to implement system readline bindings if line editing is critical for their use case.
+
+**Investigation Summary** (2026-01-18):
+- Searched for Swift readline packages with SSH compatibility
+- Found: [swift-libedit](https://github.com/neilpa/swift-libedit) (unmaintained demo from 2014)
+- Found: [linenoise-swift](https://github.com/andybest/linenoise-swift) (current implementation, no SSH support)
+- Conclusion: No maintained Swift package wraps system readline with SSH compatibility
+- Recommendation: Document limitation, keep plain input as reliable default
+
 ---
 
 ## 3. Core Tools (Built-in)
