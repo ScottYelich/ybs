@@ -192,7 +192,7 @@ cd systems/bootstrap
 ./tools/searxng start
 
 # 2. Build and run bootstrap (when ready)
-cd builds/test5
+cd builds/BUILDNAME  # Use your current build directory
 swift build
 swift run ybs
 

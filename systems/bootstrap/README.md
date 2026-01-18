@@ -63,12 +63,8 @@ bootstrap/
 │   ├── tool-architecture.md           # Hybrid tool system
 │   ├── security-model.md              # Sandboxing and security
 │   └── configuration.md               # Layered configuration system
-└── builds/                            # Build outputs
-    ├── test1/                         # First experimental build
-    ├── test2/                         # ...
-    ├── test3/                         # ...
-    ├── test4/                         # ...
-    └── test5/                         # Latest build (currently working)
+└── builds/                            # Build outputs (transient workspaces)
+    └── BUILDNAME/                     # Each build is a separate workspace
 ```
 
 ---
@@ -288,8 +284,8 @@ Each step includes:
 - ✅ Complete technical specification (specs/)
 - ✅ 15 Architectural Decision Records
 - ✅ Implementation checklist from industry research
-- ✅ Initial build steps (0-3)
-- ✅ test5 build: Swift package created, compiles successfully
+- ✅ Build steps (0-36 defined)
+- ✅ Working builds: Swift package created, compiles successfully
 
 **In Progress**:
 - 🔄 Additional build steps (implementing features)
@@ -308,12 +304,7 @@ Each step includes:
 
 ## Builds
 
-Multiple builds exist for experimentation:
-
-- **test1-test4**: Early experimental builds
-- **test5**: Current active build (most recent)
-
-Each build in `builds/BUILDNAME/` contains:
+Builds are transient workspaces for building the system. Each build in `builds/BUILDNAME/` contains:
 - Swift Package (Package.swift, Sources/, Tests/)
 - BUILD_CONFIG.json (configuration from Step 0)
 - BUILD_STATUS.md (current progress)
