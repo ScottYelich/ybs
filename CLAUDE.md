@@ -35,7 +35,7 @@ This file provides guidance to Claude Code when working in this repository.
 
 ---
 
-## New Structure (After Restructure)
+## Repository Structure
 
 ```
 ybs/
