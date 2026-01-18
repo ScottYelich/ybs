@@ -1282,25 +1282,46 @@ Messages:
   • Assistant: 23 messages
   • Tool calls: 15 calls
   • Tool results: 15 results
+  • Average length: 962 chars/message
+  • Largest message: 4,523 chars
 
 Context Size:
   • Characters: 45,234 chars
   • Estimated tokens: ~11,309 tokens
+  • Average tokens/message: ~241 tokens
   • Context limit: 50 messages
   • Token budget: 32,000 tokens
-  • Usage: 35.3% of token budget
+  • Usage: 94.0% of message limit, 35.3% of token budget
+
+Activity:
+  • Message rate: 3.7 messages/min
+  • Token rate: ~893 tokens/min
+  • Context pruned: 2 times (14 messages removed)
+
+Tool Usage:
+  • read_file: 5 calls
+  • write_file: 3 calls
+  • run_shell: 4 calls
+  • web_search: 3 calls
 
 Session:
-  • Session ID: session-20260118-143022
+  • Session ID: abc12345
   • Started: 2026-01-18 14:30:22
   • Duration: 12m 34s
   • Provider: anthropic
   • Model: claude-3-5-sonnet-20241022
 
-Storage:
-  • Session file: ~/.config/ybs/sessions/session-20260118-143022.jsonl
-  • File size: 156.3 KB
-  • Auto-save: enabled
+Cost Estimate:
+  • Input tokens: ~9,234 tokens
+  • Output tokens: ~2,075 tokens
+  • Estimated cost: $0.14 USD
+  • (Based on: $3/MTok input, $15/MTok output)
+
+Files:
+  • Session log (JSONL): ~/.config/ybs/sessions/session-20260118-143022.jsonl
+    Size: 156.3 KB, Auto-save: enabled
+  • Debug log: ~/.config/ybs/logs/ybs-abc12345-20260118T143022Z.log
+    Size: 89.7 KB, Level: info
 ```
 
 **Implementation Requirements**:
@@ -1308,9 +1329,15 @@ Storage:
 1. **Message Counting**: Count messages by role (system, user, assistant, tool)
 2. **Token Estimation**: Estimate tokens using `text.count / 4` approximation
 3. **Character Counting**: Sum of all message content lengths
-4. **Percentage Calculation**: Show usage vs. configured limits
-5. **Session Metadata**: Show session start time, duration, provider/model
-6. **File Information**: Show session file path and size
+4. **Average Calculations**: Average chars/message, average tokens/message
+5. **Largest Message**: Find largest message by character count
+6. **Percentage Calculation**: Show usage vs. configured limits
+7. **Rate Calculations**: Messages/min, tokens/min (using session duration)
+8. **Pruning History**: Track how many times context was pruned and total messages removed
+9. **Tool Usage Tracking**: Count tool calls by tool name
+10. **Session Metadata**: Show session start time, duration, provider/model
+11. **Cost Estimation**: Calculate API costs based on provider pricing
+12. **File Information**: Show both session log (JSONL) and debug log file paths and sizes
 
 **Token Estimation Algorithm**:
 ```swift
@@ -1328,6 +1355,119 @@ func totalContextTokens() -> Int {
 ```
 
 **Note**: Token estimation is approximate. Actual tokenization varies by model. This provides user-friendly feedback without requiring tiktoken/tokenizers library.
+
+**Cost Estimation Algorithm**:
+
+Track input and output tokens separately, then apply provider-specific pricing:
+
+```swift
+// Provider pricing (per million tokens)
+struct ProviderPricing {
+    let inputPricePerMTok: Double
+    let outputPricePerMTok: Double
+
+    static let pricing: [String: ProviderPricing] = [
+        "anthropic": ProviderPricing(inputPricePerMTok: 3.00, outputPricePerMTok: 15.00),   // Claude 3.5 Sonnet
+        "openai": ProviderPricing(inputPricePerMTok: 2.50, outputPricePerMTok: 10.00),     // GPT-4 Turbo
+        "ollama": ProviderPricing(inputPricePerMTok: 0.00, outputPricePerMTok: 0.00),      // Free (local)
+        "apple": ProviderPricing(inputPricePerMTok: 0.00, outputPricePerMTok: 0.00)        // Free (local)
+    ]
+}
+
+func estimateCost() -> (inputTokens: Int, outputTokens: Int, cost: Double) {
+    var inputTokens = 0
+    var outputTokens = 0
+
+    for message in messages {
+        let tokens = estimateTokens(message.content)
+
+        switch message.role {
+        case .user, .system, .tool:
+            inputTokens += tokens  // Input to LLM
+        case .assistant:
+            outputTokens += tokens  // Output from LLM
+        }
+    }
+
+    // Get pricing for current provider
+    guard let pricing = ProviderPricing.pricing[config.llm.provider] else {
+        return (inputTokens, outputTokens, 0.0)
+    }
+
+    // Calculate cost
+    let inputCost = (Double(inputTokens) / 1_000_000.0) * pricing.inputPricePerMTok
+    let outputCost = (Double(outputTokens) / 1_000_000.0) * pricing.outputPricePerMTok
+    let totalCost = inputCost + outputCost
+
+    return (inputTokens, outputTokens, totalCost)
+}
+```
+
+**Provider Pricing Table** (as of January 2026):
+
+| Provider | Model | Input $/MTok | Output $/MTok | Notes |
+|----------|-------|--------------|---------------|-------|
+| Anthropic | Claude 3.5 Sonnet | $3.00 | $15.00 | Default pricing |
+| Anthropic | Claude 3 Opus | $15.00 | $75.00 | Premium model |
+| Anthropic | Claude 3 Haiku | $0.25 | $1.25 | Budget model |
+| OpenAI | GPT-4 Turbo | $2.50 | $10.00 | Default pricing |
+| OpenAI | GPT-4o | $5.00 | $15.00 | Multimodal |
+| OpenAI | GPT-3.5 Turbo | $0.50 | $1.50 | Budget model |
+| Ollama | Any model | $0.00 | $0.00 | Local (free) |
+| Apple | Foundation Models | $0.00 | $0.00 | Local (free) |
+
+**Cost Display**:
+- Show $0.00 for local providers (Ollama, Apple)
+- Show estimate with disclaimer: "(estimated, actual may vary)"
+- Update pricing table periodically as providers change rates
+- For unknown models, show "Pricing unknown" instead of $0.00
+
+**Pruning History Tracking**:
+
+Track pruning events for statistics:
+
+```swift
+class ConversationContext {
+    private var pruneCount: Int = 0
+    private var totalMessagesPruned: Int = 0
+
+    private func pruneOldMessages() {
+        let beforeCount = messages.count
+
+        // ... existing pruning logic ...
+
+        let afterCount = messages.count
+        let pruned = beforeCount - afterCount
+
+        if pruned > 0 {
+            pruneCount += 1
+            totalMessagesPruned += pruned
+        }
+    }
+
+    func getPruningStats() -> (pruneCount: Int, totalPruned: Int) {
+        return (pruneCount, totalMessagesPruned)
+    }
+}
+```
+
+**Tool Usage Tracking**:
+
+Count tool invocations by name:
+
+```swift
+func getToolUsageStats() -> [String: Int] {
+    var toolCounts: [String: Int] = [:]
+
+    for message in messages where message.role == .assistant {
+        for toolCall in message.toolCalls {
+            toolCounts[toolCall.name, default: 0] += 1
+        }
+    }
+
+    return toolCounts
+}
+```
 
 #### 6.4.2 Context Limit Adjustment (`/context`)
 
@@ -1521,8 +1661,20 @@ File format (JSONL - one JSON object per line):
 {"timestamp":"2026-01-18T14:30:30Z","type":"user","content":"Read the README file"}
 {"timestamp":"2026-01-18T14:30:31Z","type":"tool_call","id":"call_123","name":"read_file","arguments":{"path":"README.md"}}
 {"timestamp":"2026-01-18T14:30:31Z","type":"tool_result","id":"call_123","success":true,"output":"# My Project\n..."}
-{"timestamp":"2026-01-18T14:30:33Z","type":"assistant","content":"I've read your README. The project is..."}
+{"timestamp":"2026-01-18T14:30:33Z","type":"assistant","content":"I've read your README. The project is...","provider":"anthropic","model":"claude-3-5-sonnet-20241022","tokens":{"input":245,"output":67}}
 {"timestamp":"2026-01-18T14:31:00Z","type":"session_end","reason":"user_exit","message_count":6}
+```
+
+**Important**: Assistant responses MUST include:
+- `provider`: Which LLM provider was used for this response
+- `model`: Which specific model generated the response
+- `tokens`: Token counts for this specific exchange (input and output)
+
+This enables:
+- Tracking provider switches mid-conversation
+- Per-message cost calculation
+- Provider comparison analysis
+- Debugging which model generated which response
 ```
 
 **Meta Commands for Session Management**:
