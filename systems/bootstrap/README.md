@@ -55,6 +55,9 @@ bootstrap/
 │   ├── ybs-step_478a8c4b0cef.md       # Step 1: Initialize Build Workspace
 │   ├── ybs-step_c5404152680d.md       # Step 2: Define Architecture
 │   └── ybs-step_89b9e6233da5.md       # Step 3: Set Up Project Environment
+├── tools/                             # Helper scripts
+│   ├── README.md                      # Tools documentation
+│   └── searxng                        # SearXNG management script
 ├── docs/                              # Bootstrap-specific documentation
 │   ├── bootstrap-principles.md        # Design principles for bootstrap
 │   ├── tool-architecture.md           # Hybrid tool system
@@ -91,6 +94,78 @@ bootstrap/
 2. **Identify gaps**: What's missing or ambiguous?
 3. **Refine**: Update specs or steps to improve clarity
 4. **Test**: Have AI agent attempt build with improvements
+
+---
+
+## Management Tools
+
+Bootstrap includes helper scripts in `tools/` for managing dependencies and services.
+
+### SearXNG Web Search Server
+
+Bootstrap uses SearXNG for unlimited web searches. Manage it with:
+
+```bash
+# Start SearXNG (required for web_search tool to work)
+./tools/searxng start
+
+# Check status
+./tools/searxng status
+
+# Test search functionality
+./tools/searxng test
+
+# View logs
+./tools/searxng logs
+
+# Stop server
+./tools/searxng stop
+
+# Show all commands
+./tools/searxng --help
+```
+
+**Details:**
+- **URL**: http://127.0.0.1:38888
+- **RAM**: ~30-50 MB
+- **Limit**: Unlimited searches
+- **Cost**: $0 (self-hosted)
+
+**Installation**: Already configured in `~/.config/searxng/`
+
+**See**: [tools/README.md](tools/README.md) for complete tools documentation
+
+### External Tools Registration
+
+Bootstrap auto-discovers external tools from these directories:
+- `~/.config/ybs/tools` (system-wide, primary location)
+- `~/.ybs/tools` (user-specific)
+- `./tools` (project-specific)
+
+**web_search Tool**:
+- **Location**: `~/.config/ybs/tools/web_search`
+- **Status**: ✅ Registered (auto-discovered at startup)
+- **Protocol**: JSON input/output via stdin/stdout
+- **Schema**: Supports `--schema` flag for discovery
+- **Backend**: Queries SearXNG at http://127.0.0.1:38888
+
+**How It Works**:
+1. SearXNG server runs in background (managed by `./tools/searxng`)
+2. Bootstrap discovers `web_search` tool at startup via `--schema` flag
+3. LLM can call `web_search` tool during conversations
+4. Tool queries SearXNG and returns results to LLM
+
+**Testing External Tool**:
+```bash
+# Test tool directly
+echo '{"query": "Swift programming", "max_results": 3}' | \
+  ~/.config/ybs/tools/web_search | jq .
+
+# Check tool schema
+~/.config/ybs/tools/web_search --schema | jq .
+```
+
+**No manual registration required** - bootstrap automatically discovers and loads all executable files in the tool search paths that implement the `--schema` flag.
 
 ---
 

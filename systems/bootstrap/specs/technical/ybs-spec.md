@@ -566,11 +566,27 @@ In config:
 
 **Implementation Requirements**:
 
-1. **CRITICAL - Search Backend**:
-   - Use DuckDuckGo HTML API (no API key required, respects privacy)
-   - Alternative: DuckDuckGo Instant Answer API
-   - Fallback: Direct HTML scraping with user-agent header
-   - Do NOT use APIs requiring authentication (Google, Bing) - adds setup friction
+1. **CRITICAL - Search Backend** (Real-World Implementation):
+
+   **Current Implementation**: SearXNG (Self-Hosted)
+   - Monthly limit: Unlimited
+   - Cost: $0 (self-hosted)
+   - RAM overhead: 30-200 MB depending on installation method
+     - Docker: 150-200 MB (easiest setup: 5 minutes)
+     - Native: 30-50 MB (more complex setup: 15 minutes)
+   - Best for: Unlimited searches, privacy-focused, no API keys required
+
+   **Not Viable - DuckDuckGo HTML**:
+   - Blocked by CAPTCHA challenges ("Select all ducks")
+   - Cannot be used for automated/programmatic access
+   - Tested and confirmed non-functional for AI agents
+
+   **Not Viable - Commercial APIs** (Brave, Google, Bing, Serper, SerpAPI):
+   - Require API keys and signup friction
+   - Monthly limits or per-search costs
+   - Dependency on external services
+
+   **Implementation Decision**: SearXNG native install for minimal overhead (30-50 MB RAM), unlimited searches.
 
 2. **CRITICAL - Response Format**:
    - Plain text, numbered list format
