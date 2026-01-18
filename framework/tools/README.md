@@ -163,6 +163,68 @@ Lists and filters session-based changelogs from framework development.
 
 ---
 
+### check-traceability.sh - Verify Code-to-Spec Traceability
+Verifies that all source files include traceability comments linking back to specifications.
+
+**Usage**:
+```bash
+./check-traceability.sh SYSTEM BUILDNAME
+```
+
+**Example**:
+```bash
+./check-traceability.sh bootstrap test7
+```
+
+**What it does**: Scans all source files in the build directory for traceability comments (e.g., `// Implements: ybs-spec.md § 3.1`), calculates coverage percentage, and reports untraced files.
+
+**Output**:
+```
+Traceability Check for bootstrap/test7
+======================================
+
+Summary:
+--------
+Status:      ✓ PASS
+Total files: 33
+Traced:      33
+Untraced:    0
+Coverage:    100%
+
+Build directory: systems/bootstrap/builds/test7
+File extensions: .swift
+```
+
+**Thresholds**:
+- ✅ **PASS**: ≥80% files traced
+- ⚠️ **WARN**: 60-79% files traced
+- ✗ **FAIL**: <60% files traced
+
+**When to use**:
+- Before marking build steps as complete
+- During code review
+- When verifying Feature Addition Protocol compliance
+- To detect unspecified features
+
+**Traceability Comment Format**:
+```swift
+// Implements: ybs-spec.md § 3.1 (read_file tool)
+// Brief description of file's purpose
+import Foundation
+
+class ReadFileTool { ... }
+```
+
+**Why it matters**:
+- Enforces "every line traces to spec" principle
+- Detects unspecified features automatically
+- Makes code review easier (instantly see what each file implements)
+- Enables automated quality gates
+
+**See also**: [Feature Addition Protocol](../methodology/feature-addition-protocol.md), [Writing Steps](../methodology/writing-steps.md)
+
+---
+
 ## Environment Variables
 
 All tools support the `YBS_ROOT` environment variable to override repository root location:
@@ -206,6 +268,15 @@ YBS_ROOT=/path/to/ybs ./list-specs.sh bootstrap
 
 # Count total steps
 ./list-steps.sh bootstrap | tail -5
+```
+
+### Build Verification
+```bash
+# Check traceability coverage before completing a step
+./check-traceability.sh bootstrap test7
+
+# Verify after adding new features
+./check-traceability.sh bootstrap test7 | grep "FAIL\|WARN"
 ```
 
 ### From Anywhere

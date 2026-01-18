@@ -103,6 +103,7 @@ Only after specs and steps are updated:
 - Follow step instructions
 - Implement all CRITICAL requirements
 - **Write tests BEFORE or DURING implementation** (NOT after)
+- **Add traceability comments to ALL source files** (see below)
 
 **CRITICAL: Test Coverage Requirements**:
 - **Minimum 60% line coverage** (REQUIRED for step completion)
@@ -115,30 +116,59 @@ Only after specs and steps are updated:
 - ✅ Error case tests (not just happy path)
 - ✅ Edge case tests (empty input, max values, etc.)
 
-**NO STEP IS COMPLETE WITHOUT TESTS!**
+**CRITICAL: Traceability Requirements**:
+
+All source files MUST include traceability comments linking to specs:
+
+```swift
+// Implements: ybs-spec.md § 3.1 (read_file tool)
+// Reads file contents with path validation and sandboxing
+import Foundation
+
+class ReadFileTool: ToolProtocol {
+    // ...
+}
+```
+
+**Format**:
+- First line: `// Implements: <spec-reference>`
+- Spec reference: `ybs-spec.md § X.Y`, `Step N (Title)`, or both
+- Optional second line: Brief description of file's purpose
+
+**Why**:
+- Makes code review easier (instantly see what each file implements)
+- Detects unspecified features (files without traceability comments)
+- Enables automated checking with `check-traceability.sh`
+
+**NO STEP IS COMPLETE WITHOUT TESTS AND TRACEABILITY!**
 
 ### 5. **VERIFY** (MANDATORY)
 
 - ✅ **Tests written and passing** (REQUIRED - step cannot complete without this)
 - ✅ **Test coverage ≥ 60%** (REQUIRED - measure with coverage tools)
+- ✅ **Traceability coverage ≥ 80%** (REQUIRED - all files have traceability comments)
 - ✅ Spec requirements met
 - ✅ Step verification criteria satisfied
 - ✅ No duplicate functionality created
 - ✅ All error cases handled
 
-**Verification Command**:
+**Verification Commands**:
 ```bash
 # Run tests
 swift test  # (or equivalent for language)
 
-# Check coverage (if tooling available)
+# Check test coverage (if tooling available)
 # Coverage must be ≥ 60% to pass verification
+
+# Check traceability coverage (REQUIRED)
+./framework/tools/check-traceability.sh SYSTEMNAME BUILDNAME
+# Coverage must be ≥ 80% to pass verification (≥ 60% = warning)
 ```
 
-**If tests fail or coverage < 60%**:
+**If tests fail, test coverage < 60%, or traceability < 80%**:
 - ❌ Step is NOT complete
 - ❌ Do NOT proceed to next step
-- ❌ Fix tests/add coverage first
+- ❌ Fix tests/add coverage/add traceability comments first
 
 ---
 
@@ -212,11 +242,19 @@ AI: "I found tool discovery at startup (Step 24).
 4. If duplicate/similar: ASK for clarification
 5. If new: Update specs FIRST, then implement
 
+**DURING implementation**:
+
+6. Add traceability comments to ALL new source files
+7. Run `check-traceability.sh` before marking step complete
+8. Ensure traceability coverage ≥ 80% (minimum 60%)
+
 **NEVER**:
 - Implement without updating specs
 - Skip duplicate checking
 - Create redundant features
 - Add features not documented in specs
+- Omit traceability comments from source files
+- Skip traceability verification
 
 ### For Humans:
 
@@ -274,6 +312,7 @@ When requesting features:
 - ❌ Inconsistent implementation
 - ❌ No test requirements → bugs slip through
 - ❌ Spec drift → specs become obsolete
+- ❌ Untraced code → no spec-to-code linkage
 
 **With this protocol**:
 - ✅ Specs remain source of truth
@@ -281,6 +320,8 @@ When requesting features:
 - ✅ Features persist across builds
 - ✅ Tests documented upfront
 - ✅ Clear implementation path
+- ✅ Every line traces to spec (enforceable)
+- ✅ Unspecified features are immediately detectable
 
 ---
 

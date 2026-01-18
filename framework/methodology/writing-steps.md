@@ -313,6 +313,89 @@ For pure infrastructure steps (directory creation, dependency installation):
 - Provides foundation for spec implementation in subsequent steps
 ```
 
+### Code-Level Traceability (REQUIRED)
+
+**All source files MUST include traceability comments linking back to specs.**
+
+At the top of each source file, add a comment indicating what it implements:
+
+```swift
+// Implements: ybs-spec.md § 3.1 (read_file tool)
+// Reads file contents with path validation and sandboxing
+import Foundation
+
+class ReadFileTool: ToolProtocol {
+    // ...
+}
+```
+
+**Format**:
+- First line: `// Implements: <spec-reference>`
+- Optional second line: Brief description of the file's purpose
+- Spec reference can be: `ybs-spec.md § X.Y`, `Step N (Title)`, or both
+
+**Examples**:
+
+```swift
+// Implements: Step 7 (Error Handling & Logging)
+// Defines YBSError enum with all error categories
+import Foundation
+
+enum YBSError: Error { ... }
+```
+
+```python
+# Implements: spec.md § 4.2 (External Tool Discovery)
+# Scans configured directories for executable tools
+
+class ToolDiscovery:
+    ...
+```
+
+```go
+// Implements: spec.md § 6.1 (Agent Loop) + Step 14 (Basic Agent Loop)
+// Main agent loop with tool calling and context management
+
+package agent
+
+type AgentLoop struct { ... }
+```
+
+**Why This Matters**:
+- ✅ Makes code review easier (instantly see what each file implements)
+- ✅ Detects unspecified features (files without comments)
+- ✅ Enables automated traceability checking
+- ✅ Documents intent at the code level
+
+**Enforcement**:
+
+Use `framework/tools/check-traceability.sh` to verify all files have comments:
+
+```bash
+$ ./framework/tools/check-traceability.sh bootstrap test7
+
+Traceability Check for bootstrap/test7
+======================================
+
+Summary:
+--------
+Status:      ✓ PASS
+Total files: 33
+Traced:      33
+Untraced:    0
+Coverage:    100%
+```
+
+**Thresholds**:
+- ✅ **PASS**: ≥80% files traced
+- ⚠️ **WARN**: 60-79% files traced
+- ✗ **FAIL**: <60% files traced
+
+**When to Add Comments**:
+- BEFORE committing new files
+- During code review
+- When refactoring existing code
+
 ---
 
 ## Step Ordering and Dependencies

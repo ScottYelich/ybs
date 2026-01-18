@@ -2010,5 +2010,120 @@ A minimal viable implementation should:
 
 ---
 
+## 14. Code-to-Spec Traceability
+
+### 14.1 Purpose
+
+Every source file MUST include traceability comments that link the implementation back to this specification. This ensures:
+
+- Every line of code traces to a requirement
+- Unspecified features are immediately detectable
+- Code review is faster (see what each file implements)
+- Architectural intent is documented at the code level
+
+### 14.2 Traceability Comment Format
+
+At the top of each source file (after any license header), add:
+
+```swift
+// Implements: ybs-spec.md § X.Y (Feature Name)
+// Optional: Brief description of the file's purpose
+import Foundation
+
+class MyClass {
+    // ...
+}
+```
+
+**Format rules**:
+- First line: `// Implements: <spec-reference>`
+- Spec reference can be:
+  - Section reference: `ybs-spec.md § 3.1` (refers to this document)
+  - Step reference: `Step N (Title)` (refers to build step)
+  - Combined: `Step 14 (Agent Loop) + ybs-spec.md § 6 (Agent Loop)`
+- Optional second line: Brief description (1-2 sentences)
+
+**Examples**:
+
+```swift
+// Implements: ybs-spec.md § 3.1 (read_file tool)
+// Reads file contents with path validation and sandboxing
+import Foundation
+
+class ReadFileTool: ToolProtocol { ... }
+```
+
+```swift
+// Implements: Step 7 (Error Handling & Logging)
+// Defines YBSError enum with all error categories
+enum YBSError: Error, CustomStringConvertible { ... }
+```
+
+```swift
+// Implements: Step 14 (Agent Loop) + ybs-spec.md § 6 (Agent Loop)
+// Main agent loop with tool calling and context management
+class AgentLoop { ... }
+```
+
+### 14.3 Enforcement
+
+Traceability is enforced via automated checking:
+
+```bash
+# Check traceability coverage
+./framework/tools/check-traceability.sh bootstrap BUILDNAME
+```
+
+**Thresholds**:
+- ✅ **PASS**: ≥80% files have traceability comments
+- ⚠️ **WARN**: 60-79% files have traceability comments
+- ✗ **FAIL**: <60% files have traceability comments
+
+**Requirements**:
+- All source files (`.swift`, `.py`, `.go`, etc.) must have comments
+- Test files should also include traceability comments
+- Configuration files and data files are exempt
+
+### 14.4 When to Add Comments
+
+- **BEFORE committing new files** (during implementation)
+- **During code review** (reviewer verifies comments exist)
+- **When refactoring** (update if purpose changes)
+
+### 14.5 Detecting Unspecified Features
+
+If a file lacks a traceability comment, one of two things is true:
+
+1. **The feature IS specified** → Add the comment linking to spec
+2. **The feature is NOT specified** → Feature was added without following protocol
+
+In case (2), the Feature Addition Protocol was violated:
+- Stop implementation
+- Update specification with new feature
+- Update build step with implementation instructions
+- Add traceability comment
+- Then proceed
+
+**See**: [Feature Addition Protocol](../../../../framework/methodology/feature-addition-protocol.md)
+
+### 14.6 Benefits
+
+**For developers**:
+- Instantly see what each file implements
+- Understand architectural intent
+- Navigate from code to spec easily
+
+**For reviewers**:
+- Verify implementation matches spec
+- Spot unspecified features immediately
+- Ensure completeness
+
+**For maintainers**:
+- Understand legacy code quickly
+- Refactor with confidence
+- Track requirement coverage
+
+---
+
 *Specification Version: 1.0*
-*Last Updated: 2026-01-16*
+*Last Updated: 2026-01-18*

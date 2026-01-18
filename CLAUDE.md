@@ -324,6 +324,7 @@ Use `SESSION.md.template` from repository root as starting point.
 6. **Document everything**: Completed steps get DONE files
 7. **Update status**: Keep BUILD_STATUS.md current
 8. **Clean up**: Remove scratch/ and SESSION.md when done
+9. **Traceability comments**: ALL source files must have `// Implements:` comments linking to specs
 
 ## 🚨 CRITICAL: Feature Addition Protocol
 
@@ -335,12 +336,13 @@ Use `SESSION.md.template` from repository root as starting point.
 2. **UPDATE SPECS FIRST** (never implement without spec)
    - Add to system specs with requirements + test requirements
 3. **UPDATE/CREATE STEP** (add implementation instructions)
-4. **IMPLEMENT** with mandatory test coverage:
+4. **IMPLEMENT** with mandatory test coverage and traceability:
    - ✅ Tests written BEFORE/DURING implementation
    - ✅ Minimum 60% line coverage (REQUIRED)
    - ✅ Target 80% line coverage (RECOMMENDED)
    - ✅ 100% coverage for critical paths
-5. **VERIFY** all tests pass + coverage met
+   - ✅ Traceability comments in ALL source files (REQUIRED)
+5. **VERIFY** all tests pass + coverage met + traceability ≥80%
 
 **NO EXCEPTIONS** - See: [framework/methodology/feature-addition-protocol.md](framework/methodology/feature-addition-protocol.md)
 
@@ -353,10 +355,22 @@ Use `SESSION.md.template` from repository root as starting point.
 Helper scripts in `framework/tools/`:
 
 ```bash
-framework/tools/list-specs.sh        # List specifications
-framework/tools/list-steps.sh        # List build steps
-framework/tools/deps.sh              # Show dependencies
-framework/tools/list-changelogs.sh   # List changelogs
+framework/tools/list-specs.sh             # List specifications
+framework/tools/list-steps.sh             # List build steps
+framework/tools/deps.sh                   # Show dependencies
+framework/tools/list-changelogs.sh        # List changelogs
+framework/tools/check-traceability.sh     # Verify code-to-spec traceability
+```
+
+**Traceability Checking**:
+```bash
+# Verify all source files have traceability comments
+./framework/tools/check-traceability.sh bootstrap test7
+
+# Required thresholds:
+# ✅ PASS: ≥80% files traced
+# ⚠️ WARN: 60-79% files traced
+# ✗ FAIL: <60% files traced
 ```
 
 ---
