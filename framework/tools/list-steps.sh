@@ -2,10 +2,15 @@
 #
 # list-steps.sh - Display build steps in order
 #
-# Usage: ./list-steps.sh [SYSTEM] [--full]
+# Usage: ./list-steps.sh [SYSTEM] [OPTIONS]
 #
-# Shows numbered list of steps from STEPS_ORDER.txt
-# Use --full to show complete file paths
+# Shows numbered list of steps from STEPS_ORDER.txt with titles extracted from step files
+#
+# Options:
+#   --full      Show complete file paths
+#   --verbose   Show step objectives (summary of what each step does)
+#   -v          Same as --verbose
+#
 # SYSTEM defaults to "bootstrap" if not specified
 #
 # Environment variables:
@@ -16,10 +21,13 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Parse arguments
 SYSTEM="bootstrap"
 SHOW_FULL=false
+SHOW_VERBOSE=false
 
 for arg in "$@"; do
     if [ "$arg" == "--full" ]; then
         SHOW_FULL=true
+    elif [ "$arg" == "--verbose" ] || [ "$arg" == "-v" ]; then
+        SHOW_VERBOSE=true
     elif [ -z "$SYSTEM_SET" ]; then
         SYSTEM="$arg"
         SYSTEM_SET=true
@@ -44,6 +52,40 @@ fi
 echo "Build Steps for system '$SYSTEM' (from STEPS_ORDER.txt):"
 echo ""
 
+# Function to extract title from step file
+extract_title() {
+    local STEP_FILE=$1
+    if [ ! -f "$STEP_FILE" ]; then
+        echo "(file not found)"
+        return
+    fi
+
+    # Extract title from first line: "# Step NNNNNN: Title"
+    TITLE=$(head -1 "$STEP_FILE" | sed 's/^# Step [0-9]*: //')
+    if [ -z "$TITLE" ]; then
+        echo "(no title)"
+    else
+        echo "$TITLE"
+    fi
+}
+
+# Function to extract objectives from step file
+extract_objectives() {
+    local STEP_FILE=$1
+    if [ ! -f "$STEP_FILE" ]; then
+        echo "       (file not found)"
+        return
+    fi
+
+    # Extract objectives - lines starting with "- " or numbered after "## Objectives" or "## Step Objectives"
+    # Stop at next section (## or ---)
+    awk '
+        /^## Objectives$/ || /^## Step Objectives$/ { in_obj=1; next }
+        /^##/ || /^---/ { in_obj=0 }
+        in_obj && (/^- / || /^[0-9]+\./) { print "       " $0 }
+    ' "$STEP_FILE" | head -10  # Limit to first 10 objectives
+}
+
 # Parse STEPS_ORDER.txt, skip comments and empty lines, number the steps
 STEP_NUM=0
 while IFS= read -r line; do
@@ -52,33 +94,39 @@ while IFS= read -r line; do
         continue
     fi
 
-    # Extract GUID (first field - now 12 hex chars)
+    # Extract GUID (first field - 12 hex chars)
     GUID=$(echo "$line" | awk '{print $1}')
-
-    # Extract description (everything after # if present, else rest of line)
-    if [[ "$line" =~ "#" ]]; then
-        DESC=$(echo "$line" | sed 's/^[^#]*#//' | sed 's/^[[:space:]]*//')
-    else
-        DESC=$(echo "$line" | cut -d' ' -f2-)
-    fi
 
     STEP_NUM=$((STEP_NUM + 1))
 
-    # Format: 000001 ybs-step_478a8c4b0cef  # Description
-    printf "%06d ybs-step_%s  # %s\n" "$STEP_NUM" "$GUID" "$DESC"
+    # Get step file path
+    STEP_FILE="$STEPS_DIR/ybs-step_${GUID}.md"
+
+    # Extract title from step file
+    TITLE=$(extract_title "$STEP_FILE")
+
+    # Format: 000001 ybs-step_478a8c4b0cef  Title
+    printf "%06d ybs-step_%s  %s\n" "$STEP_NUM" "$GUID" "$TITLE"
 
     if [ "$SHOW_FULL" = true ]; then
-        STEP_FILE="$STEPS_DIR/ybs-step_${GUID}.md"
         if [ -f "$STEP_FILE" ]; then
             echo "       $STEP_FILE"
         else
-            echo "       [FILE NOT FOUND: ybs-step_${GUID}.md]"
+            echo "       [FILE NOT FOUND: $STEP_FILE]"
         fi
+    fi
+
+    if [ "$SHOW_VERBOSE" = true ]; then
+        extract_objectives "$STEP_FILE"
+        echo ""
     fi
 done < "$ORDER_FILE"
 
 echo ""
 echo "Total steps: $STEP_NUM"
 echo ""
-echo "To see full paths: ./list-steps.sh --full"
+echo "Options:"
+echo "  --full      Show complete file paths"
+echo "  --verbose   Show step objectives"
+echo ""
 echo "To execute a step: Read ybs-step_<guid>.md"
