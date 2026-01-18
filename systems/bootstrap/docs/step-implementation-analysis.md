@@ -245,11 +245,11 @@ Based on step documents:
    - Include in framework/templates/
    - Document format and purpose
 
-4. ⚠️ **BUG FOUND**: framework/tools/list-steps.sh has incorrect path
-   - Currently uses: `$SCRIPT_DIR/../systems/$SYSTEM/steps`
-   - Should use: `$SCRIPT_DIR/../../systems/$SYSTEM/steps`
+4. ✅ **BUG FIXED**: framework/tools/list-steps.sh path corrected
+   - Was: `$SCRIPT_DIR/../systems/$SYSTEM/steps` (incorrect)
+   - Now: `$SCRIPT_DIR/../../systems/$SYSTEM/steps` (correct)
    - Framework tools are at `/framework/tools/`, need to go up 2 levels to reach repo root
-   - Status: Identified but not fixed (framework-level bug)
+   - Status: FIXED - Tool now works correctly
 
 ---
 

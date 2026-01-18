@@ -23,7 +23,7 @@ for arg in "$@"; do
     fi
 done
 
-STEPS_DIR="$SCRIPT_DIR/../systems/$SYSTEM/steps"
+STEPS_DIR="$SCRIPT_DIR/../../systems/$SYSTEM/steps"
 ORDER_FILE="$STEPS_DIR/STEPS_ORDER.txt"
 
 if [ ! -f "$ORDER_FILE" ]; then
