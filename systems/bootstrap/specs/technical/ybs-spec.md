@@ -52,6 +52,8 @@ OPTIONS:
   --endpoint <url>          Override API endpoint
   --no-sandbox              Disable shell sandboxing (DANGEROUS)
   --dry-run                 Show tool calls without executing
+  --quiet                   Disable console logging (clean chat interface)
+  --verbose                 Enable verbose console logging (show debug messages)
   --version                 Print version and exit
   --help                    Show help
 ```
@@ -134,7 +136,7 @@ OPTIONS:
     "log_to_file": true,
     "log_directory": "~/.config/ybs/logs",
     "log_level": "info",
-    "console_level": "info",
+    "console_level": "none",
     "max_file_size_mb": 10,
     "max_files": 5
   }
@@ -145,9 +147,14 @@ OPTIONS:
 - `log_to_file`: Enable logging to file (default: `true`)
 - `log_directory`: Directory for log files (default: `~/.config/ybs/logs`)
 - `log_level`: Minimum level for file logs (`debug`, `info`, `warn`, `error`) (default: `info`)
-- `console_level`: Minimum level for console logs (default: `info`)
+- `console_level`: Minimum level for console logs (`none`, `debug`, `info`, `warn`, `error`) (default: `none`)
+  - `none`: No log messages to console (clean chat interface)
+  - `info`: Show INFO, WARN, ERROR (startup messages visible)
+  - `debug`: Show all messages including DEBUG
 - `max_file_size_mb`: Maximum size per log file in MB (default: 10)
 - `max_files`: Maximum number of log files to keep (default: 5)
+
+**Note**: All log levels are ALWAYS written to the log file regardless of `console_level`. The console_level only controls what appears in the terminal during chat.
 
 **Log File Naming**: `ybs-{session-id}-{timestamp}.log`
 
