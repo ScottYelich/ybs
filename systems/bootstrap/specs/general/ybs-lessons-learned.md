@@ -283,6 +283,66 @@
 
 ---
 
+## 11. Readline & Terminal Handling
+
+### 11.1 Terminal Detection
+- [ ] **TTY detection alone is insufficient**: `isatty()` returns true for many terminal types that aren't compatible with readline
+- [ ] **Check TERM environment variable**: Verify `TERM` is set and not "dumb"
+- [ ] **Valid terminal types**: Common valid values: xterm, xterm-256color, screen, tmux, vt100, linux
+- [ ] **Exclude incompatible terminals**: Reject TERM="dumb" or empty TERM
+- [ ] **Test detection logic**: Verify readline is disabled for pipes, redirects, and incompatible terminals
+
+### 11.2 Readline Library Selection
+- [ ] **Pure Swift implementation preferred**: Use LineNoise over system readline for portability
+- [ ] **Cross-platform compatible**: Library must work on macOS and Linux
+- [ ] **Graceful degradation**: Fall back to plain `readLine()` if readline unavailable
+- [ ] **No external dependencies**: Avoid libraries requiring system readline or editline
+
+### 11.3 Error Handling
+- [ ] **Fallback on first error**: If readline fails on first input, immediately fall back to plain input
+- [ ] **Log terminal information**: Log TERM type and TTY status for debugging
+- [ ] **User visibility**: Inform user when falling back to plain input and why
+- [ ] **No fatal errors**: Terminal issues must never crash the application
+
+### 11.4 Terminal State Management
+- [ ] **Clean exit**: Ensure terminal raw mode is restored on exit
+- [ ] **Signal handling**: Handle Ctrl+C, Ctrl+D, and EOF correctly
+- [ ] **Cleanup on error**: Restore terminal state even when readline errors
+- [ ] **No echo duplication**: Prevent double-echo (terminal + readline both echoing)
+
+### 11.5 History File Management
+- [ ] **Restrictive permissions**: History file must be 600 (user read/write only)
+- [ ] **Size limits enforced**: Cap history entries (e.g., 1000 max)
+- [ ] **Graceful missing file**: Don't error if history file doesn't exist
+- [ ] **Atomic writes**: Write to temp file, then rename to avoid corruption
+
+### 11.6 Testing Requirements
+- [ ] **Test plain input mode**: Verify --no-readline works
+- [ ] **Test piped input**: `echo "input" | ybs` must work
+- [ ] **Test invalid TERM**: Set TERM=dumb and verify fallback
+- [ ] **Test readline mode**: With valid TTY and TERM, verify readline works
+- [ ] **Manual testing required**: Readline requires interactive testing (arrow keys, history)
+
+### 11.7 Configuration
+- [ ] **Readline enabled by default**: Most users benefit from readline
+- [ ] **CLI flag to disable**: Provide --no-readline for automation
+- [ ] **Config option to disable**: Allow permanent disable in config file
+- [ ] **Auto-disable for non-TTY**: Automatically disable for pipes/redirects
+
+### 11.8 Known Issues & Workarounds
+- **Issue**: LineNoise may show character duplication or "ou:" instead of "You:" prompt
+  - **Root cause**: Terminal not in correct mode for readline (TERM=dumb, unsupported terminal, etc.)
+  - **Detection**: Check both `isatty()` AND `TERM` environment variable
+  - **Fix**: Add `TERM` validation: `let termType = ProcessInfo.processInfo.environment["TERM"] ?? ""; let hasValidTerm = !termType.isEmpty && termType != "dumb"`
+  - **Fallback**: Use plain `readLine()` when TERM is invalid
+
+- **Issue**: Readline works in Terminal.app but fails in VS Code terminal or ssh
+  - **Root cause**: Different TERM settings in different environments
+  - **Fix**: Check TERM value and fall back gracefully
+  - **User guidance**: Document that readline can be disabled with --no-readline
+
+---
+
 ## Quick Reference: Critical Failures to Prevent
 
 | Failure Mode | Prevention |
