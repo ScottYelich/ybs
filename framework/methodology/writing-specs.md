@@ -45,6 +45,113 @@ Each feature gets a **12-hex GUID** and specifications across multiple dimension
 6. **operations/** - Deployment, monitoring, logging, SRE requirements
 7. **architecture/** - Architectural Decision Records, system diagrams
 
+### BASE Specifications
+
+**BASE specs define system-wide defaults** that apply across all features:
+
+```
+specs/
+├── business/_BASE.md      # System-wide business context
+├── functional/_BASE.md    # System-wide UX patterns, accessibility standards
+├── technical/_BASE.md     # Design tokens (UI), error codes, i18n framework
+├── testing/_BASE.md       # Test infrastructure, tools, standards
+├── security/_BASE.md      # Security model, threat model
+├── operations/_BASE.md    # Deployment infrastructure, monitoring
+└── architecture/_BASE.md  # Architectural principles, patterns
+```
+
+**Format**: `_BASE.md` (underscore prefix sorts first, clearly indicates purpose)
+
+**Usage**: Feature specs **reference** BASE specs using `$ref` syntax:
+
+```markdown
+## Error Handling
+
+**Extends**: $ref:technical/_BASE.md#error-handling-standards
+
+### Overrides
+- Error code range: 2000-2099 (validation errors for this feature)
+
+### Feature-Specific
+[Additional error codes specific to this feature]
+```
+
+**Benefits**:
+- DRY: Define patterns once, reference everywhere
+- Consistency: System-wide standards in one place
+- Flexibility: Features can override when needed
+- Maintainability: Update BASE, all features inherit
+
+### Context-Driven Requirements
+
+**Not all specs are needed for all features.** Requirements depend on feature characteristics:
+
+| Feature Class | Required Specs | Example |
+|---------------|----------------|---------|
+| **Class A**: User-Facing | business, functional, technical, testing | Login screen, API endpoint |
+| **Class B**: Backend | technical, testing (+ others as needed) | Data processor, background job |
+| **Class C**: Infrastructure | technical only | Build script, dev tool |
+| **Class D**: Documentation | None (use ADRs instead) | README update, process doc |
+
+**Decision Framework** - Ask for each feature:
+1. Does this affect users? → business + functional needed
+2. Does this involve code? → technical + testing needed
+3. Does this handle sensitive data? → security needed
+4. Does this run in production? → operations needed
+5. Does this introduce new patterns? → architecture needed
+
+If answer is NO, spec is NOT required.
+
+## Cross-Cutting Concerns
+
+**Where do system-wide concerns like accessibility, UI, errors, and localization belong?**
+
+### Accessibility (AX)
+
+- **Primary**: `functional/<guid>.md` - Add "Accessibility Requirements" section
+  - WCAG compliance level (AA/AAA)
+  - Keyboard navigation, focus management
+  - Screen reader support, ARIA labels
+  - Color contrast ratios
+- **Secondary**: `testing/<guid>.md` - Accessibility test cases
+- **System-wide**: `functional/_BASE.md` - Accessibility standards for all features
+
+### User Experience (UX)
+
+- **Primary**: `functional/<guid>.md` - "User Workflows" section (already exists)
+  - User goals, task flows, success criteria
+- **Secondary**: `business/<guid>.md` - User stories, target users
+- **System-wide**: `functional/_BASE.md` - UX patterns, interaction models
+
+### User Interface (UI)
+
+- **Primary**: `technical/_BASE.md` - Design tokens section
+  - Colors, typography, spacing, icons
+  - Component library references
+  - Platform-specific guidelines (SwiftUI, React, etc.)
+- **Secondary**: `functional/<guid>.md` - UI behavior specifications
+- **Per-feature**: `technical/<guid>.md` - Feature-specific UI overrides
+
+### Error Handling
+
+- **Primary**: `technical/_BASE.md` - Error handling standards
+  - Error code ranges by category
+  - Error message templates
+  - Retry strategies, fallback behaviors
+- **Secondary**: `operations/<guid>.md` - Error monitoring, alerting
+- **Per-feature**: `technical/<guid>.md` - Feature-specific error codes
+
+### Localization (i18n)
+
+- **Primary**: `technical/_BASE.md` - i18n framework
+  - Supported languages, default language
+  - String extraction process
+  - Date/time/number formatting standards
+- **Secondary**: `functional/<guid>.md` - User-visible text, content
+- **Per-feature**: `technical/<guid>.md` - Feature-specific localization keys
+
+**Key Principle**: Cross-cutting concerns are NOT separate spec types. They are sections within existing spec types, with system-wide standards in BASE specs.
+
 ## Traceability
 
 **Same GUID = One Feature across all perspectives**

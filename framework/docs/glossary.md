@@ -131,7 +131,7 @@ System-wide specification documents in `systems/SYSTEMNAME/specs/` that define t
 ### ADR (Architectural Decision Record)
 A document explaining WHY an architectural choice was made, what alternatives were considered, and the trade-offs.
 
-**Location**: `systems/SYSTEMNAME/specs/ybs-decisions.md`
+**Location**: `systems/SYSTEMNAME/specs/architecture/ybs-decisions.md`
 **Format**: D01, D02, D03, etc.
 
 **Example usage**: "See ADR D09 for why we chose sandbox-exec on macOS."
@@ -397,9 +397,9 @@ Documentation directory containing all YBS framework documentation.
 ### specs/
 Specifications directory containing WHAT to build.
 
-**Location**: docs/specs/
+**Location**: systems/SYSTEMNAME/specs/
 
-**Example usage**: "Put architectural decisions in systems/SYSTEMNAME/specs/ybs-decisions.md."
+**Example usage**: "Put architectural decisions in systems/SYSTEMNAME/specs/architecture/ybs-decisions.md."
 
 ---
 

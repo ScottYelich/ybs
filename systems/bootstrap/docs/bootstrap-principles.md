@@ -210,9 +210,9 @@ The bootstrap demonstrates that YBS can guide building complex systems (AI agent
 
 ## References
 
-- **Complete spec**: [../specs/ybs-spec.md](../specs/ybs-spec.md)
-- **Architectural decisions**: [../specs/ybs-decisions.md](../specs/ybs-decisions.md)
-- **Implementation checklist**: [../specs/ybs-lessons-learned.md](../specs/ybs-lessons-learned.md)
+- **Complete spec**: [../specs/technical/ybs-spec.md](../specs/technical/ybs-spec.md)
+- **Architectural decisions**: [../specs/architecture/ybs-decisions.md](../specs/architecture/ybs-decisions.md)
+- **Implementation checklist**: [../specs/general/ybs-lessons-learned.md](../specs/general/ybs-lessons-learned.md)
 - **Tool architecture**: [tool-architecture.md](tool-architecture.md)
 - **Security model**: [security-model.md](security-model.md)
 - **Configuration**: [configuration.md](configuration.md)

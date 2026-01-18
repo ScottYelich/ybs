@@ -31,7 +31,7 @@
 **→ Work on YBS framework itself** (contributors)
 - **AI agents**: [CLAUDE.md](CLAUDE.md) - Complete AI agent guide
 - **Humans**: Read [framework/README.md](framework/README.md) before proposing changes
-- **Review**: [systems/bootstrap/specs/ybs-decisions.md](systems/bootstrap/specs/ybs-decisions.md) - Architectural decisions
+- **Review**: [systems/bootstrap/specs/architecture/ybs-decisions.md](systems/bootstrap/specs/architecture/ybs-decisions.md) - Architectural decisions
 
 ---
 
@@ -197,9 +197,9 @@ ybs/
 - **[systems/bootstrap/README.md](systems/bootstrap/README.md)** - Bootstrap overview
 - **[systems/bootstrap/CLAUDE.md](systems/bootstrap/CLAUDE.md)** - AI agent guide for bootstrap
 - **[systems/bootstrap/specs/](systems/bootstrap/specs/)** - Complete specifications
-  - [ybs-spec.md](systems/bootstrap/specs/ybs-spec.md) - Technical specification
-  - [ybs-decisions.md](systems/bootstrap/specs/ybs-decisions.md) - Architectural decisions
-  - [ybs-lessons-learned.md](systems/bootstrap/specs/ybs-lessons-learned.md) - Implementation checklist
+  - [ybs-spec.md](systems/bootstrap/specs/technical/ybs-spec.md) - Technical specification
+  - [ybs-decisions.md](systems/bootstrap/specs/architecture/ybs-decisions.md) - Architectural decisions
+  - [ybs-lessons-learned.md](systems/bootstrap/specs/general/ybs-lessons-learned.md) - Implementation checklist
 - **[systems/bootstrap/docs/](systems/bootstrap/docs/)** - Bootstrap-specific docs
   - [bootstrap-principles.md](systems/bootstrap/docs/bootstrap-principles.md) - Design principles
   - [tool-architecture.md](systems/bootstrap/docs/tool-architecture.md) - Hybrid tool system

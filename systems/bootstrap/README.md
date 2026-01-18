@@ -82,8 +82,8 @@ bootstrap/
 
 1. **Overview**: Read this file
 2. **Design**: Read [docs/bootstrap-principles.md](docs/bootstrap-principles.md)
-3. **Specs**: Read [specs/ybs-spec.md](specs/ybs-spec.md) - Complete technical specification
-4. **Decisions**: Read [specs/ybs-decisions.md](specs/ybs-decisions.md) - Why designed this way
+3. **Specs**: Read [specs/technical/ybs-spec.md](specs/technical/ybs-spec.md) - Complete technical specification
+4. **Decisions**: Read [specs/architecture/ybs-decisions.md](specs/architecture/ybs-decisions.md) - Why designed this way
 
 ### For Contributors: Improve Bootstrap Specs/Steps
 
@@ -162,7 +162,7 @@ See [docs/bootstrap-principles.md](docs/bootstrap-principles.md) for complete pr
 
 ### Core Spec Documents
 
-**[specs/ybs-spec.md](specs/ybs-spec.md)** - Complete technical specification (100+ pages)
+**[specs/technical/ybs-spec.md](specs/technical/ybs-spec.md)** - Complete technical specification (100+ pages)
 - System architecture
 - Tool definitions (built-in + external)
 - Configuration schema
@@ -171,7 +171,7 @@ See [docs/bootstrap-principles.md](docs/bootstrap-principles.md) for complete pr
 - Security implementation
 - Project structure
 
-**[specs/ybs-decisions.md](specs/ybs-decisions.md)** - Architectural Decision Records (15 ADRs)
+**[specs/architecture/ybs-decisions.md](specs/architecture/ybs-decisions.md)** - Architectural Decision Records (15 ADRs)
 - D01: Swift chosen for native macOS integration
 - D04: Hybrid tool architecture
 - D08: SEARCH/REPLACE edit format
@@ -179,7 +179,7 @@ See [docs/bootstrap-principles.md](docs/bootstrap-principles.md) for complete pr
 - D13: Stateless sessions
 - *(and 10 more)*
 
-**[specs/ybs-lessons-learned.md](specs/ybs-lessons-learned.md)** - Implementation checklist
+**[specs/general/ybs-lessons-learned.md](specs/general/ybs-lessons-learned.md)** - Implementation checklist
 - Derived from Aider, Goose, OpenHands, Cursor
 - Critical failure modes to prevent
 - Recommended defaults

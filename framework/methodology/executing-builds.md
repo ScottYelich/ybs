@@ -281,7 +281,7 @@ Include:
 - **Retry limit**: If verification fails, retry up to 3 times total, then STOP
 - **Document everything**: Every completed step gets a DONE file with timing information
 - **Update status file**: Keep BUILD_STATUS.md current
-- **Reference specs**: Use `../../systems/bootstrap/specs/ybs-spec.md` and related specs as reference
+- **Reference specs**: Use `../../systems/bootstrap/specs/technical/ybs-spec.md` and related specs as reference
 
 ### Starting Point
 
@@ -360,9 +360,9 @@ For steps that involve code implementation:
 ### Reference Documentation
 
 Core specifications are in:
-- `../../systems/bootstrap/specs/ybs-spec.md` - Technical specification
-- `../../systems/bootstrap/specs/ybs-decisions.md` - Architectural decisions
-- `../../systems/bootstrap/specs/ybs-lessons-learned.md` - Implementation checklist
+- `../../systems/bootstrap/specs/technical/ybs-spec.md` - Technical specification
+- `../../systems/bootstrap/specs/architecture/ybs-decisions.md` - Architectural decisions
+- `../../systems/bootstrap/specs/general/ybs-lessons-learned.md` - Implementation checklist
 
 ### Spec-to-Step Traceability
 
@@ -445,9 +445,15 @@ repository-root/
         ├── README.md           # System overview
         ├── CLAUDE.md           # AI agent guidance for this system
         ├── specs/              # System specifications (WHAT to build)
-        │   ├── ybs-spec.md
-        │   ├── ybs-decisions.md
-        │   └── ybs-lessons-learned.md
+        │   ├── README.md
+        │   ├── technical/      # Technical specifications
+        │   ├── architecture/   # Architectural decisions (ADRs)
+        │   ├── general/        # General documentation
+        │   ├── business/       # Business requirements
+        │   ├── functional/     # Functional specifications
+        │   ├── testing/        # Test strategies
+        │   ├── security/       # Security requirements
+        │   └── operations/     # Operations documentation
         ├── steps/              # Build steps (HOW to build)
         │   ├── README.md
         │   ├── ybs-step_000000000000.md  # Step 0: Configuration

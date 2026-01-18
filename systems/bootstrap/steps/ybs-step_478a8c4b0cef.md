@@ -123,9 +123,9 @@ Complete step 000000 initialization and verification.
 - **Target Platform**: macOS 14+ (primary)
 
 ## Reference Documentation
-- Specification: `../../specs/ybs-spec.md`
-- Decisions: `../../specs/ybs-decisions.md`
-- Checklist: `../../specs/ybs-lessons-learned.md`
+- Specification: `../../specs/technical/ybs-spec.md`
+- Decisions: `../../specs/architecture/ybs-decisions.md`
+- Checklist: `../../specs/general/ybs-lessons-learned.md`
 ```
 
 Replace `SYSTEM_NAME` and `[current timestamp]` with actual values.
@@ -161,9 +161,9 @@ See `docs/build-history/` for completed build steps and verification results.
 ## Reference Specifications
 
 This implementation is based on specifications in:
-- `../../specs/ybs-spec.md` - Complete technical specification
-- `../../specs/ybs-decisions.md` - Architectural decisions
-- `../../specs/ybs-lessons-learned.md` - Implementation best practices
+- `../../specs/technical/ybs-spec.md` - Complete technical specification
+- `../../specs/architecture/ybs-decisions.md` - Architectural decisions
+- `../../specs/general/ybs-lessons-learned.md` - Implementation best practices
 
 ## Getting Started
 
@@ -243,9 +243,9 @@ SYSTEM_NAME/
 ### Reference Documentation
 
 Core specifications (DO NOT MODIFY):
-- `../../specs/ybs-spec.md` - Technical specification
-- `../../specs/ybs-decisions.md` - Architectural decisions
-- `../../specs/ybs-lessons-learned.md` - Best practices
+- `../../specs/technical/ybs-spec.md` - Technical specification
+- `../../specs/architecture/ybs-decisions.md` - Architectural decisions
+- `../../specs/general/ybs-lessons-learned.md` - Best practices
 
 Build instructions (FOLLOW THESE):
 - `../../steps/ybs-step_NNNNNN.md` - Individual steps

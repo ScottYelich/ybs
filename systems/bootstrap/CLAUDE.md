@@ -28,9 +28,9 @@ You're defining or updating WHAT the bootstrap system should do:
 - **Goal**: Define the bootstrap system clearly and completely
 
 **Key files**:
-- specs/ybs-spec.md - Complete technical specification
-- specs/ybs-decisions.md - Architectural Decision Records (ADRs)
-- specs/ybs-lessons-learned.md - Implementation checklist
+- specs/technical/ybs-spec.md - Complete technical specification
+- specs/architecture/ybs-decisions.md - Architectural Decision Records (ADRs)
+- specs/general/ybs-lessons-learned.md - Implementation checklist
 
 ---
 
@@ -76,9 +76,12 @@ bootstrap/
 │
 ├── specs/                             # System specifications
 │   ├── README.md                      # Spec organization
-│   ├── ybs-spec.md                    # Complete technical specification
-│   ├── ybs-decisions.md               # Architectural Decision Records
-│   └── ybs-lessons-learned.md         # Implementation checklist
+│   ├── technical/                     # Technical specifications
+│   │   └── ybs-spec.md                # Complete technical specification
+│   ├── architecture/                  # Architectural decisions
+│   │   └── ybs-decisions.md           # Architectural Decision Records
+│   └── general/                       # General documentation
+│       └── ybs-lessons-learned.md     # Implementation checklist
 │
 ├── steps/                             # Build steps
 │   ├── README.md                      # Steps overview
@@ -121,18 +124,18 @@ bootstrap/
 
 ### Modifying Specifications
 
-1. **Read existing specs**: Start with [specs/ybs-spec.md](specs/ybs-spec.md)
+1. **Read existing specs**: Start with [specs/technical/ybs-spec.md](specs/technical/ybs-spec.md)
 2. **Read spec guide**: [../../framework/methodology/writing-specs.md](../../framework/methodology/writing-specs.md)
-3. **Check decisions**: Review [specs/ybs-decisions.md](specs/ybs-decisions.md) for conflicts
+3. **Check decisions**: Review [specs/architecture/ybs-decisions.md](specs/architecture/ybs-decisions.md) for conflicts
 4. **Update specs**: Make changes to spec files
-5. **Add ADR**: If architectural, add to [specs/ybs-decisions.md](specs/ybs-decisions.md)
+5. **Add ADR**: If architectural, add to [specs/architecture/ybs-decisions.md](specs/architecture/ybs-decisions.md)
 6. **Update steps**: Ensure steps reflect spec changes
 
 ### Modifying Build Steps
 
 1. **Read existing steps**: Start with [steps/README.md](steps/README.md)
 2. **Read step guide**: [../../framework/methodology/writing-steps.md](../../framework/methodology/writing-steps.md)
-3. **Check specs**: Ensure changes align with [specs/ybs-spec.md](specs/ybs-spec.md)
+3. **Check specs**: Ensure changes align with [specs/technical/ybs-spec.md](specs/technical/ybs-spec.md)
 4. **Update step files**: Modify step markdown files
 5. **Test changes**: Execute steps to verify they work
 
@@ -174,7 +177,7 @@ Key principles:
 → Then: Create builds/NEWBUILD/ and start Step 0
 
 ### Task: Understand bootstrap architecture
-→ Read: [specs/ybs-spec.md](specs/ybs-spec.md)
+→ Read: [specs/technical/ybs-spec.md](specs/technical/ybs-spec.md)
 → Read: [docs/bootstrap-principles.md](docs/bootstrap-principles.md)
 
 ### Task: Modify bootstrap specifications
@@ -195,8 +198,8 @@ Key principles:
 
 ### Bootstrap System (This System)
 - **[README.md](README.md)** - System overview
-- **[specs/ybs-spec.md](specs/ybs-spec.md)** - Complete technical specification
-- **[specs/ybs-decisions.md](specs/ybs-decisions.md)** - Architectural decisions
+- **[specs/technical/ybs-spec.md](specs/technical/ybs-spec.md)** - Complete technical specification
+- **[specs/architecture/ybs-decisions.md](specs/architecture/ybs-decisions.md)** - Architectural decisions
 - **[docs/bootstrap-principles.md](docs/bootstrap-principles.md)** - Design principles
 
 ### YBS Framework (Methodology)

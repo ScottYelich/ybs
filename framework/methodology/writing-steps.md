@@ -593,10 +593,10 @@ name: "{{CONFIG:system_name|string|Name of the system|myapp}}"
 ## Traceability
 
 **Implements**:
-- systems/bootstrap/specs/ybs-spec.md Section 3.2 (Package Configuration)
+- systems/bootstrap/specs/technical/ybs-spec.md Section 3.2 (Package Configuration)
 
 **References**:
-- systems/bootstrap/specs/ybs-decisions.md D01 (Swift as Implementation Language)
+- systems/bootstrap/specs/architecture/ybs-decisions.md D01 (Swift as Implementation Language)
 ```
 
 ---

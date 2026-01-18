@@ -357,9 +357,9 @@ When implementing a system with YBS, ensure:
 
 ## References
 
-- **Bootstrap spec**: [../specs/ybs-spec.md](../specs/ybs-spec.md) Section 8 (Security)
-- **Architectural decision**: [../specs/ybs-decisions.md](../specs/ybs-decisions.md) D09 (Sandboxing)
-- **Implementation checklist**: [../specs/ybs-lessons-learned.md](../specs/ybs-lessons-learned.md) Section 4 (Safety)
+- **Bootstrap spec**: [../specs/technical/ybs-spec.md](../specs/technical/ybs-spec.md) Section 8 (Security)
+- **Architectural decision**: [../specs/architecture/ybs-decisions.md](../specs/architecture/ybs-decisions.md) D09 (Sandboxing)
+- **Implementation checklist**: [../specs/general/ybs-lessons-learned.md](../specs/general/ybs-lessons-learned.md) Section 4 (Safety)
 - **Tool architecture**: [tool-architecture.md](tool-architecture.md)
 
 ---

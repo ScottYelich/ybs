@@ -162,8 +162,8 @@ The hybrid pattern is framework-level guidance, not a strict requirement.
 
 ## References
 
-- **Bootstrap spec**: [../specs/ybs-spec.md](../specs/ybs-spec.md) Section 3 (Tools)
-- **Architectural decision**: [../specs/ybs-decisions.md](../specs/ybs-decisions.md) D04 (Hybrid Tool Architecture)
+- **Bootstrap spec**: [../specs/technical/ybs-spec.md](../specs/technical/ybs-spec.md) Section 3 (Tools)
+- **Architectural decision**: [../specs/architecture/ybs-decisions.md](../specs/architecture/ybs-decisions.md) D04 (Hybrid Tool Architecture)
 - **Security model**: [security-model.md](security-model.md)
 
 ---

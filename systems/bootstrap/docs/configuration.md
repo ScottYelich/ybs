@@ -459,8 +459,8 @@ ybs --model gpt-4-turbo
 
 ## References
 
-- **Bootstrap spec**: [../specs/ybs-spec.md](../specs/ybs-spec.md) Section 2 (Configuration)
-- **Architectural decision**: [../specs/ybs-decisions.md](../specs/ybs-decisions.md) D05 (Configuration System)
+- **Bootstrap spec**: [../specs/technical/ybs-spec.md](../specs/technical/ybs-spec.md) Section 2 (Configuration)
+- **Architectural decision**: [../specs/architecture/ybs-decisions.md](../specs/architecture/ybs-decisions.md) D05 (Configuration System)
 - **Security implications**: [security-model.md](security-model.md)
 
 ---
