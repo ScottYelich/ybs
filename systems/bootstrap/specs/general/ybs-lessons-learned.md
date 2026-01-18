@@ -222,11 +222,64 @@
 - [ ] **Protocol-based integration (MCP)**: Consider MCP for interoperability
 - [ ] **Plugin architecture (optional)**: Allow third-party tool extensions
 
-### 10.3 Testing
-- [ ] **Unit tests for tools**: Each tool tested independently
-- [ ] **Integration tests for loop**: Test full agent loop with mock LLM
-- [ ] **Sandbox tests**: Verify sandbox actually blocks dangerous operations
-- [ ] **Replay tests**: Record and replay LLM interactions for regression testing
+### 10.3 Testing (MANDATORY)
+
+**All implementations MUST include comprehensive testing. No step is complete without tests.**
+
+- ✅ **Unit tests for tools** (REQUIRED): Each tool MUST be tested independently
+  - Test success cases (valid inputs)
+  - Test error cases (invalid inputs, missing files)
+  - Test edge cases (empty files, large files, special characters)
+  - Test security (path traversal blocked)
+  - Minimum 30 test cases total across all tools
+
+- ✅ **Unit tests for LLM clients** (REQUIRED): Each LLM client MUST be tested
+  - Test message format conversion (especially Anthropic)
+  - Test API header construction
+  - Test response parsing (success and error)
+  - Test streaming functionality
+  - Mock HTTP responses for testing
+
+- ✅ **Integration tests for agent loop** (REQUIRED): Full agent loop MUST be tested
+  - Test complete conversation flow with mock LLM
+  - Test tool execution loop (multi-turn)
+  - Test meta-command handling
+  - Test shell injection
+  - Test provider switching
+  - Test error recovery
+
+- ✅ **Configuration tests** (REQUIRED): Configuration system MUST be tested
+  - Test config loading from various sources
+  - Test validation and error messages
+  - Test default value handling
+  - Test override precedence
+
+- ✅ **Session tests** (REQUIRED): Session management MUST be tested
+  - Test session creation and saving
+  - Test session loading and replay
+  - Test session listing
+  - Test cleanup and retention
+
+- ✅ **Sandbox tests** (REQUIRED): Sandbox MUST be verified
+  - Verify sandbox blocks dangerous operations (rm -rf /, etc.)
+  - Verify blocked commands are rejected
+  - Verify timeouts are enforced
+  - Test path restrictions
+
+- ⚠️ **Replay tests** (OPTIONAL): Record and replay LLM interactions
+  - Useful for regression testing
+  - Can implement after core tests are complete
+
+**Test Coverage Requirements**:
+- **Minimum**: 60% line coverage (REQUIRED for completion)
+- **Target**: 80% line coverage (RECOMMENDED)
+- **Critical paths**: 100% coverage (tool execution, LLM communication, safety)
+
+**Verification**:
+- All tests MUST pass before marking step complete
+- Run: `swift test` must succeed
+- Run: `swift test --enable-code-coverage` to verify coverage
+- No step is complete until tests are written and passing
 
 ---
 

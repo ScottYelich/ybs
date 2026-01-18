@@ -881,6 +881,233 @@ You: `cat file.txt`
 
 ---
 
+### 6.5 Session Persistence
+
+**Purpose**: Enable users to save and resume conversation sessions across application restarts without requiring a database. Sessions are stored as structured log files that can be replayed to restore conversation context.
+
+**Design Philosophy**:
+- **File-based**: No database required; uses simple JSON log files
+- **Human-readable**: Sessions stored in readable format for inspection/debugging
+- **Incremental**: Each message appended to session log as it occurs
+- **Replay-based**: Loading a session replays the conversation to rebuild context
+- **Configurable location**: Session directory specified in configuration
+
+**Configuration**:
+
+Add to configuration schema:
+```json
+{
+  "session": {
+    "storage_path": "~/.config/ybs/sessions",
+    "auto_save": true,
+    "max_sessions": 100,
+    "retention_days": 30
+  }
+}
+```
+
+**Configuration Options**:
+- `storage_path`: Directory where session logs are stored (default: `~/.config/ybs/sessions`)
+- `auto_save`: Automatically save each message to session log (default: `true`)
+- `max_sessions`: Maximum number of sessions to keep (oldest deleted first)
+- `retention_days`: Delete sessions older than N days (0 = keep forever)
+
+**Session Log Format**:
+
+Each session is stored as a JSON Lines (JSONL) file where each line is a message:
+
+```
+~/.config/ybs/sessions/
+├── session-20260118-143022.jsonl
+├── session-20260118-150145.jsonl
+└── session-20260118-163421.jsonl
+```
+
+File format (JSONL - one JSON object per line):
+```json
+{"timestamp":"2026-01-18T14:30:22Z","type":"session_start","config":{"provider":"anthropic","model":"claude-3-5-sonnet-20241022"}}
+{"timestamp":"2026-01-18T14:30:25Z","type":"system","content":"You are a helpful AI coding assistant..."}
+{"timestamp":"2026-01-18T14:30:30Z","type":"user","content":"Read the README file"}
+{"timestamp":"2026-01-18T14:30:31Z","type":"tool_call","id":"call_123","name":"read_file","arguments":{"path":"README.md"}}
+{"timestamp":"2026-01-18T14:30:31Z","type":"tool_result","id":"call_123","success":true,"output":"# My Project\n..."}
+{"timestamp":"2026-01-18T14:30:33Z","type":"assistant","content":"I've read your README. The project is..."}
+{"timestamp":"2026-01-18T14:31:00Z","type":"session_end","reason":"user_exit","message_count":6}
+```
+
+**Meta Commands for Session Management**:
+
+Extend meta-commands (section 6.3) with session commands:
+
+| Command | Purpose | Example |
+|---------|---------|---------|
+| `/sessions` | List available saved sessions | `/sessions` |
+| `/load <session>` | Load a previous session by filename or number | `/load session-20260118-143022` |
+| `/load <number>` | Load session by list number | `/load 3` |
+| `/save [name]` | Manually save current session with optional name | `/save important-bugfix` |
+| `/session` | Show current session info (messages, file) | `/session` |
+
+**Session Loading Behavior**:
+
+When loading a session:
+1. **Clear current context**: Existing conversation cleared
+2. **Replay messages**: All messages from log file replayed in order
+3. **Skip tool execution**: Tool calls are not re-executed, results are loaded from log
+4. **Restore state**: Conversation context restored to exact state at time of save
+5. **Continue**: User can continue conversation from where it left off
+
+**Implementation Pseudocode**:
+
+```swift
+class SessionManager {
+    let storageURL: URL
+    var currentSessionFile: URL?
+
+    func startNewSession() -> URL {
+        let timestamp = ISO8601DateFormatter().string(from: Date())
+        let filename = "session-\(timestamp).jsonl"
+        let fileURL = storageURL.appendingPathComponent(filename)
+
+        // Write session start marker
+        appendToSession(SessionEvent(
+            timestamp: Date(),
+            type: .sessionStart,
+            config: currentConfig
+        ))
+
+        currentSessionFile = fileURL
+        return fileURL
+    }
+
+    func appendToSession(_ event: SessionEvent) {
+        guard let file = currentSessionFile else { return }
+        guard config.session.autoSave else { return }
+
+        let json = try JSONEncoder().encode(event)
+        let line = String(data: json, encoding: .utf8)! + "\n"
+
+        // Append to file (create if not exists)
+        if let handle = FileHandle(forWritingAtPath: file.path) {
+            handle.seekToEndOfFile()
+            handle.write(line.data(using: .utf8)!)
+            handle.closeFile()
+        } else {
+            try line.write(to: file, atomically: true, encoding: .utf8)
+        }
+    }
+
+    func loadSession(_ filename: String) throws -> ConversationContext {
+        let fileURL = storageURL.appendingPathComponent(filename)
+        let content = try String(contentsOf: fileURL)
+
+        var context = ConversationContext()
+
+        // Parse each line and replay
+        for line in content.split(separator: "\n") {
+            let event = try JSONDecoder().decode(SessionEvent.self, from: Data(line.utf8))
+
+            switch event.type {
+            case .system:
+                context.addMessage(Message(role: .system, content: event.content))
+            case .user:
+                context.addMessage(Message(role: .user, content: event.content))
+            case .assistant:
+                context.addMessage(Message(role: .assistant, content: event.content))
+            case .toolCall:
+                // Add tool call (but don't execute)
+                context.addMessage(Message(role: .assistant, toolCalls: [event.toolCall]))
+            case .toolResult:
+                // Add cached result
+                context.addMessage(Message(role: .tool, content: event.output, toolCallId: event.id))
+            case .sessionStart, .sessionEnd:
+                // Metadata only, skip
+                break
+            }
+        }
+
+        return context
+    }
+
+    func listSessions() -> [SessionInfo] {
+        let files = try FileManager.default.contentsOfDirectory(at: storageURL)
+        return files
+            .filter { $0.pathExtension == "jsonl" }
+            .sorted { $0.lastPathComponent > $1.lastPathComponent }  // Newest first
+            .map { url in
+                let firstLine = try String(contentsOf: url).split(separator: "\n").first
+                let event = try JSONDecoder().decode(SessionEvent.self, from: Data(firstLine!.utf8))
+                return SessionInfo(
+                    filename: url.lastPathComponent,
+                    timestamp: event.timestamp,
+                    config: event.config
+                )
+            }
+    }
+
+    func cleanupOldSessions() {
+        guard config.session.retentionDays > 0 else { return }
+
+        let cutoff = Date().addingTimeInterval(-Double(config.session.retentionDays) * 86400)
+        let sessions = listSessions()
+
+        for session in sessions where session.timestamp < cutoff {
+            try? FileManager.default.removeItem(at: storageURL.appendingPathComponent(session.filename))
+        }
+    }
+}
+```
+
+**User Experience**:
+
+```
+# Starting a new session
+$ ybs
+Welcome to YBS - AI Coding Assistant
+Session: session-20260118-143022.jsonl
+
+You: Read the README file
+AI: [Uses read_file tool]
+    I've read your README...
+
+You: /save important-feature
+✅ Session saved as: important-feature.jsonl
+
+You: /quit
+
+# Later, resuming the session
+$ ybs
+Welcome to YBS - AI Coding Assistant
+Session: session-20260118-150200.jsonl
+
+You: /sessions
+Available sessions:
+  1. session-20260118-143022.jsonl (5 minutes ago) - 12 messages
+  2. important-feature.jsonl (10 minutes ago) - 6 messages
+  3. session-20260118-120000.jsonl (2 hours ago) - 45 messages
+
+You: /load 2
+✅ Loaded session: important-feature.jsonl
+   Restored 6 messages
+
+You: Continue with the feature implementation
+AI: [Continues from where you left off]
+```
+
+**Benefits**:
+- ✅ **No database required**: Simple file-based storage
+- ✅ **Human-readable**: Can inspect session files directly
+- ✅ **Crash recovery**: Sessions auto-saved, can resume after crash
+- ✅ **Debugging**: Full conversation history for troubleshooting
+- ✅ **Sharing**: Can share session files with team members
+- ✅ **Version control**: Can commit important sessions to git
+
+**Security Considerations**:
+- ⚠️ **Sensitive data**: Session logs may contain API keys, file contents, etc.
+- ⚠️ **File permissions**: Ensure session directory is user-accessible only (chmod 700)
+- ⚠️ **Cleanup**: Regular cleanup of old sessions prevents disk bloat
+- ⚠️ **Exclude from version control**: Add `*.jsonl` to `.gitignore` for session logs
+
+---
+
 ## 7. LLM Provider Abstraction
 
 ### 7.1 Provider Protocol
@@ -1262,7 +1489,160 @@ Auto-detect project type (Swift, Node, Python) and adjust default tools.
 
 ---
 
-## 12. Success Criteria
+## 12. Testing Requirements
+
+### 12.1 Mandatory Test Coverage
+
+All implementations MUST include comprehensive testing:
+
+- **Unit tests**: For each tool, model, and core component
+- **Integration tests**: For agent loop, LLM clients, tool executor
+- **End-to-end tests**: For complete user workflows
+
+**Test Coverage Targets**:
+- **Minimum**: 60% line coverage
+- **Target**: 80% line coverage
+- **Critical paths**: 100% coverage (tool execution, LLM communication, safety checks)
+
+### 12.2 Test Structure
+
+Tests must be organized following this structure:
+
+```
+Tests/
+└── YBSTests/
+    ├── ToolTests/           # Unit tests for each tool
+    │   ├── ReadFileToolTests.swift
+    │   ├── WriteFileToolTests.swift
+    │   ├── EditFileToolTests.swift
+    │   ├── ListFilesToolTests.swift
+    │   ├── SearchFilesToolTests.swift
+    │   └── RunShellToolTests.swift
+    ├── LLMTests/            # Unit tests for LLM clients
+    │   ├── LLMClientTests.swift
+    │   ├── AnthropicLLMClientTests.swift
+    │   └── LLMClientFactoryTests.swift
+    ├── AgentTests/          # Integration tests for agent loop
+    │   ├── AgentLoopTests.swift
+    │   ├── ConversationContextTests.swift
+    │   └── MetaCommandHandlerTests.swift
+    ├── ConfigTests/         # Unit tests for configuration
+    │   ├── ConfigLoaderTests.swift
+    │   └── ConfigTests.swift
+    ├── SessionTests/        # Unit tests for session management
+    │   └── SessionManagerTests.swift
+    └── E2ETests/            # End-to-end workflow tests
+        └── WorkflowTests.swift
+```
+
+### 12.3 Test Requirements Per Component
+
+**Tool Tests** (MANDATORY):
+- Success cases for valid inputs
+- Error cases for invalid inputs (missing files, bad paths)
+- Edge cases (empty files, large files, special characters)
+- Security validation (path traversal attempts blocked)
+
+**LLM Client Tests** (MANDATORY):
+- Message format conversion (especially Anthropic)
+- API header construction
+- Response parsing (success and error)
+- Streaming functionality
+- Timeout handling
+
+**Agent Loop Tests** (MANDATORY):
+- Full conversation flow with mock LLM
+- Tool execution loop
+- Meta-command handling
+- Shell injection
+- Provider switching
+- Error recovery
+
+**Configuration Tests** (MANDATORY):
+- Config loading from various sources
+- Validation and error messages
+- Default value handling
+- Override precedence
+
+**Session Tests** (MANDATORY):
+- Session creation and saving
+- Session loading and replay
+- Session listing
+- Cleanup and retention
+
+### 12.4 Testing Before Step Completion
+
+**No implementation step is considered complete until**:
+
+1. ✅ Tests are written for the implemented code
+2. ✅ All tests pass (`swift test` succeeds)
+3. ✅ Code coverage meets minimum threshold (60%)
+4. ✅ Critical paths have 100% coverage
+
+### 12.5 Test Execution
+
+All tests must be runnable via standard Swift testing commands:
+
+```bash
+# Run all tests
+swift test
+
+# Run specific test suite
+swift test --filter ToolTests
+
+# Run with code coverage
+swift test --enable-code-coverage
+
+# View coverage report
+xcrun llvm-cov report .build/debug/YBSPackageTests.xctest/Contents/MacOS/YBSPackageTests
+```
+
+### 12.6 Mock Objects
+
+Tests should use mock implementations where appropriate:
+
+```swift
+// Mock LLM client for testing agent loop
+class MockLLMClient: LLMClientProtocol {
+    var responses: [Message] = []
+    var currentIndex = 0
+
+    func sendChatRequest(messages: [Message], tools: [Tool]?) async throws -> Message {
+        defer { currentIndex += 1 }
+        return responses[currentIndex]
+    }
+
+    func sendStreamingChatRequest(
+        messages: [Message],
+        tools: [Tool]?,
+        onToken: @escaping (String) -> Void
+    ) async throws -> Message {
+        let response = responses[currentIndex]
+        onToken(response.content)
+        currentIndex += 1
+        return response
+    }
+}
+```
+
+### 12.7 Test Data Management
+
+- Use temporary directories for file operation tests
+- Clean up test files after each test
+- Use fixtures for complex test data
+- Never depend on external services in tests
+
+### 12.8 Continuous Integration
+
+Tests should:
+- Run automatically on commits
+- Block merges if tests fail
+- Report coverage metrics
+- Be fast (< 30 seconds total)
+
+---
+
+## 13. Success Criteria
 
 A minimal viable implementation should:
 
