@@ -1,11 +1,11 @@
 # YBS: Specification-Driven Development for Autonomous AI Agents
 
-**Yelich Build System (YBS) - The most complete SDD framework for AI-powered software development**
+**Yelich Build System (YBS) - Comprehensive SDD framework for AI-powered software development**
 
-> **Revolutionary**: AI agents build complete, production-ready systems autonomously from specifications
+> **Powerful autonomous building**: AI agents build complete, production-ready systems from specifications
 >
 > **Status**: Framework active + Bootstrap (Swift AI tool) in progress
-> **Version**: 0.2.1
+> **Version**: 0.2.2
 > **GitHub**: [github.com/ScottYelich/ybs](https://github.com/ScottYelich/ybs)
 
 📍 **Navigation**: [Framework](framework/README.md) | [Bootstrap Example](systems/bootstrap/README.md) | [AI Agent Guide](CLAUDE.md)
@@ -530,6 +530,7 @@ MIT License - See [LICENSE](LICENSE)
 
 ## Version History
 
+- **0.2.2** (2026-01-18): README restructure - moved all value propositions to top level, framework README focused on A/B/C architecture
 - **0.2.1** (2026-01-18): SDD positioning, BUILD_CONFIG.json reading, comprehensive updates
 - **0.2.0** (2026-01-17): Documentation improvements, restructure completion
 - **0.1.0** (2026-01-16): Initial version
