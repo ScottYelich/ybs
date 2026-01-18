@@ -131,7 +131,7 @@ OPTIONS:
     "show_token_usage": true,
     "show_tool_calls": true,
     "stream_responses": true,
-    "enable_readline": true,
+    "enable_readline": false,
     "history_file": "~/.config/ybs/history",
     "history_max_entries": 1000
   },
@@ -181,7 +181,7 @@ Example: `ybs-a1b2c3d4e5f6-2026-01-18T08-13-01Z.log`
 
 **Purpose**: Enhanced terminal input with line editing and command history for improved user experience.
 
-**Overview**: By default, `ybs` uses readline-style input to provide a rich interactive experience. This can be disabled via configuration or CLI flag for compatibility or automation scenarios.
+**Overview**: `ybs` supports readline-style input for enhanced terminal interaction, but this feature is **disabled by default** due to compatibility issues with SSH sessions and certain terminals. Users can enable it via configuration for local terminal use. Plain input mode works reliably across all environments.
 
 #### 2.4.1 Features
 
@@ -209,19 +209,27 @@ Readline is controlled by the `ui` section of config:
 
 ```json
 "ui": {
-  "enable_readline": true,                       // Enable/disable readline
+  "enable_readline": false,                      // Enable/disable readline (disabled by default)
   "history_file": "~/.config/ybs/history",      // History file location
   "history_max_entries": 1000                    // Max history entries
 }
 ```
 
 **Configuration Options**:
-- `enable_readline` (bool, default: `true`): Enable readline functionality
+- `enable_readline` (bool, default: `false`): Enable readline functionality
+  - **Disabled by default** due to compatibility issues with SSH sessions and certain terminal types
+  - Set to `true` in config to enable for local terminal use
 - `history_file` (string, default: `~/.config/ybs/history`): Path to history file
 - `history_max_entries` (int, default: `1000`): Maximum number of history entries to persist
 
 **CLI Override**:
 - `--no-readline`: Disable readline, use plain `readLine()` (overrides config)
+
+**Automatic Disabling**:
+Readline is automatically disabled even when `enable_readline: true` if:
+- Input is not a TTY (piped input)
+- `TERM` environment variable is unset or "dumb"
+- SSH session detected (`SSH_CONNECTION`, `SSH_CLIENT`, or `SSH_TTY` environment variables present)
 
 #### 2.4.3 Dependencies
 
