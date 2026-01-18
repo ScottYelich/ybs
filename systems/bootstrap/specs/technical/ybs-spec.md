@@ -596,6 +596,289 @@ enum Message {
 }
 ```
 
+### 6.3 Meta Commands
+
+The agent should support meta-commands that control the chat session itself rather than being sent to the LLM. Commands are prefixed with `/` and are handled before sending to the LLM.
+
+**Required Commands**:
+
+| Command | Purpose | Example |
+|---------|---------|---------|
+| `/help` | Show available commands and usage | `/help` |
+| `/tools` | List available tools with descriptions | `/tools` |
+| `/quit` or `/exit` | Exit the application | `/quit` |
+
+**Command Handling**:
+
+```swift
+func handleUserInput(_ input: String) async {
+    // Check for meta-commands first
+    if input.hasPrefix("/") {
+        handleMetaCommand(input)
+        return  // Don't send to LLM
+    }
+
+    // Check for shell injection
+    if input.hasPrefix("!") {
+        await handleShellInjection(input)
+        return  // Will send result to LLM, not the command itself
+    }
+
+    // Normal chat message - send to LLM
+    await sendToLLM(input)
+}
+```
+
+**Implementation**:
+
+```swift
+func handleMetaCommand(_ input: String) {
+    let parts = input.dropFirst().split(separator: " ", maxSplits: 1)
+    guard let command = parts.first?.lowercased() else { return }
+
+    switch command {
+    case "help":
+        displayHelp()
+    case "tools":
+        displayTools()
+    case "quit", "exit":
+        displayGoodbye()
+        exit(0)
+    default:
+        print("Unknown command: /\(command)")
+        print("Type /help for available commands")
+    }
+}
+
+func displayHelp() {
+    print("""
+
+    📖 Available Commands:
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    Meta Commands:
+      /help                Show this help message
+      /tools               List available tools
+      /quit or /exit       Exit the application
+
+    Shell Injection:
+      !<command>           Run shell command and inject output into context
+
+    Examples:
+      /tools
+      !ls -la
+      !cat package.json
+
+    Note: Shell commands run in sandbox (if enabled).
+
+    """)
+}
+
+func displayTools() {
+    let tools = toolRegistry.allTools()
+
+    print("\n🔧 Available Tools:\n")
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n")
+
+    for tool in tools.sorted(by: { $0.name < $1.name }) {
+        print("  \(tool.name)")
+        print("    \(tool.description)")
+        print()
+    }
+
+    print("Total: \(tools.count) tools available\n")
+}
+```
+
+**Display Format**:
+
+```
+You: /tools
+
+🔧 Available Tools:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  edit_file
+    Edit a file using search/replace or line-based operations
+
+  list_files
+    List files in a directory with optional filtering
+
+  read_file
+    Read contents of a file from the filesystem
+
+  search_files
+    Search for text or patterns across multiple files
+
+  write_file
+    Write content to a file, creating parent directories if needed
+
+Total: 5 tools available
+```
+
+### 6.4 Shell Injection Commands
+
+Shell injection allows users to run arbitrary shell commands and inject the output directly into the conversation context. This enables quick inspection of system state, file contents, or command output without requiring tool calls.
+
+**Syntax**: `!<command> [args]`
+
+**Examples**:
+```
+You: !ls -la
+You: !cat README.md
+You: !git status
+You: !ps aux | grep node
+You: !df -h
+```
+
+**Behavior**:
+
+1. User input starts with `!`
+2. Command is extracted (everything after `!`)
+3. Command is executed via shell (respecting sandbox settings)
+4. Output is captured (stdout + stderr)
+5. Output is injected into context as a special message type
+6. LLM receives context with output and can respond
+
+**Implementation**:
+
+```swift
+func handleShellInjection(_ input: String) async {
+    // Extract command (everything after '!')
+    let command = String(input.dropFirst()).trimmingCharacters(in: .whitespaces)
+
+    guard !command.isEmpty else {
+        print("Error: No command specified")
+        print("Usage: !<command>")
+        return
+    }
+
+    // Show what we're running
+    print("\n💻 Running: \(command)")
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
+    do {
+        // Execute via tool system (respects sandbox)
+        let result = try await shellExecutor.run(
+            command: command,
+            captureOutput: true,
+            timeout: config.safety.shellTimeoutSeconds
+        )
+
+        // Show output to user
+        if !result.stdout.isEmpty {
+            print(result.stdout)
+        }
+        if !result.stderr.isEmpty {
+            print("stderr:", result.stderr)
+        }
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        print("Exit code: \(result.exitCode)\n")
+
+        // Inject into conversation context
+        let injectedMessage = """
+        [Shell command output]
+        Command: \(command)
+        Exit code: \(result.exitCode)
+
+        Output:
+        \(result.stdout)
+        \(result.stderr.isEmpty ? "" : "\nStderr:\n\(result.stderr)")
+        """
+
+        context.addMessage(Message(role: .user, content: injectedMessage))
+
+        // Now let LLM respond to it
+        await processWithTools()
+
+    } catch {
+        print("❌ Error executing command: \(error)\n")
+
+        // Inject error into context
+        let errorMessage = """
+        [Shell command failed]
+        Command: \(command)
+        Error: \(error.localizedDescription)
+        """
+
+        context.addMessage(Message(role: .user, content: errorMessage))
+        await processWithTools()
+    }
+}
+```
+
+**Security Considerations**:
+
+1. **Sandbox Enforcement**: Shell injection MUST respect sandbox settings
+   - If sandbox enabled: Commands run in sandbox
+   - If sandbox disabled: Commands run with full permissions (dangerous)
+
+2. **Timeout Protection**: All commands subject to timeout (default: 60s)
+
+3. **Blocked Commands**: Commands in blocklist are rejected:
+   ```swift
+   let blockedPatterns = [
+       "rm -rf /",
+       "sudo",
+       "chmod 777",
+       // ... other dangerous patterns
+   ]
+   ```
+
+4. **User Awareness**: Command and output are visible to user before LLM sees them
+
+5. **Output Truncation**: Large outputs truncated to prevent context overflow:
+   ```swift
+   let maxOutputLength = config.context.maxToolOutputChars
+   if output.count > maxOutputLength {
+       output = String(output.prefix(maxOutputLength)) +
+                "\n\n... (output truncated, \(output.count) total chars)"
+   }
+   ```
+
+**Use Cases**:
+
+```
+Example 1: Quick file inspection
+You: !cat package.json
+[Output shown]
+AI: I can see your project uses TypeScript 5.0 and has dependencies on...
+
+Example 2: System diagnostics
+You: !df -h
+[Disk usage shown]
+AI: You have 45GB free on your main drive. The /home partition is at 78% capacity...
+
+Example 3: Git status
+You: !git status
+[Git status shown]
+AI: You have 3 modified files and 2 untracked files. Would you like me to help commit them?
+
+Example 4: Process inspection
+You: !ps aux | grep node
+[Process list shown]
+AI: I see 2 Node.js processes running. The one on PID 1234 is using 450MB of memory...
+```
+
+**Alternative Syntax** (Optional):
+
+Some systems use `$` prefix instead:
+```
+You: $ls -la
+You: $cat file.txt
+```
+
+Or backticks (like shell substitution):
+```
+You: `ls -la`
+You: `cat file.txt`
+```
+
+**Recommendation**: Use `!` as it:
+- Is not a shell metacharacter (unlike `$` and `` ` ``)
+- Visually distinctive
+- Common in other tools (e.g., Jupyter `!command`)
+
 ---
 
 ## 7. LLM Provider Abstraction
