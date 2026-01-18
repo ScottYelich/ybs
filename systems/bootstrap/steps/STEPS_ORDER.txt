@@ -77,3 +77,6 @@ j4k5l6m7n8o9
 #
 # Step 41: Session Persistence
 d1e2f3a4b5c6
+#
+# Step 42: Web Search Tool
+a3b4c5d6e7f8

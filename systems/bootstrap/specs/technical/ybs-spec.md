@@ -484,6 +484,234 @@ In config:
 - Project-specific tools — Test runners, linters, formatters vary by project
 - Experimental tools — Easy to iterate without recompiling
 
+### 4.5 Web Search Tool - Complete Specification
+
+**Purpose**: Enable LLM to search the web for current information, documentation, and answers to questions beyond its training data.
+
+**Type**: External tool (shell script executable)
+
+**Schema**:
+```json
+{
+  "name": "web_search",
+  "description": "Search the web for information. Returns titles, URLs, and snippets from search results.",
+  "parameters": {
+    "query": {
+      "type": "string",
+      "description": "Search query string",
+      "required": true
+    },
+    "max_results": {
+      "type": "integer",
+      "description": "Maximum number of results to return (default: 5, max: 10)",
+      "required": false
+    }
+  }
+}
+```
+
+**Response Format**:
+```json
+{
+  "success": true,
+  "result": "Found 5 results:\n\n1. [Title]\n   URL: https://...\n   Snippet: ...\n\n2. [Title]\n   ...",
+  "metadata": {
+    "query": "original query",
+    "results_count": 5,
+    "search_engine": "duckduckgo"
+  }
+}
+```
+
+**Implementation Requirements**:
+
+1. **CRITICAL - Search Backend**:
+   - Use DuckDuckGo HTML API (no API key required, respects privacy)
+   - Alternative: DuckDuckGo Instant Answer API
+   - Fallback: Direct HTML scraping with user-agent header
+   - Do NOT use APIs requiring authentication (Google, Bing) - adds setup friction
+
+2. **CRITICAL - Response Format**:
+   - Plain text, numbered list format
+   - Each result: Title, URL, Snippet (2-3 sentences)
+   - Maximum 10 results (prevent context overflow)
+   - Default 5 results
+
+3. **CRITICAL - Error Handling**:
+   - Network errors: Return `{"success": false, "error": "Network unavailable: ..."}`
+   - No results: Return `{"success": true, "result": "No results found for query: ..."}`
+   - Timeout (30 seconds): Return error with timeout message
+   - Rate limiting: Return error instructing user to wait
+
+4. **Security Considerations**:
+   - MUST sanitize query string (prevent command injection)
+   - MUST validate max_results is integer 1-10
+   - MUST use HTTPS for all requests
+   - MUST set reasonable User-Agent header
+   - MUST timeout after 30 seconds maximum
+
+5. **Implementation Details**:
+   - Language: Bash script (portable, no dependencies besides curl)
+   - Dependencies: `curl`, `jq` (JSON parsing)
+   - Location: `~/.config/ybs/tools/web_search`
+   - Executable: `chmod +x`
+   - Schema discovery: `--schema` flag support
+
+**Test Requirements**:
+
+```swift
+@Suite("WebSearch Tool Tests")
+struct WebSearchToolTests {
+
+    @Test("web_search tool provides valid schema")
+    func webSearchToolSchema() async throws {
+        // Given: web_search tool exists and is executable
+        let toolPath = NSString(string: "~/.config/ybs/tools/web_search").expandingTildeInPath
+
+        // When: Requesting schema
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: toolPath)
+        process.arguments = ["--schema"]
+        let pipe = Pipe()
+        process.standardOutput = pipe
+        try process.run()
+        process.waitUntilExit()
+
+        // Then: Schema should be valid JSON with required fields
+        let data = pipe.fileHandleForReading.readDataToEndOfFile()
+        let schema = try JSONDecoder().decode(ExternalToolSchema.self, from: data)
+        #expect(schema.name == "web_search")
+        #expect(schema.parameters["query"] != nil)
+        #expect(schema.parameters["query"]?.required == true)
+    }
+
+    @Test("web_search returns results for valid query")
+    func webSearchValidQuery() async throws {
+        // Given: A simple search query
+        let query = """
+        {"query": "Swift programming language", "max_results": 3}
+        """
+
+        // When: Executing search
+        let tool = ExternalTool(
+            executablePath: NSString(string: "~/.config/ybs/tools/web_search").expandingTildeInPath,
+            schema: ExternalToolSchema(name: "web_search", description: "", parameters: [:])
+        )
+        let result = try await tool.execute(arguments: query)
+
+        // Then: Should return success with results
+        #expect(result.success)
+        #expect(result.output?.contains("URL:") ?? false)
+    }
+
+    @Test("web_search handles max_results parameter")
+    func webSearchMaxResults() async throws {
+        // Given: Query with max_results = 2
+        let query = """
+        {"query": "test", "max_results": 2}
+        """
+
+        // When: Executing search
+        let tool = ExternalTool(
+            executablePath: NSString(string: "~/.config/ybs/tools/web_search").expandingTildeInPath,
+            schema: ExternalToolSchema(name: "web_search", description: "", parameters: [:])
+        )
+        let result = try await tool.execute(arguments: query)
+
+        // Then: Should respect max_results limit
+        #expect(result.success)
+        // Result should contain at most 2 results
+    }
+
+    @Test("web_search handles empty query gracefully")
+    func webSearchEmptyQuery() async throws {
+        // Given: Empty query
+        let query = """
+        {"query": ""}
+        """
+
+        // When: Executing search
+        let tool = ExternalTool(
+            executablePath: NSString(string: "~/.config/ybs/tools/web_search").expandingTildeInPath,
+            schema: ExternalToolSchema(name: "web_search", description: "", parameters: [:])
+        )
+        let result = try await tool.execute(arguments: query)
+
+        // Then: Should return error
+        #expect(!result.success)
+        #expect(result.error?.contains("query") ?? false)
+    }
+
+    @Test("web_search validates max_results bounds")
+    func webSearchMaxResultsBounds() async throws {
+        // Given: max_results > 10
+        let query = """
+        {"query": "test", "max_results": 100}
+        """
+
+        // When: Executing search
+        let tool = ExternalTool(
+            executablePath: NSString(string: "~/.config/ybs/tools/web_search").expandingTildeInPath,
+            schema: ExternalToolSchema(name: "web_search", description: "", parameters: [:])
+        )
+        let result = try await tool.execute(arguments: query)
+
+        // Then: Should cap at 10 or return validation error
+        #expect(result.success || result.error?.contains("max_results") ?? false)
+    }
+
+    @Test("web_search tool auto-discovers via ToolDiscovery")
+    func webSearchAutoDiscovery() async throws {
+        // Given: ToolDiscovery with search paths
+        let discovery = ToolDiscovery(
+            toolPaths: ["~/.config/ybs/tools"],
+            logger: Logger(subsystem: "test", category: "test")
+        )
+
+        // When: Discovering tools
+        let tools = await discovery.discoverTools()
+
+        // Then: web_search should be discovered
+        let webSearchTool = tools.first { $0.schema.name == "web_search" }
+        #expect(webSearchTool != nil)
+    }
+}
+```
+
+**Test Coverage Target**: 80% (all code paths tested)
+
+**Usage Example**:
+
+```bash
+# Manual test
+$ echo '{"query": "Swift concurrency"}' | ~/.config/ybs/tools/web_search
+{
+  "success": true,
+  "result": "Found 5 results:\n\n1. Swift Concurrency - Apple Developer\n   URL: https://developer.apple.com/...\n   Snippet: Learn about Swift's built-in concurrency model...\n\n2. ...",
+  "metadata": {
+    "query": "Swift concurrency",
+    "results_count": 5,
+    "search_engine": "duckduckgo"
+  }
+}
+```
+
+**In LLM conversation**:
+
+```
+User: What are the latest Swift concurrency best practices?
+Assistant: Let me search for current information...
+[Calls web_search tool with query: "Swift concurrency best practices 2026"]
+Assistant: Based on current documentation, here are the latest Swift concurrency best practices: ...
+```
+
+**Why DuckDuckGo**:
+- No API key required (zero setup friction)
+- Respects privacy (no tracking)
+- HTML API available for scraping
+- Instant Answer API for structured data
+- Works reliably without authentication
+
 ---
 
 ## 5. Tool Discovery & Runtime Loading
