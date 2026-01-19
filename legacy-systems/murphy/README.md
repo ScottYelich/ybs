@@ -1,34 +1,101 @@
-# Bootstrap System
+# Murphy - AI Chat Tool with First-Class YBS Support
 
 **Version**: 1.0.0
-**Last Updated**: 2026-01-17
+**Last Updated**: 2026-01-18
 
-📍 **You are here**: YBS Framework > Systems > Bootstrap
-**↑ Parent**: [Systems Directory](../) | [Framework](../../framework/README.md)
+📍 **You are here**: YBS Repository > Legacy Systems > Murphy
+**Status**: ⚠️ **To be extracted to separate repository**
 
 ---
 
-## What is Bootstrap?
+## What is Murphy?
 
-**Bootstrap is a Swift-based AI chat tool (LLM coding assistant) for macOS.** It's the first system being built WITH the YBS framework to validate and refine the methodology.
+**Murphy is a Swift-based AI chat tool (LLM coding assistant) for macOS with first-class YBS build system support.**
 
-**Important**: Bootstrap is ONE example of what YBS can build. The YBS framework can guide building ANY type of system - calculators, web apps, databases, compilers, AI agents, anything.
+Named after Murphy's Law ("Anything that can go wrong, will go wrong"), Murphy is your AI pair programmer that helps you handle what goes wrong during development.
+
+---
+
+## 🚨 Repository Status
+
+**This directory will be moved to a separate repository**: `github.com/ScottYelich/murphy`
+
+**Current location**: `legacy-systems/murphy/` (temporary, within YBS repo)
+
+**Future location**: Standalone repository with YBS integration
+
+**Why separate?**
+- Murphy is a general-purpose AI chat tool (not YBS-specific)
+- Can be used for any development tasks, not just YBS builds
+- YBS framework works with any AI agent (Murphy is the reference implementation)
+- **Option B Architecture**: YBS (framework) + Murphy (agent) = separate but tightly integrated
+
+---
+
+## Murphy + YBS: The Perfect Pair
+
+**YBS Framework** provides:
+- Specifications (what to build)
+- Build steps (how to build)
+- Configuration system
+- Verification requirements
+
+**Murphy** provides:
+- AI execution engine (reads and executes YBS steps)
+- Tool use (git, swift, npm, docker, etc.)
+- Streaming responses (real-time feedback)
+- Context management (handles large builds)
+- Local execution (works with Ollama, no API costs)
+
+**Together**:
+```bash
+# Install both
+brew install ybs murphy
+
+# Create system with YBS
+cd my-system
+ybs init
+
+# Execute with Murphy
+murphy build
+
+# Murphy automatically:
+# - Reads BUILD_CONFIG.json
+# - Executes YBS steps sequentially
+# - Verifies each step
+# - Handles retries
+# - Shows streaming progress
+```
+
+**But also separate**: Use YBS with Claude CLI, OpenAI assistants, or any AI agent. Use Murphy for non-YBS tasks.
+
+---
+
+## History: Originally Called "Bootstrap"
+
+This project was originally named "bootstrap" because it was the **first system built WITH the YBS framework** to validate the methodology ("pulling yourself up by your bootstraps").
+
+**Renamed to Murphy** (2026-01-18):
+- **Reason**: Avoid naming confusion with YBS framework, reflect Murphy's Law theme
+- **Git history**: Fully preserved via `git mv`
+- **Purpose**: Clarified as general-purpose AI chat tool, not YBS-only
 
 ---
 
 ## Purpose
 
-### Primary Goal: Validate YBS Framework
+### Primary Goal: Reference AI Agent for YBS
 
-Bootstrap serves as a real-world test case:
+Murphy serves as the reference implementation showing how AI agents can work with YBS:
 
-- **Tests methodology**: Does YBS provide sufficient detail for autonomous builds?
-- **Refines framework**: Identifies gaps, ambiguities, and improvements needed
-- **Demonstrates completeness**: Proves AI agents can build complex systems end-to-end
+- **Execute YBS builds**: Read specs, execute steps, verify results
+- **Configuration-first**: Honors BUILD_CONFIG.json
+- **Autonomous execution**: No prompts after Step 0
+- **Demonstrates completeness**: AI agents can build complex systems end-to-end
 
-### Secondary Goal: Useful Tool
+### Secondary Goal: General-Purpose AI Chat Tool
 
-If successful, bootstrap becomes a functional AI coding assistant:
+Murphy is also a functional AI coding assistant for any task:
 
 - Command-line interface
 - Local or remote LLMs (Ollama, OpenAI, Anthropic)
@@ -41,50 +108,53 @@ If successful, bootstrap becomes a functional AI coding assistant:
 ## System Structure
 
 ```
-bootstrap/
+murphy/
 ├── README.md                          # This file
-├── CLAUDE.md                          # Guide for AI agents working on bootstrap
+├── CLAUDE.md                          # Guide for AI agents working on Murphy
 ├── specs/                             # System specifications
 │   ├── README.md                      # Spec organization
-│   ├── ybs-spec.md                    # Complete technical specification
-│   ├── ybs-decisions.md               # Architectural Decision Records (ADRs)
-│   └── ybs-lessons-learned.md         # Implementation checklist
+│   ├── technical/
+│   │   └── ybs-spec.md                # Complete technical specification
+│   ├── architecture/
+│   │   └── ybs-decisions.md           # Architectural Decision Records (ADRs)
+│   └── general/
+│       └── ybs-lessons-learned.md     # Implementation checklist
 ├── steps/                             # Build steps
 │   ├── README.md                      # Step overview
 │   ├── ybs-step_000000000000.md       # Step 0: Build Configuration
 │   ├── ybs-step_478a8c4b0cef.md       # Step 1: Initialize Build Workspace
-│   ├── ybs-step_c5404152680d.md       # Step 2: Define Architecture
-│   └── ybs-step_89b9e6233da5.md       # Step 3: Set Up Project Environment
+│   └── ...                            # Steps 1-44
 ├── tools/                             # Helper scripts
 │   ├── README.md                      # Tools documentation
 │   └── searxng                        # SearXNG management script
-├── docs/                              # Bootstrap-specific documentation
-│   ├── bootstrap-principles.md        # Design principles for bootstrap
+├── docs/                              # Murphy-specific documentation
+│   ├── murphy-principles.md           # Design principles (formerly bootstrap-principles.md)
 │   ├── tool-architecture.md           # Hybrid tool system
 │   ├── security-model.md              # Sandboxing and security
 │   └── configuration.md               # Layered configuration system
 └── builds/                            # Build outputs (transient workspaces)
-    └── BUILDNAME/                     # Each build is a separate workspace
+    ├── test6/                         # Test build 6
+    └── test7/                         # Test build 7 (current active)
 ```
 
 ---
 
 ## Quick Start
 
-### For AI Agents: Build the Bootstrap System
+### For AI Agents: Build the Murphy System
 
-1. **Read**: [CLAUDE.md](CLAUDE.md) - Complete AI agent guide for bootstrap
+1. **Read**: [CLAUDE.md](CLAUDE.md) - Complete AI agent guide for Murphy
 2. **Start**: Execute [steps/ybs-step_000000000000.md](steps/ybs-step_000000000000.md) (Step 0: Configuration)
 3. **Continue**: Follow steps autonomously until system is built
 
-### For Humans: Understand the Bootstrap
+### For Humans: Understand Murphy
 
 1. **Overview**: Read this file
-2. **Design**: Read [docs/bootstrap-principles.md](docs/bootstrap-principles.md)
+2. **Design**: Read [docs/murphy-principles.md](docs/murphy-principles.md)
 3. **Specs**: Read [specs/technical/ybs-spec.md](specs/technical/ybs-spec.md) - Complete technical specification
 4. **Decisions**: Read [specs/architecture/ybs-decisions.md](specs/architecture/ybs-decisions.md) - Why designed this way
 
-### For Contributors: Improve Bootstrap Specs/Steps
+### For Contributors: Improve Murphy Specs/Steps
 
 1. **Understand**: Read specs and steps thoroughly
 2. **Identify gaps**: What's missing or ambiguous?
@@ -95,11 +165,11 @@ bootstrap/
 
 ## Management Tools
 
-Bootstrap includes helper scripts in `tools/` for managing dependencies and services.
+Murphy includes helper scripts in `tools/` for managing dependencies and services.
 
 ### SearXNG Web Search Server
 
-Bootstrap uses SearXNG for unlimited web searches. Manage it with:
+Murphy uses SearXNG for unlimited web searches. Manage it with:
 
 ```bash
 # Start SearXNG (required for web_search tool to work)
@@ -133,7 +203,7 @@ Bootstrap uses SearXNG for unlimited web searches. Manage it with:
 
 ### External Tools Registration
 
-Bootstrap auto-discovers external tools from these directories:
+Murphy auto-discovers external tools from these directories:
 - `~/.config/ybs/tools` (system-wide, primary location)
 - `~/.ybs/tools` (user-specific)
 - `./tools` (project-specific)
@@ -147,7 +217,7 @@ Bootstrap auto-discovers external tools from these directories:
 
 **How It Works**:
 1. SearXNG server runs in background (managed by `./tools/searxng`)
-2. Bootstrap discovers `web_search` tool at startup via `--schema` flag
+2. Murphy discovers `web_search` tool at startup via `--schema` flag
 3. LLM can call `web_search` tool during conversations
 4. Tool queries SearXNG and returns results to LLM
 
@@ -161,11 +231,11 @@ echo '{"query": "Swift programming", "max_results": 3}' | \
 ~/.config/ybs/tools/web_search --schema | jq .
 ```
 
-**No manual registration required** - bootstrap automatically discovers and loads all executable files in the tool search paths that implement the `--schema` flag.
+**No manual registration required** - Murphy automatically discovers and loads all executable files in the tool search paths that implement the `--schema` flag.
 
 ---
 
-## Bootstrap System Overview
+## Murphy System Overview
 
 ### What It Does
 
@@ -176,6 +246,7 @@ A command-line AI coding assistant that:
 - **Tool-based**: 6 built-in tools + unlimited external tools
 - **Secure**: Sandboxed execution, confirmation for destructive ops
 - **Simple core**: Agent loop < 100 lines
+- **YBS-aware**: First-class support for executing YBS builds
 
 ### Technology Stack
 
@@ -202,6 +273,13 @@ A command-line AI coding assistant that:
 - JSON protocol (input via argv, output via stdout)
 - Examples: web_search, web_fetch, project-specific tools
 
+**YBS Integration** (future):
+- `murphy build` - Execute YBS build from current directory
+- `murphy step <N>` - Execute specific YBS step
+- `murphy verify` - Run YBS verification for current step
+- Native BUILD_CONFIG.json support
+- Built-in understanding of YBS step format
+
 **Configuration**:
 - Layered config: System → User → Project → CLI
 - Multiple file locations supported
@@ -218,7 +296,7 @@ A command-line AI coding assistant that:
 
 ## Design Principles
 
-See [docs/bootstrap-principles.md](docs/bootstrap-principles.md) for complete principles. Summary:
+See [docs/murphy-principles.md](docs/murphy-principles.md) for complete principles. Summary:
 
 1. **Local-First**: All tool execution happens locally
 2. **Minimal Dependencies**: Swift stdlib + 2-3 packages
@@ -226,6 +304,7 @@ See [docs/bootstrap-principles.md](docs/bootstrap-principles.md) for complete pr
 4. **Secure by Default**: Sandboxed, confirmation required
 5. **Simple Core**: Agent loop < 100 lines
 6. **Provider-Agnostic**: Works with any LLM provider
+7. **YBS-Friendly**: First-class support for YBS builds (but not YBS-only)
 
 ---
 
@@ -266,7 +345,7 @@ Steps are in [steps/](steps/) directory:
 - **Step 1**: Initialize Build Workspace
 - **Step 2**: Define Architecture
 - **Step 3**: Set Up Project Environment
-- *(More steps to be added)*
+- *(44+ steps total)*
 
 Each step includes:
 - Objectives (what to accomplish)
@@ -284,21 +363,21 @@ Each step includes:
 - ✅ Complete technical specification (specs/)
 - ✅ 15 Architectural Decision Records
 - ✅ Implementation checklist from industry research
-- ✅ Build steps (0-36 defined)
+- ✅ Build steps (0-44 defined)
 - ✅ Working builds: Swift package created, compiles successfully
+- ✅ Core functionality implemented (test7 build)
 
 **In Progress**:
-- 🔄 Additional build steps (implementing features)
-- 🔄 Core agent loop
-- 🔄 Built-in tools
-- 🔄 LLM provider integration
+- 🔄 Feature refinements
+- 🔄 Testing suite expansion
+- 🔄 YBS-specific integration features
 
-**Future**:
-- ❌ External tool system
-- ❌ Security implementation
-- ❌ Configuration system
-- ❌ Testing suite
-- ❌ User documentation
+**Future (After Extraction to Separate Repo)**:
+- 🚀 Standalone repository setup
+- 🚀 Homebrew formula
+- 🚀 Published releases
+- 🚀 User documentation website
+- 🚀 YBS integration guide
 
 ---
 
@@ -310,59 +389,67 @@ Builds are transient workspaces for building the system. Each build in `builds/B
 - BUILD_STATUS.md (current progress)
 - build-history/ (completed steps documentation)
 
+**Active builds**:
+- test6, test7 (current development)
+
 ---
 
 ## Documentation
 
-### Bootstrap-Specific Docs
+### Murphy-Specific Docs
 
-- [docs/bootstrap-principles.md](docs/bootstrap-principles.md) - Design principles
+- [docs/murphy-principles.md](docs/murphy-principles.md) - Design principles
 - [docs/tool-architecture.md](docs/tool-architecture.md) - Hybrid tool system
 - [docs/security-model.md](docs/security-model.md) - Security layers
 - [docs/configuration.md](docs/configuration.md) - Config system
 
-### Framework Docs
+### YBS Framework Docs (for context)
 
 - [../../framework/README.md](../../framework/README.md) - YBS framework overview
 - [../../framework/docs/glossary.md](../../framework/docs/glossary.md) - Standard terminology
 
 ---
 
-## Why "Bootstrap"?
+## Why "Murphy"?
 
-**Bootstrap = The first system built WITH YBS to validate the framework itself.**
+**Murphy's Law**: "Anything that can go wrong, will go wrong"
 
-The name reflects its purpose:
-- "Pulling yourself up by your bootstraps"
-- Using YBS to build a tool that could eventually build systems (including itself)
-- First reference implementation demonstrating YBS completeness
+The name reflects software development reality:
+- Code breaks, bugs appear, builds fail
+- Murphy is here to help you handle what goes wrong
+- Pragmatic, honest, battle-tested approach
+- Perfect for a developer's AI pair programmer
 
-**Not called "YBS Tool"** because:
-- YBS is the FRAMEWORK (methodology)
-- Bootstrap is ONE system built WITH the framework
-- Avoids confusion between framework and implementation
+**Originally called "bootstrap"** (2026-01-16 to 2026-01-18):
+- Built to validate YBS framework ("pulling yourself up by your bootstraps")
+- Renamed to avoid confusion with YBS framework name
+- History preserved in git
 
 ---
 
 ## Example Usage (When Complete)
 
 ```bash
-# Start bootstrap with Ollama (local)
-$ bootstrap
+# Start Murphy with Ollama (local)
+$ murphy
 
 # Or with OpenAI
-$ bootstrap --provider openai --model gpt-4-turbo
+$ murphy --provider openai --model gpt-4-turbo
+
+# Execute YBS build
+$ cd my-system
+$ murphy build
 
 # With project config
 $ cd ~/myproject
-$ bootstrap  # Reads ./.ybs.json for project-specific settings
+$ murphy  # Reads ./.murphy.json for project-specific settings
 ```
 
 ---
 
 ## Contributing
 
-To improve bootstrap specs or steps:
+To improve Murphy specs or steps:
 
 1. **Test with AI agent**: Have Claude execute build steps
 2. **Identify issues**: Ambiguities, gaps, errors
@@ -375,14 +462,19 @@ To improve bootstrap specs or steps:
 
 ## References
 
-- **Framework**: [../../framework/README.md](../../framework/README.md)
-- **YBS Overview**: [../../README.md](../../README.md)
+- **YBS Framework**: [../../framework/README.md](../../framework/README.md)
+- **YBS Repository**: [../../README.md](../../README.md)
 - **AI Agent Guide**: [CLAUDE.md](CLAUDE.md)
 - **Glossary**: [../../framework/docs/glossary.md](../../framework/docs/glossary.md)
+- **Future Repository**: github.com/ScottYelich/murphy (to be created)
 
 ---
 
 ## Version History
 
-- **1.0.0** (2026-01-17): Initial bootstrap system documentation after restructure
+- **1.0.0** (2026-01-18): Renamed from bootstrap to Murphy, prepared for extraction to separate repo
+- **0.1.0** (2026-01-17): Initial bootstrap system documentation after restructure
 
+---
+
+**Last updated**: 2026-01-18 (renamed to Murphy, prepared for repository extraction)

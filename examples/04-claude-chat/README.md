@@ -103,7 +103,7 @@ I'm doing well, thank you for asking! ...
 
 ### Original Name: Bootstrap
 
-This example was originally called "bootstrap" because it was the first system built with YBS - it "bootstrapped" the methodology.
+This example was originally called "murphy" because it was the first system built with YBS - it "bootstrapped" the methodology.
 
 **Renamed to Claude Chat** (2026-01-18):
 - Reason: Avoid naming confusion with YBS framework
@@ -112,7 +112,7 @@ This example was originally called "bootstrap" because it was the first system b
 
 ### Timeline
 
-- **2026-01-16**: Initial bootstrap system created
+- **2026-01-16**: Initial murphy system created
 - **Steps 0-3**: Core CLI structure, API integration
 - **Steps 4-42**: Feature development (history, context, configuration)
 - **Step 43**: Context statistics and dynamic management
@@ -125,9 +125,9 @@ This example was originally called "bootstrap" because it was the first system b
 
 🚧 **Placeholder - Content to be migrated**
 
-This example directory is a placeholder in the YBS v2.0.0 restructure. The complete implementation currently exists in `legacy-systems/bootstrap/` and will be migrated here in a future update.
+This example directory is a placeholder in the YBS v2.0.0 restructure. The complete implementation currently exists in `legacy-systems/murphy/` and will be migrated here in a future update.
 
-**Current location**: `legacy-systems/bootstrap/`
+**Current location**: `legacy-systems/murphy/`
 
 ---
 
@@ -184,13 +184,13 @@ class MessageStore {
 }
 ```
 
-Verified with: `./framework/tools/check-traceability.sh bootstrap test5`
+Verified with: `./framework/tools/check-traceability.sh murphy test5`
 
 ---
 
 ## References
 
 - **Examples Overview**: [../README.md](../README.md)
-- **Current Implementation**: [../../legacy-systems/bootstrap/](../../legacy-systems/bootstrap/)
-- **Tool Architecture**: [../../legacy-systems/bootstrap/docs/tool-architecture.md](../../legacy-systems/bootstrap/docs/tool-architecture.md)
-- **Security Model**: [../../legacy-systems/bootstrap/docs/security-model.md](../../legacy-systems/bootstrap/docs/security-model.md)
+- **Current Implementation**: [../../legacy-systems/murphy/](../../legacy-systems/murphy/)
+- **Tool Architecture**: [../../legacy-systems/murphy/docs/tool-architecture.md](../../legacy-systems/murphy/docs/tool-architecture.md)
+- **Security Model**: [../../legacy-systems/murphy/docs/security-model.md](../../legacy-systems/murphy/docs/security-model.md)

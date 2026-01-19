@@ -1,0 +1,1 @@
+./{nil}  # Contains details of current directory

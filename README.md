@@ -8,7 +8,7 @@
 > **Version**: 0.2.2
 > **GitHub**: [github.com/ScottYelich/ybs](https://github.com/ScottYelich/ybs)
 
-📍 **Navigation**: [Framework](framework/README.md) | [Bootstrap Example](systems/bootstrap/README.md) | [AI Agent Guide](CLAUDE.md)
+📍 **Navigation**: [Framework](framework/README.md) | [Bootstrap Example](legacy-systems/murphy/README.md) | [AI Agent Guide](CLAUDE.md)
 
 ---
 
@@ -300,7 +300,7 @@ ybs/
 **What**: Command-line AI coding assistant with local/remote LLMs
 **Why**: First test case to validate YBS provides sufficient detail for autonomous builds
 **Status**: In progress (Steps 0-3 complete, test5 build working)
-**Location**: [systems/bootstrap/](systems/bootstrap/)
+**Location**: [legacy-systems/murphy/](legacy-systems/murphy/)
 
 ---
 
@@ -341,13 +341,13 @@ Write specifications and steps once, then:
 4. **Execute**: Start with Step 0 (Build Configuration)
 5. **Continue**: Autonomously through all steps
 
-**Example**: [systems/bootstrap/builds/test5/](systems/bootstrap/builds/test5/)
+**Example**: [legacy-systems/murphy/builds/test5/](legacy-systems/murphy/builds/test5/)
 
 ### → I'm a Human: Understand YBS
 
 1. **Read**: [framework/README.md](framework/README.md) - Framework overview (detailed)
-2. **Explore**: [systems/bootstrap/](systems/bootstrap/) - Complete example system
-3. **Review**: [systems/bootstrap/builds/test5/](systems/bootstrap/builds/test5/) - Working build
+2. **Explore**: [legacy-systems/murphy/](legacy-systems/murphy/) - Complete example system
+3. **Review**: [legacy-systems/murphy/builds/test5/](legacy-systems/murphy/builds/test5/) - Working build
 4. **Learn**: [framework/docs/glossary.md](framework/docs/glossary.md) - Terminology
 
 ### → I Want to Build Something with YBS
@@ -355,7 +355,7 @@ Write specifications and steps once, then:
 **Step 1**: Read [framework/README.md](framework/README.md) - Understand methodology
 **Step 2**: Read [framework/methodology/writing-specs.md](framework/methodology/writing-specs.md) - Learn to write specifications
 **Step 3**: Read [framework/methodology/writing-steps.md](framework/methodology/writing-steps.md) - Learn to create build steps
-**Step 4**: Study `systems/bootstrap/` - See complete real-world example
+**Step 4**: Study `legacy-systems/murphy/` - See complete real-world example
 **Step 5**: Create your system in `systems/YOUR_SYSTEM/` - Build something amazing
 
 ---
@@ -399,8 +399,8 @@ AI agents work continuously without interruption:
 ### Parallel Builds
 
 Multiple agents can work simultaneously:
-- ✅ Different systems: systems/bootstrap/ + systems/calculator/
-- ✅ Different builds: systems/bootstrap/builds/test5/ + test6/
+- ✅ Different systems: legacy-systems/murphy/ + systems/calculator/
+- ✅ Different builds: legacy-systems/murphy/builds/test5/ + test6/
 - ❌ Same build: One agent per build (prevents conflicts)
 
 ---
@@ -421,13 +421,13 @@ Multiple agents can work simultaneously:
 
 ### Bootstrap Documentation
 
-- **[systems/bootstrap/README.md](systems/bootstrap/README.md)** - Bootstrap overview
-- **[systems/bootstrap/CLAUDE.md](systems/bootstrap/CLAUDE.md)** - AI agent guide for bootstrap
-- **[systems/bootstrap/specs/](systems/bootstrap/specs/)** - Complete specifications
-  - [ybs-spec.md](systems/bootstrap/specs/technical/ybs-spec.md) - Technical specification (100+ pages)
-  - [ybs-decisions.md](systems/bootstrap/specs/architecture/ybs-decisions.md) - 15 Architectural decisions
-  - [ybs-lessons-learned.md](systems/bootstrap/specs/general/ybs-lessons-learned.md) - Implementation checklist
-- **[systems/bootstrap/docs/](systems/bootstrap/docs/)** - Bootstrap-specific documentation
+- **[legacy-systems/murphy/README.md](legacy-systems/murphy/README.md)** - Bootstrap overview
+- **[legacy-systems/murphy/CLAUDE.md](legacy-systems/murphy/CLAUDE.md)** - AI agent guide for bootstrap
+- **[legacy-systems/murphy/specs/](legacy-systems/murphy/specs/)** - Complete specifications
+  - [ybs-spec.md](legacy-systems/murphy/specs/technical/ybs-spec.md) - Technical specification (100+ pages)
+  - [ybs-decisions.md](legacy-systems/murphy/specs/architecture/ybs-decisions.md) - 15 Architectural decisions
+  - [ybs-lessons-learned.md](legacy-systems/murphy/specs/general/ybs-lessons-learned.md) - Implementation checklist
+- **[legacy-systems/murphy/docs/](legacy-systems/murphy/docs/)** - Bootstrap-specific documentation
 
 ---
 

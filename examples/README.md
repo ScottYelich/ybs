@@ -34,7 +34,7 @@
 - **Complexity**: Complex (44+ steps)
 - **Learn**: Production patterns, advanced features, framework stress test
 - **Build**: Full-featured AI chat CLI
-- **Status**: 🚧 Coming soon (will be migrated from legacy-systems/bootstrap)
+- **Status**: 🚧 Coming soon (will be migrated from legacy-systems/murphy)
 
 ---
 
@@ -101,7 +101,7 @@ See: [docs/external-systems.md](../docs/external-systems.md)
 
 **Note**: This examples/ directory is newly created as part of YBS v2.0.0 restructure.
 
-- **Legacy systems**: See `legacy-systems/bootstrap/` for the original bootstrap implementation
+- **Legacy systems**: See `legacy-systems/murphy/` for the original murphy implementation
 - **Future examples**: Will be created based on progressive learning path
 - **Your feedback**: Help us prioritize which examples to create first!
 

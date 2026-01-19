@@ -144,7 +144,7 @@ git commit -m "Add tool specification template"
 1. Read existing tool
 2. Identify improvement (bug fix, new feature, better UX)
 3. Update script
-4. Test tool against real systems (e.g., bootstrap)
+4. Test tool against real systems (e.g., murphy)
 5. Update `framework/tools/README.md` if interface changed
 6. Commit
 
@@ -153,7 +153,7 @@ git commit -m "Add tool specification template"
 # Adding --verbose flag to list-steps.sh
 vim framework/tools/list-steps.sh
 # Test it
-./framework/tools/list-steps.sh bootstrap --verbose
+./framework/tools/list-steps.sh murphy --verbose
 # Update docs
 vim framework/tools/README.md
 git add framework/tools/list-steps.sh framework/tools/README.md
@@ -205,13 +205,13 @@ When writing methodology:
 When writing methodology:
 - ✅ Use abstract examples
 - ✅ Reference "systems/SYSTEMNAME/" not specific systems
-- ❌ Don't hardcode references to bootstrap or specific systems
+- ❌ Don't hardcode references to murphy or specific systems
 - ❌ Don't assume CLI tools, web apps, or any specific type
 
 **Example**:
 ```markdown
 ✅ GOOD: "Reference specs at systems/SYSTEMNAME/specs/"
-❌ BAD: "Reference systems/bootstrap/specs/ybs-spec.md"
+❌ BAD: "Reference systems/murphy/specs/ybs-spec.md"
 ```
 
 ### 3. Maintain Traceability
@@ -230,7 +230,7 @@ When updating framework:
 
 Before committing methodology changes:
 - Have another AI agent read updated docs
-- Test tools against real systems (bootstrap)
+- Test tools against real systems (murphy)
 - Verify examples are accurate
 - Check all cross-references still work
 
@@ -305,11 +305,11 @@ Before committing methodology changes:
 
 ```bash
 # Test list-steps.sh
-./framework/tools/list-steps.sh bootstrap
-./framework/tools/list-steps.sh bootstrap --verbose
+./framework/tools/list-steps.sh murphy
+./framework/tools/list-steps.sh murphy --verbose
 
 # Test check-traceability.sh
-./framework/tools/check-traceability.sh bootstrap test7
+./framework/tools/check-traceability.sh murphy test7
 
 # Verify output is helpful
 ```
@@ -376,7 +376,7 @@ For complete details, see [overview.md § Configuration System](methodology/over
 
 **Example**:
 ```markdown
-❌ BAD: "See systems/bootstrap/specs/ybs-spec.md for example"
+❌ BAD: "See systems/murphy/specs/ybs-spec.md for example"
 ✅ GOOD: "See systems/SYSTEMNAME/specs/ for specifications"
 ```
 
@@ -431,7 +431,7 @@ For complete details, see [overview.md § Configuration System](methodology/over
 Before committing framework changes:
 
 - [ ] Language-agnostic? (No Swift/Python/etc. assumptions)
-- [ ] System-agnostic? (No bootstrap/specific system references)
+- [ ] System-agnostic? (No murphy/specific system references)
 - [ ] Tested? (Tools tested, docs reviewed by another AI)
 - [ ] Versioned? (Version number updated)
 - [ ] Consistent? (No contradictions with other docs)
@@ -480,7 +480,7 @@ Affected files:
 
 Why: Multiple system builders confused about choice[...] syntax
 
-Tested: Reviewed by Claude, validated against bootstrap system
+Tested: Reviewed by Claude, validated against murphy system
 ```
 
 ---

@@ -145,13 +145,13 @@ You're building a system using YBS:
 
 ---
 
-### → Working on Bootstrap System (systems/bootstrap/)
+### → Working on Bootstrap System (legacy-systems/murphy/)
 You're working on the Swift AI chat tool:
-- **Read**: [systems/bootstrap/README.md](systems/bootstrap/README.md) for overview
-- **Read**: [systems/bootstrap/CLAUDE.md](systems/bootstrap/CLAUDE.md) for AI agent guide
-- **Specs**: systems/bootstrap/specs/ (WHAT to build)
-- **Steps**: systems/bootstrap/steps/ (HOW to build)
-- **Builds**: systems/bootstrap/builds/test5/ (WHERE you work)
+- **Read**: [legacy-systems/murphy/README.md](legacy-systems/murphy/README.md) for overview
+- **Read**: [legacy-systems/murphy/CLAUDE.md](legacy-systems/murphy/CLAUDE.md) for AI agent guide
+- **Specs**: legacy-systems/murphy/specs/ (WHAT to build)
+- **Steps**: legacy-systems/murphy/steps/ (HOW to build)
+- **Builds**: legacy-systems/murphy/builds/test5/ (WHERE you work)
 
 **Remember**: Bootstrap is ONE example system, not YBS itself.
 
@@ -232,8 +232,8 @@ Use `SESSION.md.template` from repository root as starting point.
 ## Parallel Execution Support
 
 **Supported Parallelization**:
-- ✅ Multiple systems: systems/bootstrap/ + systems/calculator/ (different agents)
-- ✅ Multiple builds: systems/bootstrap/builds/test5/ + test6/ (different agents)
+- ✅ Multiple systems: legacy-systems/murphy/ + systems/calculator/ (different agents)
+- ✅ Multiple builds: legacy-systems/murphy/builds/test5/ + test6/ (different agents)
 
 **Not Supported**:
 - ❌ Multiple agents on same build (two agents both on test5/)
@@ -305,12 +305,12 @@ Use `SESSION.md.template` from repository root as starting point.
 
 **The bootstrap system demonstrates YBS in action:**
 
-- **Location**: systems/bootstrap/
+- **Location**: legacy-systems/murphy/
 - **What**: Swift-based AI chat tool for macOS
 - **Purpose**: Validate YBS framework through real-world use
 - **Status**: In progress (Steps 0-3 complete, test5 build active)
 
-**To work on bootstrap**: Read [systems/bootstrap/CLAUDE.md](systems/bootstrap/CLAUDE.md)
+**To work on bootstrap**: Read [legacy-systems/murphy/CLAUDE.md](legacy-systems/murphy/CLAUDE.md)
 
 ---
 
@@ -405,5 +405,5 @@ framework/tools/check-traceability.sh     # Verify code-to-spec traceability
 - **Framework**: [framework/README.md](framework/README.md)
 - **Repository**: [README.md](README.md)
 - **Glossary**: [framework/docs/glossary.md](framework/docs/glossary.md)
-- **Bootstrap**: [systems/bootstrap/README.md](systems/bootstrap/README.md)
+- **Bootstrap**: [legacy-systems/murphy/README.md](legacy-systems/murphy/README.md)
 

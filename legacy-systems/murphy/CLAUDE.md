@@ -1,31 +1,37 @@
-# CLAUDE.md - Bootstrap System
+# CLAUDE.md - Murphy System
 
 **Version**: 1.0.0
-**Last Updated**: 2026-01-17
+**Last Updated**: 2026-01-18
 
-📍 **You are here**: YBS Repository > Systems > Bootstrap > AI Agent Guide
-📚 **See also**: [Bootstrap README](README.md) | [Framework](../../framework/README.md) | [Glossary](../../framework/docs/glossary.md)
+📍 **You are here**: YBS Repository > Legacy Systems > Murphy > AI Agent Guide
+📚 **See also**: [Murphy README](README.md) | [YBS Framework](../../framework/README.md) | [Glossary](../../framework/docs/glossary.md)
+
+**Status**: ⚠️ **To be extracted to separate repository** (`github.com/ScottYelich/murphy`)
 
 ---
 
-This file provides guidance to Claude Code when working on the Bootstrap system.
+This file provides guidance to Claude Code when working on the Murphy system.
 
-## Bootstrap System Overview
+## Murphy System Overview
 
-**Bootstrap is a Swift-based AI chat tool (LLM coding assistant) for macOS.** It's the first system being built WITH the YBS framework to validate and refine the methodology.
+**Murphy is a Swift-based AI chat tool (LLM coding assistant) for macOS with first-class YBS build system support.**
 
-**Location**: `systems/bootstrap/`
+Named after Murphy's Law ("Anything that can go wrong, will go wrong"), Murphy helps developers handle what goes wrong during development.
+
+**Location**: `legacy-systems/murphy/` (temporary - will move to standalone repo)
+
+**Originally called**: "bootstrap" (renamed 2026-01-18 to avoid YBS framework name confusion)
 
 ---
 
 ## What Are You Doing? (Task Identification)
 
-### → Working on Bootstrap Specifications (specs/)
-You're defining or updating WHAT the bootstrap system should do:
+### → Working on Murphy Specifications (specs/)
+You're defining or updating WHAT the Murphy system should do:
 - **Read**: [specs/README.md](specs/README.md) for specs overview
 - **Read**: [../../framework/methodology/writing-specs.md](../../framework/methodology/writing-specs.md) for how to write specs
 - **Focus**: Technical requirements, architectural decisions, design principles
-- **Goal**: Define the bootstrap system clearly and completely
+- **Goal**: Define the Murphy system clearly and completely
 
 **Key files**:
 - specs/technical/ybs-spec.md - Complete technical specification
@@ -34,12 +40,12 @@ You're defining or updating WHAT the bootstrap system should do:
 
 ---
 
-### → Working on Bootstrap Build Steps (steps/)
-You're defining or updating HOW to build the bootstrap system:
+### → Working on Murphy Build Steps (steps/)
+You're defining or updating HOW to build the Murphy system:
 - **Read**: [steps/README.md](steps/README.md) for steps overview
 - **Read**: [../../framework/methodology/writing-steps.md](../../framework/methodology/writing-steps.md) for how to write steps
 - **Focus**: Step-by-step build instructions for AI agents
-- **Goal**: Enable autonomous builds of the bootstrap system
+- **Goal**: Enable autonomous builds of the Murphy system
 
 **Key files**:
 - steps/ybs-step_000000000000.md - Step 0 (Build Configuration)
@@ -49,10 +55,10 @@ You're defining or updating HOW to build the bootstrap system:
 
 ---
 
-### → Executing a Bootstrap Build (builds/)
-You're BUILDING the bootstrap system using the steps:
+### → Executing a Murphy Build (builds/)
+You're BUILDING the Murphy system using the steps:
 - **Read**: [../../framework/methodology/executing-builds.md](../../framework/methodology/executing-builds.md) for execution guide
-- **Navigate**: To builds/BUILDNAME/ (e.g., builds/test5/)
+- **Navigate**: To builds/BUILDNAME/ (e.g., builds/test7/)
 - **Execute**: Start with Step 0 (Build Configuration)
 - **Follow**: The build-specific CLAUDE.md in the build directory
 
@@ -67,10 +73,10 @@ You're BUILDING the bootstrap system using the steps:
 
 ---
 
-## Bootstrap System Structure
+## Murphy System Structure
 
 ```
-bootstrap/
+murphy/
 ├── README.md                          # System overview (start here)
 ├── CLAUDE.md                          # This file - AI agent guide
 │
@@ -90,18 +96,15 @@ bootstrap/
 │   ├── ybs-step_c5404152680d.md       # Step 2: Configuration & Providers
 │   └── ybs-step_89b9e6233da5.md       # Step 3: Initial Implementation
 │
-├── docs/                              # Bootstrap-specific documentation
-│   ├── bootstrap-principles.md        # Design principles
+├── docs/                              # Murphy-specific documentation
+│   ├── murphy-principles.md           # Design principles (was bootstrap-principles.md)
 │   ├── tool-architecture.md           # Hybrid tool system
 │   ├── security-model.md              # Security layers
 │   └── configuration.md               # Configuration system
 │
 └── builds/                            # Build outputs
-    ├── test1/                         # First test build
-    ├── test2/                         # Second test build
-    ├── test3/                         # Third test build
-    ├── test4/                         # Fourth test build
-    └── test5/                         # Current active build
+    ├── test6/                         # Test build 6
+    └── test7/                         # Test build 7 (current active)
         ├── CLAUDE.md                  # Build-specific guide
         ├── BUILD_CONFIG.json          # Configuration
         ├── BUILD_STATUS.md            # Status
@@ -141,9 +144,9 @@ bootstrap/
 
 ---
 
-## Bootstrap Design Principles
+## Murphy Design Principles
 
-**See [docs/bootstrap-principles.md](docs/bootstrap-principles.md) for complete details.**
+**See [docs/murphy-principles.md](docs/murphy-principles.md) for complete details.**
 
 Key principles:
 1. **Configuration-first** - Step 0 collects ALL questions upfront
@@ -151,10 +154,12 @@ Key principles:
 3. **Hybrid tools** - Built-in + external tools
 4. **Security by default** - Sandboxed execution
 5. **Traceability** - Every implementation traces to specs
+6. **YBS-friendly** - First-class support for YBS builds (but not YBS-only)
+7. **Murphy's Law mindset** - Assume things will go wrong, help users handle it
 
 ---
 
-## Important Rules for Bootstrap Work
+## Important Rules for Murphy Work
 
 1. **Check SESSION.md**: Always check for crash recovery in build directories
 2. **Use scratch/**: All temporary files in repository root scratch/
@@ -172,15 +177,15 @@ Key principles:
 
 ## Common Tasks
 
-### Task: Start a new bootstrap build
+### Task: Start a new Murphy build
 → Read: [../../framework/methodology/executing-builds.md](../../framework/methodology/executing-builds.md)
 → Then: Create builds/NEWBUILD/ and start Step 0
 
-### Task: Understand bootstrap architecture
+### Task: Understand Murphy architecture
 → Read: [specs/technical/ybs-spec.md](specs/technical/ybs-spec.md)
-→ Read: [docs/bootstrap-principles.md](docs/bootstrap-principles.md)
+→ Read: [docs/murphy-principles.md](docs/murphy-principles.md)
 
-### Task: Modify bootstrap specifications
+### Task: Modify Murphy specifications
 → Read: [specs/README.md](specs/README.md)
 → Read: [../../framework/methodology/writing-specs.md](../../framework/methodology/writing-specs.md)
 
@@ -196,11 +201,11 @@ Key principles:
 
 ## Reference Documentation
 
-### Bootstrap System (This System)
+### Murphy System (This System)
 - **[README.md](README.md)** - System overview
 - **[specs/technical/ybs-spec.md](specs/technical/ybs-spec.md)** - Complete technical specification
 - **[specs/architecture/ybs-decisions.md](specs/architecture/ybs-decisions.md)** - Architectural decisions
-- **[docs/bootstrap-principles.md](docs/bootstrap-principles.md)** - Design principles
+- **[docs/murphy-principles.md](docs/murphy-principles.md)** - Design principles
 
 ### YBS Framework (Methodology)
 - **[../../framework/README.md](../../framework/README.md)** - Framework overview
@@ -213,33 +218,52 @@ Key principles:
 
 ---
 
-## Bootstrap Build History
+## Murphy + YBS Integration
+
+Murphy was built **using** YBS to validate the framework, and now serves as the **reference implementation** for how AI agents can work with YBS.
+
+**Murphy's dual purpose**:
+1. **General AI chat tool**: Works for any development task
+2. **YBS reference agent**: Demonstrates first-class YBS build execution
+
+**Future YBS-specific features** (after extraction to separate repo):
+- `murphy build` - Execute YBS build from current directory
+- `murphy step <N>` - Execute specific YBS step
+- `murphy verify` - Run YBS verification for current step
+- Native BUILD_CONFIG.json support
+- Built-in understanding of YBS step format
+
+**But**: YBS works with ANY AI agent. Murphy is ONE option (the recommended one).
+
+---
+
+## Murphy Build History
 
 **Active builds**:
-- test1: First test build (2026-01-16, Step 0 complete)
-- test2: Second test build (2026-01-16, Step 0 complete)
-- test3: Third test build (2026-01-16, Step 0 complete)
-- test4: Fourth test build (2026-01-16, Step 0 complete)
-- test5: Current active build (2026-01-16, Step 0 complete, Step 1-3 in progress)
+- test6: Test build 6 (2026-01-17)
+- test7: Current active build (2026-01-18, Steps 0-44 in various states)
 
-**Status**: In progress (Steps 0-3 defined, test5 is active build)
+**Status**: Active development (test7 is current working build)
 
 ---
 
 ## Version History
 
-- **1.0.0** (2026-01-17): Initial version after repository restructure
+- **1.0.0** (2026-01-18): Renamed from bootstrap to Murphy, prepared for extraction to separate repository
+- **0.1.0** (2026-01-17): Initial version after repository restructure
 
 ---
 
 ## Notes for AI Agents
 
-- This CLAUDE.md is for the SYSTEM level (bootstrap as a whole)
-- Each BUILD has its own CLAUDE.md (e.g., builds/test5/CLAUDE.md)
+- This CLAUDE.md is for the SYSTEM level (Murphy as a whole)
+- Each BUILD has its own CLAUDE.md (e.g., builds/test7/CLAUDE.md)
 - Use the build-specific CLAUDE.md when working inside a build directory
 - Use this CLAUDE.md when working on specs, steps, or creating new builds
-- Bootstrap is ONE example system - YBS can build ANY type of system
+- Murphy is being extracted to separate repository (github.com/ScottYelich/murphy)
+- Originally called "bootstrap" - renamed 2026-01-18 for clarity
+- Murphy demonstrates how AI agents can work with YBS, but is not YBS-only
 
 ---
 
-**Last updated**: 2026-01-17 (after repository restructure)
+**Last updated**: 2026-01-18 (renamed to Murphy, prepared for repository extraction)
