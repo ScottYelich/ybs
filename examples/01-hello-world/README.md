@@ -49,9 +49,9 @@ This example builds the simplest possible program: a Python script that prints "
 
 ## Status
 
-🚧 **Coming Soon**
+✅ **Complete** (v1.0.0 - 2026-01-18)
 
-This example is a placeholder in the YBS v2.0.0 restructure. Content will be added in a future update.
+This example is fully specified with complete specs and steps. Ready for AI agent execution.
 
 ---
 

@@ -12,20 +12,36 @@ scratch/
 .AppleDouble
 .LSOverride
 
-# Build artifacts
-builds/*/build/
-builds/*/.build/
-builds/*/dist/
-builds/*/target/
-builds/*/__pycache__/
-builds/*/*.egg-info/
-builds/*/node_modules/
+# Build artifacts - language/platform-specific outputs
+**/builds/*/build/
+**/builds/*/.build/
+**/builds/*/dist/
+**/builds/*/target/
+**/builds/*/__pycache__/
+**/builds/*/*.egg-info/
+**/builds/*/node_modules/
+**/builds/*/*.pyc
+**/builds/*/.pytest_cache/
+**/builds/*/venv/
+**/builds/*/env/
 
-# Build directories - entire build workspaces are transient
-systems/*/builds/*/
+# Build workspaces - all build directories are transient (generated from specs/steps)
+# Ignore all build workspaces in examples
+examples/*/builds/*/
 
-# Keep builds/ directories themselves but ignore all subdirectories
-!systems/*/builds/.gitkeep
+# Ignore all build workspaces in legacy-systems (if any)
+legacy-systems/*/builds/*/
+
+# Keep builds/ directories themselves (structure) but ignore contents
+!examples/*/builds/
+!legacy-systems/*/builds/
+!examples/*/builds/.gitkeep
+!legacy-systems/*/builds/.gitkeep
+
+# Exception: Keep demo/ builds as reference (if they contain example outputs)
+# Uncomment the following if you want to commit demo builds:
+# !examples/*/builds/demo/
+# !examples/*/builds/demo/**
 
 # IDE
 .vscode/
@@ -38,3 +54,47 @@ systems/*/builds/*/
 *.tmp
 *.log
 .*.tmp
+
+# Build-specific files that might leak into root
+BUILD_CONFIG.json
+BUILD_STATUS.md
+TEST_REPORT.md
+EXECUTION_NOTES.txt
+PROJECT_STRUCTURE.txt
+
+# Python
+*.pyc
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+*.egg-info/
+venv/
+env/
+
+# JavaScript/Node
+node_modules/
+package-lock.json
+yarn.lock
+
+# Rust
+target/
+Cargo.lock
+
+# Go
+go.sum
+
+# Swift
+.build/
+.swiftpm/
+*.xcodeproj/
+*.xcworkspace/
+
+# Compiled binaries (anywhere)
+*.exe
+*.out
+*.app
+*.o
+*.so
+*.dylib
+*.dll
