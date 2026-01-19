@@ -45,11 +45,6 @@ Progress through examples by complexity:
 - Complexity: Moderate (20 steps)
 - Learn: Multi-tier systems, persistence, API design
 
-**Level 4: Claude Chat** ([examples/04-claude-chat/](../examples/04-claude-chat/))
-- Time: Study over several sessions
-- Complexity: Complex (44+ steps)
-- Learn: Production patterns, advanced features
-
 ### 3. Build Your Own
 Create your first system:
 - See [Create Your First System](#create-your-first-system) below
@@ -358,7 +353,7 @@ Verified with: `check-traceability.sh . build1`
 1. ✅ Read [Framework Overview](../framework/README.md)
 2. ✅ Study [01-hello-world](../examples/01-hello-world/)
 3. ✅ Build [02-calculator](../examples/02-calculator/)
-4. ✅ Review [04-claude-chat](../examples/04-claude-chat/)
+4. ✅ Build [03-rest-api](../examples/03-rest-api/)
 
 ### For System Builders
 1. ✅ Read [Writing Specs](../framework/methodology/writing-specs.md)

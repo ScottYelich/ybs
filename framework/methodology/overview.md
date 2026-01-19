@@ -558,22 +558,22 @@ Working on: Setting up Swift project environment
 
 ✅ **Multiple systems** - Different AI agents building different systems:
 ```
-Agent 1 → systems/bootstrap/builds/build1/
-Agent 2 → systems/calculator/builds/build1/
+Agent 1 → system-a/builds/build1/
+Agent 2 → system-b/builds/build1/
 ```
 
 ✅ **Multiple builds** - Different AI agents building different variants:
 ```
-Agent 1 → systems/bootstrap/builds/test5/
-Agent 2 → systems/bootstrap/builds/test6/
+Agent 1 → system-a/builds/build1/
+Agent 2 → system-a/builds/build2/
 ```
 
 ### Not Supported
 
 ❌ **Multiple agents on same build**:
 ```
-Agent 1 → systems/bootstrap/builds/test5/  ⚠️
-Agent 2 → systems/bootstrap/builds/test5/  ⚠️ CONFLICT
+Agent 1 → system-a/builds/build1/  ⚠️
+Agent 2 → system-a/builds/build1/  ⚠️ CONFLICT
 ```
 
 **Reason**: Compilation locks, file conflicts, state confusion
@@ -703,19 +703,18 @@ See [glossary.md](../docs/glossary.md) for complete terminology reference.
 
 ## Examples
 
-### Real System: Bootstrap
+### Reference Systems: Examples
 
-**What**: Swift-based AI chat tool (LLM coding assistant)
+**What**: Progressive learning examples demonstrating YBS patterns
 
-**Location**: `systems/bootstrap/`
+**Location**: `examples/`
 
-**Structure**:
-- `specs/` - Technical specs, decisions, lessons
-- `steps/` - Step 0-3 complete, more planned
-- `builds/test5/` - Current active build
-- `docs/` - Architecture, security, configuration
+**Examples**:
+- `01-hello-world/` - Simple 5-step system
+- `02-calculator/` - Multi-module 10-step system
+- `03-rest-api/` - Multi-tier 20-step system
 
-**Purpose**: Validate YBS framework through real-world use
+**Purpose**: Demonstrate YBS patterns and provide learning path
 
 **Learn from**: Complete example of YBS methodology in action
 
@@ -731,8 +730,8 @@ See [glossary.md](../docs/glossary.md) for complete terminology reference.
 
 ### Try It
 
-1. Read bootstrap example: `systems/bootstrap/`
-2. Try building bootstrap: Follow steps in `systems/bootstrap/steps/`
+1. Read examples: `examples/02-calculator/`
+2. Try building an example: Follow steps in `examples/02-calculator/steps/`
 3. Create your own system: Use templates in `framework/templates/`
 
 ---
@@ -742,7 +741,7 @@ See [glossary.md](../docs/glossary.md) for complete terminology reference.
 - **Framework**: [../README.md](../README.md)
 - **Repository**: [../../README.md](../../README.md)
 - **Glossary**: [../docs/glossary.md](../docs/glossary.md)
-- **Bootstrap**: [../../systems/bootstrap/README.md](../../systems/bootstrap/README.md)
+- **Examples**: [../../examples/README.md](../../examples/README.md)
 
 ---
 

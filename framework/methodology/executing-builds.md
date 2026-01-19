@@ -298,7 +298,7 @@ Include:
 - **Retry limit**: If verification fails, retry up to 3 times total, then STOP
 - **Document everything**: Every completed step gets a DONE file with timing information
 - **Update status file**: Keep BUILD_STATUS.md current
-- **Reference specs**: Use `../../systems/bootstrap/specs/technical/ybs-spec.md` and related specs as reference
+- **Reference specs**: Use system's specs/ directory for requirements and architecture
 
 ### Starting Point
 
@@ -376,10 +376,10 @@ For steps that involve code implementation:
 
 ### Reference Documentation
 
-Core specifications are in:
-- `../../systems/bootstrap/specs/technical/ybs-spec.md` - Technical specification
-- `../../systems/bootstrap/specs/architecture/ybs-decisions.md` - Architectural decisions
-- `../../systems/bootstrap/specs/general/ybs-lessons-learned.md` - Implementation checklist
+Core specifications are typically in:
+- `specs/technical/SYSTEM-spec.md` - Technical specification
+- `specs/architecture/SYSTEM-decisions.md` - Architectural decisions
+- `specs/general/SYSTEM-lessons-learned.md` - Implementation checklist (if applicable)
 
 ### Spec-to-Step Traceability
 
@@ -436,15 +436,15 @@ Core specifications are in:
 
 ```
 1. User: "Execute step 478a8c4b0cef"
-2. Claude reads: systems/bootstrap/steps/ybs-step_478a8c4b0cef.md
+2. Claude reads: SYSTEMNAME/steps/SYSTEM-step_478a8c4b0cef.md
 3. Claude creates: TodoWrite list for step sub-tasks
-4. Claude asks: "What should we name this system?"
-5. User: "myproject"
-6. Claude creates: systems/bootstrap/builds/myproject/ structure
+4. Claude asks: "What should we name this build?"
+5. User: "build1"
+6. Claude creates: SYSTEMNAME/builds/build1/ structure
 7. Claude verifies: All directories and files created
-8. Claude documents: systems/bootstrap/builds/myproject/docs/build-history/ybs-step_478a8c4b0cef-DONE.txt
-9. Claude updates: systems/bootstrap/builds/myproject/BUILD_STATUS.md
-10. Claude reports: "Step complete. Next: ybs-step_c5404152680d"
+8. Claude documents: SYSTEMNAME/builds/build1/docs/build-history/SYSTEM-step_478a8c4b0cef-DONE.txt
+9. Claude updates: SYSTEMNAME/builds/build1/BUILD_STATUS.md
+10. Claude reports: "Step complete. Next: SYSTEM-step_c5404152680d"
 ```
 
 ## Directory Structure After Step 0

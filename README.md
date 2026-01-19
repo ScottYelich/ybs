@@ -8,7 +8,7 @@
 > **Version**: 0.2.2
 > **GitHub**: [github.com/ScottYelich/ybs](https://github.com/ScottYelich/ybs)
 
-📍 **Navigation**: [Framework](framework/README.md) | [Bootstrap Example](legacy-systems/murphy/README.md) | [AI Agent Guide](CLAUDE.md)
+📍 **Navigation**: [Framework](framework/README.md) | [Examples](examples/README.md) | [AI Agent Guide](CLAUDE.md)
 
 ---
 
@@ -254,12 +254,12 @@ The AI agent delivers:
 - **Language-agnostic, system-agnostic**
 - **See**: [framework/README.md](framework/README.md)
 
-**B. Systems** (`systems/`) - Definitions of specific systems to build
-- Each system has: specs (WHAT) + steps (HOW) + docs
+**B. Examples** (`examples/`) - Reference example systems
+- Each example has: specs (WHAT) + steps (HOW) + docs
 - Self-contained (everything needed to build that system)
-- **Examples**: bootstrap (Swift AI tool), calculator, web-app, etc.
+- **Examples**: 01-hello-world, 02-calculator, 03-rest-api
 
-**C. Builds** (`systems/SYSTEMNAME/builds/`) - Active build workspaces
+**C. Builds** (`examples/EXAMPLENAME/builds/`) - Active build workspaces
 - Build outputs and artifacts (compiled code, etc.)
 - SESSION.md for crash recovery
 - BUILD_STATUS.md for progress tracking
@@ -276,31 +276,40 @@ ybs/
 │   ├── docs/                          # Reference docs
 │   └── tools/                         # Helper scripts
 │
-└── systems/                           # System definitions
-    └── bootstrap/                     # Swift AI chat tool example
+└── examples/                          # Reference examples
+    ├── 01-hello-world/                # Simple example
+    ├── 02-calculator/                 # Multi-module example
+    └── 03-rest-api/                   # Multi-tier example
         ├── specs/                     # Specifications (WHAT)
         ├── steps/                     # Build steps (HOW)
         ├── docs/                      # Documentation
-        └── builds/                    # Build workspaces
-            └── test5/                 # Current active build
+        └── builds/demo/               # Example build output
 ```
 
 ---
 
-## Proven in Production
+## Example Systems
 
-**Bootstrap System**: A Swift-based AI chat tool for macOS, built entirely using YBS methodology.
+**Three reference examples demonstrate YBS methodology:**
 
-- 60+ build steps
-- Comprehensive specifications
-- Full test coverage
-- Production-ready code
-- Built autonomously by Claude Code
+**01-hello-world**: Simple Python script
+- 5 build steps
+- Basic YBS workflow
+- Learn fundamentals
 
-**What**: Command-line AI coding assistant with local/remote LLMs
-**Why**: First test case to validate YBS provides sufficient detail for autonomous builds
-**Status**: In progress (Steps 0-3 complete, test5 build working)
-**Location**: [legacy-systems/murphy/](legacy-systems/murphy/)
+**02-calculator**: CLI calculator
+- 10 build steps
+- Multi-module structure
+- Testing and traceability
+
+**03-rest-api**: Todo REST API
+- 20 build steps
+- Multi-tier architecture
+- Persistence and API design
+
+**Location**: [examples/](examples/)
+
+**Note**: Murphy (Swift AI tool) was extracted to a separate repository
 
 ---
 
@@ -341,13 +350,13 @@ Write specifications and steps once, then:
 4. **Execute**: Start with Step 0 (Build Configuration)
 5. **Continue**: Autonomously through all steps
 
-**Example**: [legacy-systems/murphy/builds/test5/](legacy-systems/murphy/builds/test5/)
+**Example**: [examples/02-calculator/](examples/02-calculator/)
 
 ### → I'm a Human: Understand YBS
 
 1. **Read**: [framework/README.md](framework/README.md) - Framework overview (detailed)
-2. **Explore**: [legacy-systems/murphy/](legacy-systems/murphy/) - Complete example system
-3. **Review**: [legacy-systems/murphy/builds/test5/](legacy-systems/murphy/builds/test5/) - Working build
+2. **Explore**: [examples/](examples/) - Reference example systems
+3. **Study**: [examples/02-calculator/](examples/02-calculator/) - Complete working example
 4. **Learn**: [framework/docs/glossary.md](framework/docs/glossary.md) - Terminology
 
 ### → I Want to Build Something with YBS
@@ -355,8 +364,8 @@ Write specifications and steps once, then:
 **Step 1**: Read [framework/README.md](framework/README.md) - Understand methodology
 **Step 2**: Read [framework/methodology/writing-specs.md](framework/methodology/writing-specs.md) - Learn to write specifications
 **Step 3**: Read [framework/methodology/writing-steps.md](framework/methodology/writing-steps.md) - Learn to create build steps
-**Step 4**: Study `legacy-systems/murphy/` - See complete real-world example
-**Step 5**: Create your system in `systems/YOUR_SYSTEM/` - Build something amazing
+**Step 4**: Study `examples/02-calculator/` - See complete reference example
+**Step 5**: Create your system externally (see [docs/external-systems.md](docs/external-systems.md)) - Build something amazing
 
 ---
 
@@ -399,8 +408,8 @@ AI agents work continuously without interruption:
 ### Parallel Builds
 
 Multiple agents can work simultaneously:
-- ✅ Different systems: legacy-systems/murphy/ + systems/calculator/
-- ✅ Different builds: legacy-systems/murphy/builds/test5/ + test6/
+- ✅ Different systems: system-a/ + system-b/ (external repos)
+- ✅ Different builds: system-a/builds/build1/ + build2/
 - ❌ Same build: One agent per build (prevents conflicts)
 
 ---
@@ -419,15 +428,13 @@ Multiple agents can work simultaneously:
 - **[framework/docs/glossary.md](framework/docs/glossary.md)** - Standard terminology (50+ terms)
 - **[framework/templates/](framework/templates/)** - Reusable templates
 
-### Bootstrap Documentation
+### Examples Documentation
 
-- **[legacy-systems/murphy/README.md](legacy-systems/murphy/README.md)** - Bootstrap overview
-- **[legacy-systems/murphy/CLAUDE.md](legacy-systems/murphy/CLAUDE.md)** - AI agent guide for bootstrap
-- **[legacy-systems/murphy/specs/](legacy-systems/murphy/specs/)** - Complete specifications
-  - [ybs-spec.md](legacy-systems/murphy/specs/technical/ybs-spec.md) - Technical specification (100+ pages)
-  - [ybs-decisions.md](legacy-systems/murphy/specs/architecture/ybs-decisions.md) - 15 Architectural decisions
-  - [ybs-lessons-learned.md](legacy-systems/murphy/specs/general/ybs-lessons-learned.md) - Implementation checklist
-- **[legacy-systems/murphy/docs/](legacy-systems/murphy/docs/)** - Bootstrap-specific documentation
+- **[examples/README.md](examples/README.md)** - Examples overview and learning path
+- **[examples/01-hello-world/](examples/01-hello-world/)** - Simple example (5 steps)
+- **[examples/02-calculator/](examples/02-calculator/)** - Multi-module example (10 steps)
+- **[examples/03-rest-api/](examples/03-rest-api/)** - Multi-tier example (20 steps)
+- **[docs/external-systems.md](docs/external-systems.md)** - Creating your own systems externally
 
 ---
 
@@ -505,20 +512,18 @@ YBS improves through real-world use:
 - ✅ SDD positioning complete
 - ✅ Templates and patterns
 - ✅ Helper scripts and tools
-- 🔄 Refining through bootstrap validation
+- ✅ Reference examples created
 
-### Bootstrap System (B)
-- ✅ Complete technical specification (100+ pages)
-- ✅ 15 Architectural Decision Records
-- ✅ Implementation checklist
-- ✅ Build steps (0-3 documented)
-- 🔄 Code implementation in progress
+### Example Systems (B)
+- ✅ 01-hello-world: Basic YBS workflow (5 steps)
+- ✅ 02-calculator: Multi-module system (10 steps)
+- ✅ 03-rest-api: Multi-tier system (20 steps)
+- ✅ Progressive learning path established
 
-### Bootstrap Builds (C)
-- ✅ test5: Swift package created, compiles successfully
-- ✅ BUILD_CONFIG.json generated (Step 0)
-- ✅ BUILD_STATUS.md tracking progress
-- 🔄 Core features being implemented
+### External Systems (C)
+- ✅ Murphy: Extracted to separate repository
+- ✅ External system documentation complete
+- ✅ Repository architecture defined
 
 ---
 

@@ -1,7 +1,7 @@
 # CLAUDE.md
 
-**Version**: 1.0.0
-**Last Updated**: 2026-01-17
+**Version**: 1.0.1
+**Last Updated**: 2026-01-18
 
 📍 **You are here**: YBS Repository > AI Agent Guide
 📚 **See also**: [README.md](README.md) | [Framework](framework/README.md) | [Glossary](framework/docs/glossary.md)
@@ -22,12 +22,12 @@ This file provides guidance to Claude Code when working in this repository.
 - Tools and documentation
 - **Applies to**: ANY system being built
 
-**B. Systems** (`systems/`) - Definitions of specific systems to build
-- Each system: specs + steps + docs
+**B. Examples** (`examples/`) - Reference example systems
+- Each example: specs + steps + docs
 - Self-contained (everything needed to build that system)
-- **Examples**: bootstrap (Swift AI tool), calculator, web-app, etc.
+- **Examples**: 01-hello-world, 02-calculator, 03-rest-api
 
-**C. Builds** (`systems/SYSTEMNAME/builds/`) - Active build workspaces
+**C. Builds** (`examples/EXAMPLENAME/builds/`) - Active build workspaces
 - Build outputs and artifacts
 - SESSION.md for crash recovery (per build)
 - BUILD_STATUS.md tracking progress
@@ -68,42 +68,29 @@ ybs/
 │   │   └── list-changelogs.sh
 │   └── changelogs/                    # Framework changes
 │
-└── systems/                           # Collection of system definitions
+└── examples/                          # Collection of reference examples
     │
-    └── bootstrap/                     # "B" - Bootstrap system (Swift AI tool)
-        ├── README.md                  # Bootstrap overview
-        ├── CLAUDE.md                  # Guide for working on bootstrap
-        │
-        ├── specs/                     # Bootstrap specifications
-        │   ├── README.md
-        │   ├── ybs-spec.md            # Technical specification
-        │   ├── ybs-decisions.md       # Architectural decisions
-        │   └── ybs-lessons-learned.md # Implementation checklist
-        │
-        ├── steps/                     # Bootstrap build steps
-        │   ├── README.md
-        │   ├── ybs-step_000000000000.md  # Step 0
-        │   ├── ybs-step_478a8c4b0cef.md  # Step 1
-        │   ├── ybs-step_c5404152680d.md  # Step 2
-        │   └── ybs-step_89b9e6233da5.md  # Step 3
-        │
-        ├── docs/                      # Bootstrap-specific docs
-        │   ├── bootstrap-principles.md
-        │   ├── tool-architecture.md
-        │   ├── security-model.md
-        │   └── configuration.md
-        │
-        └── builds/                    # "C" - Build outputs
-            ├── test1/
-            ├── test2/
-            ├── test3/
-            ├── test4/
-            └── test5/                 # Current build
-                ├── SESSION.md         # Per-build session
-                ├── BUILD_CONFIG.json
-                ├── BUILD_STATUS.md
-                ├── Package.swift
-                └── Sources/
+    ├── 01-hello-world/                # Simple example
+    │   ├── README.md                  # Example overview
+    │   ├── specs/                     # Specifications
+    │   ├── steps/                     # Build steps
+    │   ├── docs/                      # Documentation
+    │   └── builds/                    # Build workspaces
+    │       └── demo/                  # Example build
+    │
+    ├── 02-calculator/                 # Multi-module example
+    │   ├── README.md
+    │   ├── specs/
+    │   ├── steps/
+    │   ├── docs/
+    │   └── builds/demo/
+    │
+    └── 03-rest-api/                   # Multi-tier example
+        ├── README.md
+        ├── specs/
+        ├── steps/
+        ├── docs/
+        └── builds/demo/
 ```
 
 ---
@@ -123,37 +110,39 @@ You're improving the methodology:
 
 ---
 
-### → Defining a New System (systems/NEWSYSTEM/)
+### → Defining a New System (External Repository)
 You're creating specs and steps for a new system:
 - **Read**: [framework/methodology/writing-specs.md](framework/methodology/writing-specs.md)
 - **Read**: [framework/methodology/writing-steps.md](framework/methodology/writing-steps.md)
-- **Create**: systems/NEWSYSTEM/specs/ and systems/NEWSYSTEM/steps/
+- **Read**: [docs/external-systems.md](docs/external-systems.md) for external system setup
+- **Create**: External directory with specs/, steps/, builds/
 - **Goal**: Define WHAT to build and HOW to build it
 
-**Remember**: System definitions are self-contained (specs + steps + docs).
+**Remember**: Systems are typically created as external repositories, not in examples/.
 
 ---
 
 ### → Executing Build Steps (Building a System)
 You're building a system using YBS:
 - **Read**: [framework/methodology/executing-builds.md](framework/methodology/executing-builds.md)
-- **Navigate**: To systems/SYSTEMNAME/
-- **Execute**: Start with Step 0 (Build Configuration)
+- **Study**: Examples in examples/ directory for reference
+- **Execute**: Start with Step 0 (Build Configuration) in your system
 - **Continue**: Follow steps autonomously
 
-**Working directory**: systems/SYSTEMNAME/builds/BUILDNAME/
+**Working directory**: YOUR_SYSTEM/builds/BUILDNAME/ (in external repo or examples/)
 
 ---
 
-### → Working on Bootstrap System (legacy-systems/murphy/)
-You're working on the Swift AI chat tool:
-- **Read**: [legacy-systems/murphy/README.md](legacy-systems/murphy/README.md) for overview
-- **Read**: [legacy-systems/murphy/CLAUDE.md](legacy-systems/murphy/CLAUDE.md) for AI agent guide
-- **Specs**: legacy-systems/murphy/specs/ (WHAT to build)
-- **Steps**: legacy-systems/murphy/steps/ (HOW to build)
-- **Builds**: legacy-systems/murphy/builds/test5/ (WHERE you work)
+### → Studying Example Systems (examples/)
+You're studying reference implementations:
+- **Read**: [examples/README.md](examples/README.md) for overview
+- **Examples**: 01-hello-world, 02-calculator, 03-rest-api
+- **Purpose**: Learn YBS patterns and practices
+- **Location**: examples/EXAMPLENAME/
 
-**Remember**: Bootstrap is ONE example system, not YBS itself.
+**Remember**: Examples are for reference only. Build your own systems externally.
+
+**Note**: Murphy (former bootstrap system) was extracted to a separate repository.
 
 ---
 
@@ -184,9 +173,9 @@ You're working on the Swift AI chat tool:
 
 **IMPORTANT**: SESSION.md location depends on what you're working on:
 
-- **Building a system**: `systems/SYSTEMNAME/builds/BUILDNAME/SESSION.md`
+- **Building a system**: `YOUR_SYSTEM/builds/BUILDNAME/SESSION.md` (in external repo)
 - **Framework work**: `./SESSION.md` (repository root)
-- **System definition**: `systems/SYSTEMNAME/SESSION.md`
+- **Studying examples**: `./SESSION.md` (repository root)
 
 **One SESSION.md per build** - enables parallel agents on different builds.
 
@@ -232,15 +221,15 @@ Use `SESSION.md.template` from repository root as starting point.
 ## Parallel Execution Support
 
 **Supported Parallelization**:
-- ✅ Multiple systems: legacy-systems/murphy/ + systems/calculator/ (different agents)
-- ✅ Multiple builds: legacy-systems/murphy/builds/test5/ + test6/ (different agents)
+- ✅ Multiple systems: YOUR_SYSTEM_A/ + YOUR_SYSTEM_B/ (different agents, external repos)
+- ✅ Multiple builds: YOUR_SYSTEM/builds/build1/ + build2/ (different agents)
 
 **Not Supported**:
 - ❌ Multiple agents on same build (two agents both on test5/)
 
 **Reason**: Compilation locks, file conflicts, state confusion. One agent per build.
 
-**See**: scratch/parallelization-analysis.md for complete analysis.
+**See**: Repository structure supports parallel work on different builds.
 
 ---
 
@@ -281,16 +270,16 @@ Use `SESSION.md.template` from repository root as starting point.
 ### For AI Agents Building Systems
 
 1. **Learn YBS**: [framework/methodology/executing-builds.md](framework/methodology/executing-builds.md)
-2. **Choose system**: Navigate to systems/SYSTEMNAME/
-3. **Read system guide**: systems/SYSTEMNAME/CLAUDE.md
-4. **Execute**: Start with Step 0 in systems/SYSTEMNAME/steps/
+2. **Study examples**: Navigate to examples/ for reference
+3. **Set up your system**: See [docs/external-systems.md](docs/external-systems.md)
+4. **Execute**: Start with Step 0 in your external system
 
 ### For System Designers
 
 1. **Learn YBS**: [framework/README.md](framework/README.md)
 2. **Learn specs**: [framework/methodology/writing-specs.md](framework/methodology/writing-specs.md)
 3. **Learn steps**: [framework/methodology/writing-steps.md](framework/methodology/writing-steps.md)
-4. **Create system**: systems/NEWSYSTEM/ with specs/ and steps/
+4. **Create system**: External repository with specs/, steps/, and builds/
 
 ### For Framework Contributors
 
@@ -301,16 +290,17 @@ Use `SESSION.md.template` from repository root as starting point.
 
 ---
 
-## Bootstrap Example
+## Example Systems
 
-**The bootstrap system demonstrates YBS in action:**
+**Three reference examples demonstrate YBS in action:**
 
-- **Location**: legacy-systems/murphy/
-- **What**: Swift-based AI chat tool for macOS
-- **Purpose**: Validate YBS framework through real-world use
-- **Status**: In progress (Steps 0-3 complete, test5 build active)
+- **01-hello-world**: Simple Python script (5 steps) - Learn basics
+- **02-calculator**: CLI calculator (10 steps) - Multi-module, testing
+- **03-rest-api**: Todo REST API (20 steps) - Multi-tier, persistence
 
-**To work on bootstrap**: Read [legacy-systems/murphy/CLAUDE.md](legacy-systems/murphy/CLAUDE.md)
+**To study examples**: Read [examples/README.md](examples/README.md)
+
+**Note**: Murphy (Swift AI tool) was extracted to a separate repository
 
 ---
 
@@ -365,7 +355,7 @@ framework/tools/check-traceability.sh     # Verify code-to-spec traceability
 **Traceability Checking**:
 ```bash
 # Verify all source files have traceability comments
-./framework/tools/check-traceability.sh bootstrap test7
+./framework/tools/check-traceability.sh YOUR_SYSTEM BUILD_NAME
 
 # Required thresholds:
 # ✅ PASS: ≥80% files traced
@@ -388,12 +378,13 @@ framework/tools/check-traceability.sh     # Verify code-to-spec traceability
 - Enables parallel builds
 - Self-contained system definitions
 
-**See**: scratch/restructure-plan.md for complete restructure documentation
+**See**: git log for complete restructure history
 
 ---
 
 ## Version History
 
+- **1.0.1** (2026-01-18): Updated for Murphy extraction and systems → examples restructure
 - **1.0.0** (2026-01-17): Major restructure - separated framework, systems, and builds
 - **0.2.0** (2026-01-17): Documentation improvements, canonical docs, Quick Start
 - **0.1.0** (2026-01-16): Initial version
@@ -405,5 +396,6 @@ framework/tools/check-traceability.sh     # Verify code-to-spec traceability
 - **Framework**: [framework/README.md](framework/README.md)
 - **Repository**: [README.md](README.md)
 - **Glossary**: [framework/docs/glossary.md](framework/docs/glossary.md)
-- **Bootstrap**: [legacy-systems/murphy/README.md](legacy-systems/murphy/README.md)
+- **Examples**: [examples/README.md](examples/README.md)
+- **External Systems**: [docs/external-systems.md](docs/external-systems.md)
 

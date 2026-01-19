@@ -29,13 +29,6 @@
 - **Build**: Todo list REST API
 - **Status**: 🚧 Coming soon (placeholder)
 
-### 4. Claude Chat (04-claude-chat/)
-- **Time**: Study over several sessions
-- **Complexity**: Complex (44+ steps)
-- **Learn**: Production patterns, advanced features, framework stress test
-- **Build**: Full-featured AI chat CLI
-- **Status**: 🚧 Coming soon (will be migrated from legacy-systems/murphy)
-
 ---
 
 ## Using Examples
@@ -91,7 +84,6 @@ See: [docs/external-systems.md](../docs/external-systems.md)
 | Hello World | 5 | 1 source | Basics | 🚧 Placeholder |
 | Calculator | 10 | 3 modules | Testing, traceability | 🚧 Placeholder |
 | REST API | 20 | 10+ files | Multi-tier, database | 🚧 Placeholder |
-| Claude Chat | 44+ | 20+ files | Production patterns | 🚧 Placeholder |
 
 **Start simple, work up!**
 

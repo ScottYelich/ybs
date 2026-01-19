@@ -128,9 +128,8 @@ This example is a placeholder in the YBS v2.0.0 restructure. Content will be add
 ## Next Steps
 
 After completing this example:
-1. **Study**: [04-claude-chat](../04-claude-chat/) - Production complexity
-2. **Apply**: Build your own API-based system
-3. **Extend**: Add features (pagination, filtering, sorting)
+1. **Apply**: Build your own API-based system
+2. **Extend**: Add features (pagination, filtering, sorting)
 
 ---
 

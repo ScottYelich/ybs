@@ -47,7 +47,7 @@ YBS organizes work into three distinct layers:
 
 ---
 
-### B. Systems (`../systems/`) - System Definitions
+### B. System Definitions - External Repositories
 
 **Definitions of specific systems to build**—each system is self-contained.
 
@@ -64,13 +64,13 @@ YBS organizes work into three distinct layers:
 
 **Purpose**: Define WHAT to build and HOW to build it (for one specific system)
 
-**Example**: `../systems/bootstrap/` - Swift AI chat tool
+**Examples**: See `../examples/` for reference implementations
 
-**See**: [../systems/README.md](../systems/README.md) for systems overview
+**See**: [../docs/external-systems.md](../docs/external-systems.md) for creating your own systems
 
 ---
 
-### C. Builds (`../systems/SYSTEMNAME/builds/`) - Build Workspaces
+### C. Builds (SYSTEMNAME/builds/) - Build Workspaces
 
 **Active build directories where AI agents do their work**—outputs and artifacts.
 
@@ -86,7 +86,7 @@ YBS organizes work into three distinct layers:
 
 **Location**: Inside each system directory (B + C together keep systems self-contained)
 
-**Example**: `../systems/bootstrap/builds/test5/` - Current bootstrap build
+**Example**: `../examples/02-calculator/builds/demo/` - Reference build
 
 ---
 
@@ -160,9 +160,9 @@ Technical references in `docs/`:
 
 **Step 3**: Read [methodology/writing-steps.md](methodology/writing-steps.md) - Learn to create build steps
 
-**Step 4**: Study `../systems/bootstrap/` - See complete real-world example
+**Step 4**: Study `../examples/02-calculator/` - See complete reference example
 
-**Step 5**: Create your system in `../systems/YOUR_SYSTEM/` with specs, steps, and docs
+**Step 5**: Create your system externally (see [../docs/external-systems.md](../docs/external-systems.md)) with specs, steps, and docs
 
 ---
 
@@ -170,11 +170,11 @@ Technical references in `docs/`:
 
 **Step 1**: Read [methodology/executing-builds.md](methodology/executing-builds.md) - Your complete execution guide
 
-**Step 2**: Navigate to `../systems/SYSTEMNAME/`
+**Step 2**: Navigate to your system directory (external repo or examples/)
 
-**Step 3**: Read `../systems/SYSTEMNAME/CLAUDE.md` - System-specific guidance
+**Step 3**: Read system's CLAUDE.md - System-specific guidance
 
-**Step 4**: Execute Step 0 (Build Configuration) in `../systems/SYSTEMNAME/builds/BUILDNAME/`
+**Step 4**: Execute Step 0 (Build Configuration) in SYSTEMNAME/builds/BUILDNAME/
 
 **Step 5**: Continue autonomously through Steps 1-N
 
@@ -188,7 +188,7 @@ Technical references in `docs/`:
 
 **Step 3**: Make changes while maintaining language-agnostic, system-agnostic design
 
-**Step 4**: Test changes with real systems (e.g., bootstrap)
+**Step 4**: Test changes with reference examples (e.g., examples/02-calculator/)
 
 **Step 5**: Submit improvements
 
@@ -401,11 +401,11 @@ AI agents can crash and resume exactly where they left off.
 Multiple AI agents can work simultaneously on different systems or different builds.
 
 **Supported**:
-- ✅ Multiple systems: One agent on bootstrap, another on calculator
-- ✅ Multiple builds: One agent on test5, another on test6
+- ✅ Multiple systems: One agent on system-a, another on system-b
+- ✅ Multiple builds: One agent on build1, another on build2
 
 **Not supported**:
-- ❌ Same build: Two agents both working on test5 (causes file conflicts)
+- ❌ Same build: Two agents both working on same build directory (causes file conflicts)
 
 **Why**: Each build directory is an independent workspace. One agent per workspace prevents conflicts.
 
@@ -415,10 +415,10 @@ Multiple AI agents can work simultaneously on different systems or different bui
 
 ### Creating a New System
 
-**1. Create system directory**:
+**1. Create system directory** (typically external to ybs repo):
 ```bash
-mkdir -p systems/NEWSYSTEM/{specs,steps,docs,builds}
-cd systems/NEWSYSTEM
+mkdir -p YOUR_SYSTEM/{specs,steps,docs,builds}
+cd YOUR_SYSTEM
 ```
 
 **2. Write specifications** (`specs/`):
@@ -513,7 +513,7 @@ framework/tools/check-traceability.sh SYSTEMNAME BUILDNAME
 ### For Framework Details
 
 - **[methodology/overview.md](methodology/overview.md)** - Complete technical methodology
-- **[../systems/bootstrap/](../systems/bootstrap/)** - Real-world example system
+- **[../examples/](../examples/)** - Reference example systems
 - **[docs/glossary.md](docs/glossary.md)** - Standard terminology
 
 ### For AI Agents

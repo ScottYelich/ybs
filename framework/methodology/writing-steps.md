@@ -600,11 +600,11 @@ Before finalizing a step, verify:
 
 See the [step template](../templates/step-template.md) for a complete example of a well-formed step file.
 
-**Real examples** (from bootstrap system):
-- Step 0: `systems/bootstrap/steps/ybs-step_000000000000.md` - Build Configuration
-- Step 1: `systems/bootstrap/steps/ybs-step_478a8c4b0cef.md` - Initialize Build Workspace
-- Step 2: `systems/bootstrap/steps/ybs-step_c5404152680d.md` - Define Architecture
-- Step 3: `systems/bootstrap/steps/ybs-step_89b9e6233da5.md` - Set Up Project Environment
+**Real examples** (from calculator system):
+- Step 0: `examples/02-calculator/steps/calc-step_000000000000.md` - Build Configuration
+- Step 1: `examples/02-calculator/steps/calc-step_[guid].md` - Initialize Project
+- Step 2: `examples/02-calculator/steps/calc-step_[guid].md` - Core Calculator Logic
+- See: `examples/02-calculator/steps/` for complete set
 
 ---
 
@@ -723,10 +723,10 @@ name: "{{CONFIG:system_name|string|Name of the system|myapp}}"
 ## Traceability
 
 **Implements**:
-- systems/bootstrap/specs/technical/ybs-spec.md Section 3.2 (Package Configuration)
+- specs/technical/SYSTEM-spec.md Section 3.2 (Configuration Management)
 
 **References**:
-- systems/bootstrap/specs/architecture/ybs-decisions.md D01 (Swift as Implementation Language)
+- specs/architecture/SYSTEM-decisions.md D01 (Technology Selection)
 ```
 
 ---
@@ -822,7 +822,7 @@ Add changelog at top of step (after front matter):
 - **Executing Builds**: [executing-builds.md](executing-builds.md)
 - **Writing Specs**: [writing-specs.md](writing-specs.md)
 - **Glossary**: [../docs/glossary.md](../docs/glossary.md)
-- **Bootstrap Examples**: [../../systems/bootstrap/steps/](../../systems/bootstrap/steps/)
+- **Example Steps**: [../../examples/02-calculator/steps/](../../examples/02-calculator/steps/)
 
 ---
 

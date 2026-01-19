@@ -683,15 +683,15 @@ func testReadlineDisabledForSSH() {
 ### 5. Verify
 ```bash
 # Create new build from scratch
-mkdir -p systems/bootstrap/builds/test8
-cd systems/bootstrap/builds/test8
+mkdir -p SYSTEMNAME/builds/new-build
+cd SYSTEMNAME/builds/new-build
 
 # Execute Step 0 (build config)
-# Execute Steps 1-44 in order
+# Execute Steps 1-N in order
 
-# When Step 44 executes:
-# - enableReadline defaults to false ✓
-# - SSH detection code present ✓
+# When step executes:
+# - Changes applied correctly ✓
+# - Tests pass ✓
 # - Tests include SSH detection ✓
 
 # Result: test8 does NOT have readline SSH bug

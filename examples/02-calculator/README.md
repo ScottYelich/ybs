@@ -104,8 +104,7 @@ This example is a placeholder in the YBS v2.0.0 restructure. Content will be add
 
 After completing this example:
 1. **Study**: [03-rest-api](../03-rest-api/) - Multi-tier system
-2. **Study**: [04-claude-chat](../04-claude-chat/) - Production complexity
-3. **Create**: Your own multi-module system
+2. **Create**: Your own multi-module system
 
 ---
 
