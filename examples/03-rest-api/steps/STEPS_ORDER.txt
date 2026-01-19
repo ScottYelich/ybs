@@ -1,0 +1,25 @@
+# REST API Client - Build Steps Order
+
+# Step 0: Build Configuration (REQUIRED FIRST)
+api-step_000000000000.md
+
+# Step 1: Initialize Project Structure
+api-step_478a8c4b0cef.md
+
+# Step 2: Create Main Client Script
+api-step_c5404152680d.md
+
+# Step 3: Create Test Suite
+api-step_89b9e6233da5.md
+
+# Step 4: Run Tests and Verify Coverage
+api-step_a1b2c3d4e5f6.md
+
+# Step 5: Integration Test with Real API
+api-step_b2c3d4e5f6a1.md
+
+# Step 6: Final Verification
+api-step_c3d4e5f6a1b2.md
+
+# Total: 7 steps (including Step 0)
+# Estimated time: 40-45 minutes
